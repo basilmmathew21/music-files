@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'slno' => 'No',
+    'name' => 'Department',
+    'name__placeholder' => 'Enter Department here...',
+    'status' => 'Status',
+    'is_active' => 'Is Active',
+    'is_active_0' => 'No',
+    'is_active_1' => 'Yes',
+    'create' => 'Create New Department',
+    'delete' => 'Delete Department',
+    'edit' => 'Edit Department',
+    'show' => 'Show Department',
+    'show_all' => 'Show All Department',
+    'add' => 'Add',
+    'update' => 'Update',
+    'confirm_delete' => 'Click Ok to delete Department.',
+    'none_available' => 'No Department Available.',
+    'model_plural' => 'Department',
+    'model_was_added' => 'Department was successfully added.',
+    'model_was_retrieved' => 'Department was successfully retrieved.',
+    'models_were_retrieved' => 'Department were successfully retrieved.',
+    'model_was_updated' => 'Department was successfully updated.',
+    'model_was_deleted' => 'Department was successfully deleted.',
+    'unexpected_error' => 'Unexpected error occurred while trying to process your request.',
+];
