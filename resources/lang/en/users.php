@@ -22,6 +22,7 @@ return [
     'country' => 'Country',
     'state'   => 'State',
     'address' => 'Address',
+    'user_type' => 'Usertype',
     'status'  =>  'Active',
     'country__placeholder' => 'Select country here...',
     'city' => 'City',

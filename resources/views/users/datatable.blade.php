@@ -6,6 +6,7 @@
         <a href=" {{ route('users.user.show', $user->id) }} " class="btn btn-info" title=" {{ trans('users.show') }}">
             <i class="fas fa-eye"></i>
         </a>
+        <!--
         <a href="{{ route('users.user.edit', $user->id) }}" class="btn btn-primary" title="{{ trans('users.edit') }}">
             <i class="fas fa-edit"></i>
         </a>
@@ -14,6 +15,7 @@
             onclick="return confirm('{{ trans('users.confirm_delete') }}')">
             <i class="fas fa-trash-alt"></i>
         </button>
+        -->
     </div>
 </form>
 @endif

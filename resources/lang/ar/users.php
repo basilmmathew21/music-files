@@ -11,6 +11,7 @@ return [
     'email' => 'Email',
     'email__placeholder' => 'أدخل البريد الإلكتروني هنا ...',
     'phone' => 'Phone',
+    'user_type' => 'Usertype',
     'phone__placeholder' => 'أدخل رقم الهاتف هنا ...',
     'gender' => 'جنس',
     'gender__placeholder' => 'أدخل الجنس هنا ...',

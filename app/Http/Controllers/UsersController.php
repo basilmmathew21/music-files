@@ -107,8 +107,12 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        $user = User::findOrFail($id);
-
+        $user = DB::table('users')->where('users.id',$id)
+                    ->leftJoin('countries', 'users.country_id', '=', 'countries.id')
+                    ->leftJoin('user_types', 'users.user_type_id', '=', 'user_types.id')
+                    ->select(['users.*','user_types.user_type','countries.name AS country_name','users.dob',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%y") as dob'),DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
+                    ->first();
+        
         return view('users.show', compact('user'));
     }
 
