@@ -43,7 +43,7 @@ class UsersController extends Controller
        
         if ($request->ajax()) {
             $data = User::join('countries', 'users.country_id', '=', 'countries.id')
-                        ->select(['users.*','countries.name AS country_name','users.dob',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%y") as dob')])
+                        ->select(['users.*','countries.name AS country_name','users.dob',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%y") as dob'),DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
                         ->get();
                         
             $datatable =  DataTables::of($data)
