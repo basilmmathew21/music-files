@@ -60,6 +60,13 @@
                             <th>{{ trans('users.slno') }}</th>
                             <th>{{ trans('users.name') }}</th>
                             <th>{{ trans('users.email') }}</th>
+                            <th>{{ trans('users.gender') }}</th>
+                            <th>{{ trans('users.dob') }}</th>
+                            <th>{{ trans('users.phone') }}</th>
+                            <th>{{ trans('users.country') }}</th>
+                            <th>{{ trans('users.state') }}</th>
+                            <th>{{ trans('users.address') }}</th>
+                            <th>{{ trans('users.status') }}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -92,6 +99,13 @@
                     {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                     {data: 'name', name: 'name'},
                     {data: 'email', name: 'email'},
+                    {data:  'gender', name: "gender"},
+                    {data:  'dob', name: "dob"},
+                    {data:  'phone', name: "phone"},
+                    {data:  'country_name', name: "country_name"},
+                    {data:  'state', name: "state"},
+                    {data:  'address', name: "address"},
+                    {data:  'is_active', name: "is_active"},
                     {data: 'action', name: 'action', orderable: false, searchable: false},
                 ]
             });

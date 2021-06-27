@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Validation\Rule;
-
+use DB;
 use App\Exports\UsersExport;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -39,13 +39,18 @@ class UsersController extends Controller
         /**
          * Ajax call by datatable for listing of the users.
          */
+
+       
         if ($request->ajax()) {
-            $data = User::all();
+            $data = User::join('countries', 'users.country_id', '=', 'countries.id')
+                        ->select(['users.*','countries.name AS country_name','users.dob',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%y") as dob')])
+                        ->get();
+                        
             $datatable =  DataTables::of($data)
                 ->filter(function ($instance) use ($request) {
                     if ($request->has('keyword') && $request->get('keyword')) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['name'], Str::lower($request->get('keyword'))) ? true : false;
+                            return Str::contains($row['name'], $request->get('keyword')) ? true : false;
                         });
                     }
                 })
