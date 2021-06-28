@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Laravel\Passport\HasApiTokens;
+use App\Models\Student;
 
 
 class User extends Authenticatable
@@ -99,5 +100,13 @@ class User extends Authenticatable
     public function adminlte_profile_url()
     {
         return 'profile/username';
+    }
+
+    /**
+     * Get the Student record associated with the user.
+     */
+    public function student()
+    {
+        return $this->hasOne(Student::class);
     }
 }
