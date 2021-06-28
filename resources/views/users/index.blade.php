@@ -1,12 +1,14 @@
 @extends('adminlte::page')
 
 @section('content_header')
-    <h1 class="m-0 text-dark">{{ trans('users.model_plural') }}</h1>
+    <h1 class="m-0 text-dark">{{ trans('users.listing') }}</h1>
+     <!--
      <div class="btn-group btn-group-sm pull-right" role="group">
         <a href="{{ route('users.user.create') }}" class="btn btn-success" title="{{ trans('users.create') }}">
             <i class="fas fa-plus-circle"></i>
         </a>
     </div>
+    -->
 @stop
 
 @section('content')
@@ -60,6 +62,7 @@
                             <th>{{ trans('users.slno') }}</th>
                             <th>{{ trans('users.name') }}</th>
                             <th>{{ trans('users.email') }}</th>
+                            <th>{{ trans('users.user_type') }}</th>
                             <th>{{ trans('users.gender') }}</th>
                             <th>{{ trans('users.phone') }}</th>
                             <th>{{ trans('users.country') }}</th>
@@ -96,6 +99,7 @@
                     {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                     {data: 'name', name: 'name'},
                     {data: 'email', name: 'email'},
+                    {data: 'user_type', name: 'user_type'},
                     {data:  'gender', name: "gender"},
                     {data:  'phone', name: "phone"},
                     {data:  'country_name', name: "country_name"},

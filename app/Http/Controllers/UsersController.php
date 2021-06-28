@@ -40,12 +40,13 @@ class UsersController extends Controller
          * Ajax call by datatable for listing of the users.
          */
 
-       
         if ($request->ajax()) {
+            
             $data = User::join('countries', 'users.country_id', '=', 'countries.id')
-                        ->select(['users.*','countries.name AS country_name','users.dob',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%y") as dob'),DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
+                        ->join('user_types', 'users.user_type_id', '=', 'user_types.id')
+                        ->select(['users.*','user_types.user_type','countries.name AS country_name','users.dob',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%y") as dob'),DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
                         ->get();
-                        
+                                           
             $datatable =  DataTables::of($data)
                 ->filter(function ($instance) use ($request) {
                     if ($request->has('keyword') && $request->get('keyword')) {
