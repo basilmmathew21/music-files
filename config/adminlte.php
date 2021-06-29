@@ -254,6 +254,12 @@ return [
             'icon'    => 'icon-34-users',
             'can' => ['view users'],
         ],
+        [
+            'text' => 'Students',
+            'route'  => 'students.student.index',
+            'icon'    => 'icon-34-users',
+            'can' => ['view users'],
+        ],
     ],
 
 
