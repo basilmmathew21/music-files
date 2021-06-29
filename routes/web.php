@@ -36,6 +36,7 @@ Route::group([
     'middleware' => ['permission:view users'],
     'prefix' => 'users',
 ], function () {
+    
     Route::get('/', 'UsersController@index')
         ->name('users.user.index');
     Route::get('/create', 'UsersController@create')
@@ -51,3 +52,25 @@ Route::group([
     Route::delete('/user/{user}', 'UsersController@destroy')
         ->name('users.user.destroy');
 });
+
+Route::group([
+    'middleware' => ['permission:view users'],
+    'prefix' => 'students',
+], function () {
+    Route::get('/', 'StudentsController@index')
+        ->name('students.student.index');
+    Route::get('/create', 'StudentsController@create')
+        ->name('students.student.create');
+    Route::get('/show/{student}', 'StudentsController@show')
+        ->name('students.student.show');
+    Route::get('/{student}/edit', 'StudentsController@edit')
+        ->name('students.student.edit');
+    Route::post('/', 'StudentsController@store')
+        ->name('students.student.store');
+    Route::put('student/{student}', 'StudentsController@update')
+        ->name('students.student.update');
+    Route::delete('/student/{student}', 'StudentsController@destroy')
+        ->name('students.student.destroy');
+});
+
+
