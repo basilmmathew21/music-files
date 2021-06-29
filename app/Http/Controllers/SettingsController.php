@@ -25,7 +25,7 @@ class SettingsController extends Controller
             ->filter(function ($instance) use ($request) {
                 if ($request->has('keyword') && $request->get('keyword')) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains($row['name'], Str::lower($request->get('keyword'))) ? true : false;
+                        return Str::contains(Str::lower($row['name']), Str::lower($request->get('keyword'))) ? true : false;
                     });
                 }
             })

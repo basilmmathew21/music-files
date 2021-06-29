@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Courses;
 use DataTables;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class CoursesController extends Controller
 {
@@ -23,7 +24,7 @@ class CoursesController extends Controller
             ->filter(function ($instance) use ($request) {
                 if ($request->has('keyword') && $request->get('keyword')) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains($row['course'], Str::lower($request->get('keyword'))) ? true : false;
+                        return Str::contains(Str::lower($row['course']), Str::lower($request->get('keyword'))) ? true : false;
                     });
                 }
             })
@@ -66,14 +67,24 @@ class CoursesController extends Controller
             'course'=>'required'
         ]);
         
-
         
+       if(DB::table('courses')->where('course', $request['course'])->exists())
+       {
+        return redirect()->route('courses.course.index')
+        ->with('error_message', trans('Course Already Exist'));
+       }
+       else
+       {
         $course=new Courses();
         $course->course=$request['course'];
         $course->is_active=$request['status'];
         $course->save();
         return redirect()->route('courses.course.index')
         ->with('success_message', trans('users.course_was_added'));
+
+      
+       }
+       
     }
 
     /**
@@ -108,12 +119,25 @@ class CoursesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $course=Courses::find($id);
-        $course->course=$request['course'];
-        $course->is_active=$request['status'];
-        $course->save();
-        return redirect()->route('courses.course.index')
-        ->with('success_message', trans('users.course_was_updated'));
+        $course_exist= Courses::where('course', '=', $request['course'])
+                            ->Where('id', '!=',  $id)->exists();
+       if($course_exist)
+       {
+           return redirect()->route('courses.course.index')
+                 ->with('error_message', trans('Course Already Exist'));
+
+       }
+        else
+        {
+            $course=Courses::find($id);
+            $course->course=$request['course'];
+            $course->is_active=$request['status'];
+            $course->save();
+            return redirect()->route('courses.course.index')
+            ->with('success_message', trans('users.course_was_updated'));
+            
+        }
+        
     }
 
     /**

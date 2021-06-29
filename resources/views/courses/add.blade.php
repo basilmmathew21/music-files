@@ -4,7 +4,7 @@
     <h1 class="m-0 text-dark">Courses</h1>
     <div class="btn-group btn-group-sm pull-right" role="group">
 
-    <a href="{{ route('courses.course.index') }}" class="btn btn-primary" title="Sho All Courses">
+    <a href="{{ route('courses.course.index') }}" class="btn btn-primary" title="{{ trans('users.show_all_course') }}">
             <i class="fas fa-list-alt"></i>
         </a>
 

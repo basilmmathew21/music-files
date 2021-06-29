@@ -146,6 +146,12 @@ return [
 'course_was_deleted' => 'Course  successfully deleted.',
 'course'=>'Course',
 'courses'=>'Courses',
+'confirm_delete_course'=>'Click Ok to Delete the Course ',
+'delete_course'=>'Delete Course',
+'edit_course'=>'Edit Course',
+'create_course'=>'Add Course',
+'show_all_course'=>'Show All Courses',
+
 
 
 ];

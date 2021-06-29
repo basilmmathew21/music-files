@@ -3,7 +3,7 @@
 @section('content_header')
     <h1 class="m-0 text-dark">{{ trans('users.courses') }}</h1>
      <div class="btn-group btn-group-sm pull-right" role="group">
-     <a href="{{ route('courses.course.create') }}" class="btn btn-success" title="{{ trans('courses.create') }}">
+     <a href="{{ route('courses.course.create') }}" class="btn btn-success" title="{{ trans('users.create_course') }}">
             <i class="fas fa-plus-circle"></i>
         </a>
     </div>
@@ -11,15 +11,16 @@
 
 @section('content')
 
-    @if(Session::has('success_message') or Session::has('error_message'))
+    @if(Session::has('success_message') )
         <div class="alert alert-success">
             <i class="fas fa-check-circle"></i>
             {!! session('success_message') !!}
-            {!! session('error_message') !!}
+            
             <button type="button" class="close" data-dismiss="alert" aria-label="close">
                 <span aria-hidden="true">&times;</span>
             </button>
-
+           
+            
         </div>
     @endif
     @if(Session::has('error_message'))
