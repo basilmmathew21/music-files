@@ -254,6 +254,18 @@ return [
             'icon'    => 'icon-34-users',
             'can' => ['view users'],
         ],
+        [
+            'text' => 'settings',
+            'route'  => 'settings.settings.index',
+            'icon'    => 'fa fa-cog',
+            'can' => ['view settings'],
+        ],
+        [
+            'text' => 'Courses',
+            'route'  => 'courses.course.index',
+            'icon'    => 'fa fa-cog',
+            'can' => ['view courses'],
+        ],
     ],
 
 

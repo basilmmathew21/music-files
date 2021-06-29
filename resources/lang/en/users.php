@@ -130,4 +130,22 @@ return [
     'field_name_title' => 'Field Name',
     'field_type_title' => 'Field Type',
 
+
+//settings
+    'settings'=>'Settings',    
+    'name__placeholder' => 'Enter name here...',
+    'value'=>'Value',
+    'value__placeholder' => 'Enter Value here...',
+    'setting_was_updated' => 'Settings  successfully updated.',
+
+
+
+//courses
+'course_was_added' => 'Course  successfully added.',
+'course_was_updated' => 'Course  successfully updated.',
+'course_was_deleted' => 'Course  successfully deleted.',
+'course'=>'Course',
+'courses'=>'Courses',
+
+
 ];
