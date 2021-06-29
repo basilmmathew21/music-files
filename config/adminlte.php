@@ -45,7 +45,7 @@ return [
     |
     */
 
-    'logo' => '<b></b>',
+    'logo' => '<b>musicshikshan</b>',
     'logo_img' => 'vendor/adminlte/dist/img/LaravelLogo.png',
     'logo_img_class' => 'brand-image',
     'logo_img_xl' => null,
