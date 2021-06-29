@@ -51,3 +51,36 @@ Route::group([
     Route::delete('/user/{user}', 'UsersController@destroy')
         ->name('users.user.destroy');
 });
+
+Route::group([
+    'middleware' => ['permission:view settings'],
+    'prefix' => 'settings',
+], function () {
+    Route::get('/', 'SettingsController@index')
+        ->name('settings.settings.index');   
+    Route::get('/{settings}/edit', 'SettingsController@edit')
+            ->name('settings.settings.edit'); 
+    Route::put('settings/{settings}', 'SettingsController@update')
+            ->name('settings.settings.update');
+       
+   
+});
+Route::group([
+    'middleware' => ['permission:view courses'],
+    'prefix' => 'courses',
+], function () {
+    Route::get('/', 'CoursesController@index')
+        ->name('courses.course.index');
+    Route::get('/create', 'CoursesController@create')
+        ->name('courses.course.create');
+    Route::get('/{course}/edit', 'CoursesController@edit')
+        ->name('courses.course.edit');
+   Route::post('/', 'CoursesController@store')
+        ->name('courses.course.store');
+    Route::put('courses/{course}', 'CoursesController@update')
+        ->name('courses.course.update');
+    Route::delete('/course/{course}', 'CoursesController@destroy')
+        ->name('courses.course.destroy');
+       
+   
+});
