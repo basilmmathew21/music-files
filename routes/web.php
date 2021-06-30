@@ -53,6 +53,7 @@ Route::group([
 });
 
 Route::group([
+<<<<<<< HEAD
     'middleware' => ['permission:view settings'],
     'prefix' => 'settings',
 ], function () {
@@ -84,4 +85,23 @@ Route::group([
        
  
    
+=======
+    'middleware' => ['permission:view users'],
+    'prefix' => 'students',
+], function () {
+    Route::get('/', 'StudentsController@index')
+        ->name('students.student.index');
+    Route::get('/create', 'StudentsController@create')
+        ->name('students.student.create');
+    Route::get('/show/{student}', 'StudentsController@show')
+        ->name('students.student.show');
+    Route::get('/{student}/edit', 'StudentsController@edit')
+        ->name('students.student.edit');
+    Route::post('/', 'StudentsController@store')
+        ->name('students.student.store');
+    Route::put('student/{student}', 'StudentsController@update')
+        ->name('students.student.update');
+    Route::delete('/student/{student}', 'StudentsController@destroy')
+        ->name('students.student.destroy');
+>>>>>>> a8c6f2d0a54d7dc5cae284a52a9b31dde20c5d97
 });

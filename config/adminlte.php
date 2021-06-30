@@ -267,8 +267,10 @@ return [
             'can' => ['view courses'],
         ],
         [
-            'text' => 'Manage Tutors',
+            //'text' => 'Manage Tutors',
           // 'route'  => 'tutors.tutor.index',
+            'text' => 'Students',
+            'route'  => 'students.student.index',
             'icon'    => 'icon-34-users',
             'can' => ['view users'],
         ],
