@@ -151,6 +151,7 @@ return [
 'edit_course'=>'Edit Course',
 'create_course'=>'Add Course',
 'show_all_course'=>'Show All Courses',
+'status'=>'Status',
 
 
 
