@@ -263,7 +263,7 @@ return [
         [
             'text' => 'Courses',
             'route'  => 'courses.course.index',
-            'icon'    => 'fa fa-cog',
+            'icon'    => 'fa fa-graduation-cap',
             'can' => ['view courses'],
         ],
     ],
