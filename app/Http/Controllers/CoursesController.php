@@ -70,7 +70,7 @@ class CoursesController extends Controller
         
        if(DB::table('courses')->where('course', $request['course'])->exists())
        {
-        return redirect()->route('courses.course.index')
+         return redirect()->back()
         ->with('error_message', trans('Course Already Exist'));
        }
        else
@@ -123,7 +123,7 @@ class CoursesController extends Controller
                             ->Where('id', '!=',  $id)->exists();
        if($course_exist)
        {
-           return redirect()->route('courses.course.index')
+        return redirect()->back()
                  ->with('error_message', trans('Course Already Exist'));
 
        }

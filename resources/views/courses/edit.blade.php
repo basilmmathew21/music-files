@@ -12,6 +12,16 @@
 @stop
 
 @section('content')
+@if(Session::has('error_message'))
+        <div class="alert alert-danger">
+            <i class="fas fa-check-circle"></i>
+            {!! session('error_message') !!}
+            <button type="button" class="close" data-dismiss="alert" aria-label="close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+        </div>
+    @endif
 
     <div class="panel panel-default">
     <div class="card card-primary card-outline">

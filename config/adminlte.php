@@ -266,6 +266,12 @@ return [
             'icon'    => 'fa fa-graduation-cap',
             'can' => ['view courses'],
         ],
+        [
+            'text' => 'Manage Tutors',
+          // 'route'  => 'tutors.tutor.index',
+            'icon'    => 'icon-34-users',
+            'can' => ['view users'],
+        ],
     ],
 
 
