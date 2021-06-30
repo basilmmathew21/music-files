@@ -1,7 +1,7 @@
 @extends('adminlte::page')
 
 @section('content_header')
-    <h1 class="m-0 text-dark">{{ trans('users.create') }}</h1>
+    <h1 class="m-0 text-dark">{{ trans('students.create') }}</h1>
     <div class="btn-group btn-group-sm pull-right" role="group">
         <a href="{{ route('users.user.index') }}" class="btn btn-primary" title="{{ trans('users.show_all') }}">
             <i class="fas fa-list-alt"></i>
@@ -29,9 +29,9 @@
             @endif
 
 
-            <form method="POST" action="{{ route('users.user.store') }}" accept-charset="UTF-8" id="create_user_form" name="create_user_form" class="form-horizontal">
+            <form method="POST" action="{{ route('students.student.store') }}" accept-charset="UTF-8" id="create_user_form" name="create_user_form" class="form-horizontal">
             {{ csrf_field() }}
-            @include ('users.form', [
+            @include ('students.form', [
                                         'user' => null,
                                       ])
 
