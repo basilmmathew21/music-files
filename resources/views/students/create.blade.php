@@ -33,6 +33,7 @@
             {{ csrf_field() }}
             @include ('students.form', [
                                         'user' => null,
+                                        'files' => true
                                       ])
 
                 <div class="form-group">

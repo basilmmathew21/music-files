@@ -50,7 +50,12 @@ class User extends Authenticatable
         'password',
         'is_active',
         'user_type_id',
-        'country_id'
+        'country_id',
+        'gender',
+        'dob',
+        'state',
+        'address',
+        'profile_image',
     ];
 
     /**

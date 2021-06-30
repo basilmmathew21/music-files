@@ -61,6 +61,16 @@ class StudentsController extends Controller
                             return Str::contains(Str::lower($row['phone'] . $row['email'] . $row['name'] ), Str::lower($request->get('keyword'))) ? true : false;
                         });
                     }
+                    /*
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        if($row['is_registered'] == 1) 
+                            $isReg  =   'Yes';
+                        else
+                            $isReg  =   'No';
+
+                        return $isReg;
+                    });
+                    */
                 })
                 ->addIndexColumn()
                 ->addColumn('action', function ($student) {
@@ -68,9 +78,13 @@ class StudentsController extends Controller
                 })
                 ->rawColumns(['action'])
                 ->make(true);
-            //dd($datatable);
             return $datatable;
         }
+
+        
+
+
+
 
         $student = User::paginate(25);
         return view('students.index', compact('student'));
@@ -100,21 +114,17 @@ class StudentsController extends Controller
      */
     public function store(Request $request)
     {
-        //try {
-
         $data = $this->getData($request);
-        
         $data['password']       = Hash::make($data['password']); //Encrypting password
         $data['country_id']     = $data['country']; //country
+        $data['state']          = $request->state;
+        $data['address']        = $request->address;
         $data['user_type_id']   = 4;
         if ($request->hasFile('profile_image')) {
 
             $profile_image_path = $request->file('profile_image')->store('students/profile');
             $data['profile_image'] =  $profile_image_path;
         }
-        //unset($data['country']);
-        //unset($data['city']);
-        
         User::create($data);
         
         $newuser = User::where('email', '=', $data['email'])->where('user_type_id', 4)->first()->toArray();
@@ -128,11 +138,7 @@ class StudentsController extends Controller
         
         return redirect()->route('students.student.index')
             ->with('success_message', trans('students.model_was_added'));
-        /*} catch (Exception $exception) {
-
-            return back()->withInput()
-                ->withErrors(['unexpected_error' => trans('drivers.unexpected_error')]);
-        }*/
+        
     }
     /**
      * Display the specified customer.

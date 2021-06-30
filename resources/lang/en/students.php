@@ -17,6 +17,7 @@ return [
     'registered' => 'Registered',
     'email__placeholder' => 'Enter email here...',
     'phone__placeholder' => 'Enter phone here...',
+    'address__placeholder'  => 'Enter address here...',
     'dob__placeholder'   => 'Enter dob here...',
     'phone' => 'Phone',
     'dob' => 'Dob',

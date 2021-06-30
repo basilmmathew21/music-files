@@ -56,7 +56,7 @@ Route::group([
     'middleware' => ['permission:view users'],
     'prefix' => 'students',
 ], function () {
-    Route::get('/', 'StudentsController@index')
+    Route::get('/students', 'StudentsController@index')
         ->name('students.student.index');
     Route::get('/create', 'StudentsController@create')
         ->name('students.student.create');
