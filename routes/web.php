@@ -82,5 +82,6 @@ Route::group([
     Route::delete('/course/{course}', 'CoursesController@destroy')
         ->name('courses.course.destroy');
        
+ 
    
 });
