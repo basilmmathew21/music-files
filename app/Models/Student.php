@@ -22,7 +22,7 @@ class Student extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id','country_id','course_id'
+        'user_id','country_id','course_id','currency_id'
     ];
 
     /**

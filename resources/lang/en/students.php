@@ -11,7 +11,13 @@ return [
     'surname' => 'Surname',
     'surname__placeholder' => 'Enter surname here...',
     'email' => 'Email',
+    'course' => 'Course',
+    'currency' => 'Currency',
+    'nation' =>  'Country',
+    'registered' => 'Registered',
     'email__placeholder' => 'Enter email here...',
+    'phone__placeholder' => 'Enter phone here...',
+    'dob__placeholder'   => 'Enter dob here...',
     'phone' => 'Phone',
     'dob' => 'Dob',
     'phone__placeholder' => 'Enter phone here...',
@@ -22,7 +28,7 @@ return [
     'country' => 'Country',
     'state'   => 'State',
     'address' => 'Address',
-    'listing' => 'Users listing',
+    'listing' => 'Students',
     'user_type' => 'Usertype',
     'status'  =>  'Active',
     'country__placeholder' => 'Select country here...',
@@ -88,7 +94,7 @@ return [
     'confirm_delete' => 'Click Ok to delete User.',
     'none_available' => 'No Users Available.',
     'model_plural' => 'Users',
-    'model_was_added' => 'User was successfully added.',
+    'model_was_added' => 'Student was successfully added.',
     'model_was_retrieved' => 'User was successfully retrieved.',
     'models_were_retrieved' => 'Users were successfully retrieved.',
     'model_was_updated' => 'User was successfully updated.',
@@ -135,29 +141,5 @@ return [
     'parameter_name_title' => 'Parameter Name',
     'field_name_title' => 'Field Name',
     'field_type_title' => 'Field Type',
-
-
-//settings
-    'settings'=>'Settings',    
-    'name__placeholder' => 'Enter name here...',
-    'value'=>'Value',
-    'value__placeholder' => 'Enter Value here...',
-    'setting_was_updated' => 'Settings  successfully updated.',
-
-
-
-//courses
-'course_was_added' => 'Course  successfully added.',
-'course_was_updated' => 'Course  successfully updated.',
-'course_was_deleted' => 'Course  successfully deleted.',
-'course'=>'Course',
-'courses'=>'Courses',
-'confirm_delete_course'=>'Click Ok to Delete the Course ',
-'delete_course'=>'Delete Course',
-'edit_course'=>'Edit Course',
-'create_course'=>'Add Course',
-'show_all_course'=>'Show All Courses',
-
-
 
 ];

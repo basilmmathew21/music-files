@@ -254,14 +254,29 @@ return [
             'icon'    => 'icon-34-users',
             'can' => ['view users'],
         ],
-		
-		[
+	
+        [
+            'text' => 'settings',
+            'route'  => 'settings.settings.index',
+            'icon'    => 'fa fa-cog',
+            'can' => ['view settings'],
+        ],
+        [
+            'text' => 'Courses',
+            'route'  => 'courses.course.index',
+            'icon'    => 'fa fa-graduation-cap',
+            'can' => ['view courses'],
+        ],
+        [
+       
             'text' => 'Students',
             'route'  => 'students.student.index',
             'icon'    => 'icon-34-users',
             'can' => ['view users'],
         ]
+
     ],
+
 
 
     /*

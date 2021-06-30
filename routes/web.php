@@ -32,6 +32,7 @@ Route::get('send-mail', function () {
     dd("Email is Sent.");
 }); */
 //Route::get("send-email", 'EmailController@sendEmail')->name('first.email');
+
 Route::group([
     'middleware' => ['permission:view users'],
     'prefix' => 'users',
@@ -53,6 +54,39 @@ Route::group([
         ->name('users.user.destroy');
 });
 
+
+Route::group([
+    'middleware' => ['permission:view settings'],
+    'prefix' => 'settings',
+], function () {
+    Route::get('/', 'SettingsController@index')
+        ->name('settings.settings.index');   
+    Route::get('/{settings}/edit', 'SettingsController@edit')
+            ->name('settings.settings.edit'); 
+    Route::put('settings/{settings}', 'SettingsController@update')
+            ->name('settings.settings.update');
+       
+   
+});
+
+Route::group([
+    'middleware' => ['permission:view courses'],
+    'prefix' => 'courses',
+], function () {
+    Route::get('/', 'CoursesController@index')
+        ->name('courses.course.index');
+    Route::get('/create', 'CoursesController@create')
+        ->name('courses.course.create');
+    Route::get('/{course}/edit', 'CoursesController@edit')
+        ->name('courses.course.edit');
+   Route::post('/', 'CoursesController@store')
+        ->name('courses.course.store');
+    Route::put('courses/{course}', 'CoursesController@update')
+        ->name('courses.course.update');
+    Route::delete('/course/{course}', 'CoursesController@destroy')
+        ->name('courses.course.destroy');
+    });
+
 Route::group([
     'middleware' => ['permission:view users'],
     'prefix' => 'students',
@@ -72,5 +106,4 @@ Route::group([
     Route::delete('/student/{student}', 'StudentsController@destroy')
         ->name('students.student.destroy');
 });
-
 

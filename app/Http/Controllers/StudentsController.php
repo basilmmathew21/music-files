@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\User;
-use App\Models\Customer;
-use App\Models\Wallet;
+use App\Models\Course;
+use App\Models\Currency;
+use App\Models\Student;
 use Illuminate\Http\Request;
 use Exception;
 use DataTables;
+use DB;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -28,7 +30,7 @@ class StudentsController extends Controller
     }
 
     /**
-     * Display a listing of the students.
+     * Display a listing of the customers.
      *
      * @return Illuminate\View\View
      */
@@ -37,34 +39,48 @@ class StudentsController extends Controller
         /**
          * Ajax call by datatable for listing of the drivers.
          */
+       
         if ($request->ajax()) {
-            $data = User::with('customer')->where('user_type_id', 4)->get();
+             $data = User::with('student')
+            ->join('countries', 'users.country_id', '=', 'countries.id')
+            ->leftJoin('students', 'students.user_id', '=', 'users.id')
+            ->leftJoin('courses', 'students.course_id', '=', 'courses.id')
+            ->select(['users.*','students.is_registered','courses.course','countries.name AS country_name',DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
+            ->where('user_type_id', 4)
+            ->get();
+
             $datatable =  DataTables::of($data)
                 ->filter(function ($instance) use ($request) {
-                    if ($request->has('city') && $request->get('city')) {
+                    if ($request->has('keyword') && $request->get('keyword')) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            //return Str::contains($row['phone'], $request->get('phone')) ? true : false;
-                            return $row['city_id'] == $request->get('city');
+                            return Str::contains(Str::lower($row['name']), Str::lower($request->get('keyword'))) ? true : false;
                         });
                     }
                     if ($request->has('keyword') && $request->get('keyword')) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains(Str::lower($row['phone'] . $row['email'] . $row['name'] . $row['surname']), Str::lower($request->get('keyword'))) ? true : false;
+                            return Str::contains(Str::lower($row['phone'] . $row['email'] . $row['name'] ), Str::lower($request->get('keyword'))) ? true : false;
                         });
                     }
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        if($row['is_registered'] == 1) 
+                            $isReg  =   'Yes';
+                        else
+                            $isReg  =   'No';
+
+                        return $isReg;
+                    });
                 })
                 ->addIndexColumn()
-                ->addColumn('action', function ($customer) {
-                    return view('customer.datatable', compact('customer'));
+                ->addColumn('action', function ($student) {
+                    return view('students.datatable', compact('student'));
                 })
                 ->rawColumns(['action'])
                 ->make(true);
             return $datatable;
         }
 
-        $customer   = User::with('customer')->where('user_type_id', 4)->paginate(25);
-        $cities     = City::where('is_active', 1)->pluck('name', 'id')->all();
-        return view('customer.index', compact('customer', 'cities'));
+       $student = User::paginate(25);
+        return view('students.index', compact('student'));
     }
 
     /**
@@ -74,10 +90,12 @@ class StudentsController extends Controller
      */
     public function create()
     {
-        $country_code = Country::pluck('phone_code', 'id')->all();
+        //$country_code = Country::pluck('phone_code', 'id')->all();
         $nationalities = Country::pluck('name', 'id')->all();
-        $cities =  City::where('is_active', 1)->pluck('name', 'id')->all();
-        return view('customer.create', compact('country_code', 'cities', 'nationalities'));
+        $courses = Course::pluck('course', 'id')->all();
+        $currency = Currency::pluck('symbol', 'id')->all();
+        //$cities =  City::where('is_active', 1)->pluck('name', 'id')->all();
+        return view('students.create', compact('nationalities','courses','currency'));
     }
 
     /**
@@ -89,52 +107,31 @@ class StudentsController extends Controller
      */
     public function store(Request $request)
     {
-        //try {
-
         $data = $this->getData($request);
-
-        $data['password'] = Hash::make($data['password']); //Encrypting password
-        $data['country_id'] = $data['country']; //driver user type
-        $data['city_id'] =  $data['city']; //driver user type
-        $data['user_type_id'] = 4;
+        $data['password']       = Hash::make($data['password']); //Encrypting password
+        $data['country_id']     = $data['country']; //country
+        $data['state']          = $request->state;
+        $data['address']        = $request->address;
+        $data['user_type_id']   = 4;
         if ($request->hasFile('profile_image')) {
 
-            $profile_image_path = $request->file('profile_image')->store('customers/profile');
+            $profile_image_path = $request->file('profile_image')->store('students/profile');
             $data['profile_image'] =  $profile_image_path;
         }
-        unset($data['country']);
-        unset($data['city']);
         User::create($data);
+        
         $newuser = User::where('email', '=', $data['email'])->where('user_type_id', 4)->first()->toArray();
-        $wallet['user_id'] =  $newuser['id'];
-        $wallet['user_type'] =  4;
-        $wallet['amount'] =  0;
-        $wallet['is_active'] =  1;
-        Wallet::create($wallet);
-        if ($request->hasFile('national_file')) {
-
-            $national_file_path = $request->file('national_file')->store('customers/national');
-            $data['national_file'] =  $national_file_path;
-            $customer['national_file'] = $data['national_file'];
-        }
-        if ($request->hasFile('license_file')) {
-
-            $license_file_path = $request->file('license_file')->store('customers/license');
-            $data['license_file'] =  $license_file_path;
-            $customer['license_file'] = $data['license_file'];
-        }
-        $customer['user_id'] = $newuser['id'];
-        $customer['dob'] = $data['dob'];
-        $customer['national_id'] = $data['national_id'];
-        $customer['nationality_id'] = $data['nationality_id'];
-        Customer::create($customer); //create driver
-        return redirect()->route('customer.index')
-            ->with('success_message', trans('customer.model_was_added'));
-        /*} catch (Exception $exception) {
-
-            return back()->withInput()
-                ->withErrors(['unexpected_error' => trans('drivers.unexpected_error')]);
-        }*/
+        $student['user_id']        =  $newuser['id'];
+        $student['country_id']     =  $data['country'];
+        $student['course_id']      =  $request->course;
+        $student['currency_id']    =  $request->currency;
+        $student['is_registered']  =  1;
+        $student['is_active']      =  1;
+        Student::create($student);
+        
+        return redirect()->route('students.student.index')
+            ->with('success_message', trans('students.model_was_added'));
+        
     }
     /**
      * Display the specified customer.
@@ -260,7 +257,6 @@ class StudentsController extends Controller
 
         $rules = [
             'name' => 'required|string|min:1|max:255',
-            'surname' => 'nullable',
             'email' => [
                 'required',
                 Rule::unique('users')->where(function ($query) {
@@ -277,12 +273,8 @@ class StudentsController extends Controller
             'gender' => 'nullable',
             'dob' => 'nullable',
             'country' => 'nullable',
-            'city' => 'nullable',
-            'nationality_id' => 'nullable',
             'profile_image' => 'nullable|mimes:jpg,jpeg,png|max:5120',
-            'national_id' => 'nullable',
-            'national_file' => 'nullable|mimes:jpg,jpeg,png|max:5120',
-            'license_file' => 'nullable|mimes:jpg,jpeg,png|max:5120',
+        
         ];
 
         //Validating unique for update ignoring the same record

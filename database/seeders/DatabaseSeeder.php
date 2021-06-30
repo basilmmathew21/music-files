@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Country;
+use App\Models\Currency;
 use App\Models\User;
 use App\Models\UserType;
 use Illuminate\Database\Seeder;
@@ -87,6 +88,17 @@ class DatabaseSeeder extends Seeder
             'is_active'=>1
         ]);
 
+        Currency::create([
+            'code' => 'USD',
+            'name' => 'US Dollar',
+            'symbol' => '$'            
+        ]);
+        Currency::create([
+            'code' => 'EUR',
+            'name' => 'Euro',
+            'symbol' => 'â‚¬'            
+        ]);
+        
         // create permissions
         Permission::create(['name' => 'view dashboard']);
 
