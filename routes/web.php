@@ -53,7 +53,6 @@ Route::group([
 });
 
 Route::group([
-<<<<<<< HEAD
     'middleware' => ['permission:view settings'],
     'prefix' => 'settings',
 ], function () {
@@ -63,9 +62,8 @@ Route::group([
             ->name('settings.settings.edit'); 
     Route::put('settings/{settings}', 'SettingsController@update')
             ->name('settings.settings.update');
-       
-   
 });
+
 Route::group([
     'middleware' => ['permission:view courses'],
     'prefix' => 'courses',
@@ -82,11 +80,10 @@ Route::group([
         ->name('courses.course.update');
     Route::delete('/course/{course}', 'CoursesController@destroy')
         ->name('courses.course.destroy');
-       
- 
-   
-=======
-    'middleware' => ['permission:view users'],
+    });
+         
+Route::group([ 
+    'middleware' => ['permission:view students'],
     'prefix' => 'students',
 ], function () {
     Route::get('/students', 'StudentsController@index')
@@ -103,5 +100,4 @@ Route::group([
         ->name('students.student.update');
     Route::delete('/student/{student}', 'StudentsController@destroy')
         ->name('students.student.destroy');
->>>>>>> a8c6f2d0a54d7dc5cae284a52a9b31dde20c5d97
 });
