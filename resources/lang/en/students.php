@@ -26,6 +26,7 @@ return [
     'gender__placeholder' => 'Enter gender here...',
     'city' => 'City',
     'city__placeholder' => 'Select city here...',
+    'is_registered'     => 'Is Registered',
     'country' => 'Country',
     'state'   => 'State',
     'address' => 'Address',

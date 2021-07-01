@@ -96,6 +96,19 @@ class User extends Authenticatable
         return $value ? 'Active' : 'Inactive';
     }
 
+
+    /**
+     * Get the User Status.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getIsRegisteredAttribute($value)
+    {
+        return $value ? 'Reg' : 'Not Reg';
+    }
+
+
     public function adminlte_image()
     {
         return 'https://picsum.photos/300/300';

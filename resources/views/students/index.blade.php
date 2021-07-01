@@ -104,8 +104,8 @@
                     {data:  'phone', name: "phone"},
                     {data:  'country_name', name: "country_name"},
                     {data:  'course', name: "course"},
+                    {data:  'is_registered', name: "is_registered"},
                     {data:  'is_active', name: "is_registered"},
-                    {data:  'is_active', name: "is_active"},
                     {data: 'action', name: 'action', orderable: false, searchable: false},
                 ]
             });

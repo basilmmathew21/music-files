@@ -61,16 +61,7 @@ class StudentsController extends Controller
                             return Str::contains(Str::lower($row['phone'] . $row['email'] . $row['name'] ), Str::lower($request->get('keyword'))) ? true : false;
                         });
                     }
-                    /*
-                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        if($row['is_registered'] == 1) 
-                            $isReg  =   'Yes';
-                        else
-                            $isReg  =   'No';
-
-                        return $isReg;
-                    });
-                    */
+                    
                 })
                 ->addIndexColumn()
                 ->addColumn('action', function ($student) {
@@ -149,83 +140,18 @@ class StudentsController extends Controller
      */
     public function show($id)
     {
-        $customer = User::with('customer')->findOrFail($id);
-        return view('customer.show', compact('customer'));
+        $user = User::with('student')
+                    ->join('countries', 'users.country_id', '=', 'countries.id')
+                    ->leftJoin('students', 'students.user_id', '=', 'users.id')
+                    ->leftJoin('courses', 'students.course_id', '=', 'courses.id')
+                    ->leftJoin('currencies', 'students.currency_id', '=', 'currencies.id')
+                    ->leftJoin('user_types', 'users.user_type_id', '=', 'user_types.id')
+                    ->select(['users.*','user_types.user_type','currencies.code','students.is_registered','courses.course','countries.name AS country_name',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%y") as dob'),DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
+                    ->findOrFail($id);
+        return view('students.show', compact('user'));
     }
 
-    /**
-     * Display the specified customer.
-     *
-     * @param int $id-','id')->all();
-     * /**
-     * Show the form for editing the specified driver.
-     *
-     * @param int $id
-     *
-     * @return Illuminate\View\View
-     */
-    public function edit($id)
-    {
-        $customer = User::with('customer')->findOrFail($id);
-        $country_code = Country::pluck('phone_code', 'id')->all();
-        $nationalities = Country::pluck('name', 'id')->all();
-        $cities = City::where('is_active', 1)->pluck('name', 'id')->all();
-        return view('customer.edit', compact('customer', 'country_code', 'nationalities', 'cities'));
-    }
 
-    /**
-     * Update the specified driver in the storage.
-     *
-     * @param int $id
-     * @param Illuminate\Http\Request $request
-     *
-     * @return Illuminate\Http\RedirectResponse | Illuminate\Routing\Redirector
-     */
-    public function update($id, Request $request)
-    {
-
-        $data = $this->getData($request, $id);
-        $user   =   User::findOrFail($id);
-        $data['country_id'] = $data['country']; //driver user type
-        $data['city_id'] =  $data['city']; //driver user type
-        if ($request->hasFile('profile_image')) {
-            $profile_image_path = $request->file('profile_image')->store('customers/profile');
-            $data['profile_image'] =  $profile_image_path;
-        } else {
-            $data['profile_image'] =  $user->profile_image;
-        }
-        //Update the password only if provided
-        if ($data['password'] && !empty($data['password']))
-            $data['password'] = Hash::make($data['password']); //Encrypting password
-        else
-            unset($data['password']);
-        $user->update($data);
-
-        $customer = Customer::where('user_id', $id)->first();
-        if ($request->hasFile('national_file')) {
-
-            $national_file_path = $request->file('national_file')->store('customers/national');
-            $data['national_file'] =  $national_file_path;
-        } else {
-            $data['national_file'] =  $customer->national_file;
-        }
-        if ($request->hasFile('license_file')) {
-
-            $license_file_path = $request->file('license_file')->store('customers/license');
-            $data['license_file'] =  $license_file_path;
-        } else {
-            $data['license_file'] =  $customer->license_file;
-        }
-        $customer_data['is_active'] = $data['is_active'];
-        $customer_data['dob'] = $data['dob'];
-        $customer_data['national_file'] = $data['national_file'];
-        $customer_data['license_file'] = $data['license_file'];
-        $customer_data['national_id'] = $data['national_id'];
-        $customer_data['nationality_id'] = $data['nationality_id'];
-        $customer->update($customer_data);
-        return redirect()->route('customer.index')
-            ->with('success_message', trans('customer.model_was_updated'));
-    }
 
     /**
      * Remove the specified driver from the storage.
@@ -237,18 +163,18 @@ class StudentsController extends Controller
     public function destroy($id)
     {
         try {
-            $customer = Customer::where('user_id', $id);
-            $customer->delete();
+            $student = Student::where('user_id', $id);
+            $student->delete();
 
             $user = User::findOrFail($id);
             $user->delete();
 
-            return redirect()->route('customer.index')
-                ->with('success_message', trans('customer.model_was_deleted'));
+            return redirect()->route('students.index')
+                ->with('success_message', trans('students.model_was_deleted'));
         } catch (Exception $exception) {
 
             return back()->withInput()
-                ->withErrors(['unexpected_error' => trans('customer.unexpected_error')]);
+                ->withErrors(['unexpected_error' => trans('students.unexpected_error')]);
         }
     }
 
