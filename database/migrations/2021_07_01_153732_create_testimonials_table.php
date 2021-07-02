@@ -18,8 +18,8 @@ class CreateTestimonialsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('title',250);
             $table->text('description');
-            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
-            $table->boolean('is_active')->default(0);
+            $table->enum('status', ['pending', 'approved', 'rejected'])->nullable();
+            $table->tinyInteger('is_active')->default(0);
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users'); 
         });
