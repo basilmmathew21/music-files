@@ -55,9 +55,9 @@
     <label for="gender" class="col-md-2 control-label">{{ trans('students.gender') }}</label>
 	<div class="col-md-10">
         <select name="gender" class="form-control">
-		        <option value="Male" @if(old($user->gender)=='Male') selected @endif>Male</option>
-				<option value="Female" @if(old($user->gender)=='Female') selected @endif>Female</option>
-                <option value="Other" @if(old($user->gender)=='Other') selected @endif>Other</option>
+		        <option value="Male" @if($user->gender =='Male') selected @endif>Male</option>
+				<option value="Female" @if($user->gender =='Female') selected @endif>Female</option>
+                <option value="Other" @if($user->gender =='Other') selected @endif>Other</option>
         </select>
 	</div>
 </div>
@@ -87,7 +87,7 @@
         <select name="course" class="form-control">
 			@if(isset($courses))
 				@foreach ($courses as $id => $course)
-				<option value="{{ $id }}" <?php if(in_array($id,$courses)) { ?> selected="selected" <?php } ?>>{{ $course }}</option>
+				<option value="{{ $id }}" @if($user->course_id == $id) selected @endif>{{ $course }}</option>
 				@endforeach
 			@endif
         </select>
@@ -100,7 +100,7 @@
         <select name="country" class="form-control">
 			@if(isset($nationalities))
 				@foreach ($nationalities as $id => $nation)
-				<option value="{{ $id }}" <?php if(in_array($id,$nationalities)) { ?> selected="selected" <?php } ?>>{{ $nation }}</option>
+				<option value="{{ $id }}" @if($user->country_id == $id) selected @endif>{{ $nation }}</option>
 				@endforeach
 			@endif
         </select>
@@ -113,7 +113,7 @@
         <select name="currency" class="form-control">
 			@if(isset($currency))
 				@foreach ($currency as $id => $curcy)
-				<option value="{{ $id }}" <?php if(in_array($id,$currency)) { ?> selected="selected" <?php } ?>>{{ $curcy }}</option>
+				<option value="{{ $id }}" @if($user->currency_id == $id) selected @endif>{{ $curcy }}</option>
 				@endforeach
 			@endif
         </select>

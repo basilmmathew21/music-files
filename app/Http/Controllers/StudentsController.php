@@ -141,7 +141,8 @@ class StudentsController extends Controller
     {
 
         $user           = User::with('student')
-                                ->select(['users.*',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%y") as dob')])
+                                ->leftJoin('students', 'students.user_id', '=', 'users.id')
+                                ->select(['users.*','students.is_registered','students.country_id','students.course_id','students.currency_id',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%y") as dob')])
                                 ->findOrFail($id);
         $nationalities  = Country::pluck('name', 'id')->all();
         $courses        = Course::pluck('course', 'id')->all();
@@ -276,7 +277,7 @@ class StudentsController extends Controller
 
         //Validating unique for update ignoring the same record
         if ($id) {
-            $rules = array_merge($rules, [
+            $rules = array_merge($rules,[
                 'email' => [
                     'required',
                     Rule::unique('users')->ignore($id)->where(function ($query) {
@@ -292,6 +293,7 @@ class StudentsController extends Controller
                 'password' => 'nullable|string|min:1|max:255',
             ]);
         }
+        
         $data = $request->validate($rules);
 
         $data['is_active'] = $request->has('is_active');
