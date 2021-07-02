@@ -169,6 +169,7 @@ class StudentsController extends Controller
         $data['address']        = $request->address;
         $data['dob']            = Carbon::createFromFormat('d-m-y',$request->dob)->format('Y-m-d');
         $data['user_type_id']   = 4;
+        $data['is_active']      = $request->status;
         if ($request->hasFile('profile_image')) {
             $profile_image_path = $request->file('profile_image')->store('students/profile');
             $data['profile_image'] =  $profile_image_path;
