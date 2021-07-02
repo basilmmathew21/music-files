@@ -55,9 +55,9 @@
     <label for="gender" class="col-md-2 control-label">{{ trans('students.gender') }}</label>
 	<div class="col-md-10">
         <select name="gender" class="form-control">
-		        <option value="Male">Male</option>
-				<option value="Female">Female</option>
-                <option value="Other">Other</option>
+		        <option value="Male" @if(old($user->gender)=='Male') selected @endif>Male</option>
+				<option value="Female" @if(old($user->gender)=='Female') selected @endif>Female</option>
+                <option value="Other" @if(old($user->gender)=='Other') selected @endif>Other</option>
         </select>
 	</div>
 </div>
@@ -146,8 +146,8 @@
 	<div class="col-md-10">
     
         <select name="status" class="form-control">
-		        <option value="1">Active</option>
-				<option value="0">Inactive</option>
+		        <option value="1" <?php if($user->is_active == "Active") { ?> selected="selected" <?php } ?> >Active</option>
+				<option value="0" <?php if($user->is_active == "Inactive") { ?> selected="selected" <?php } ?>>Inactive</option>
         </select>
 	</div>
 </div>

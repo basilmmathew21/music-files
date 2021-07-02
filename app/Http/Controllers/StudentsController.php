@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\City;
 use App\Models\Country;
 use App\Models\User;
 use App\Models\Course;
@@ -30,14 +29,14 @@ class StudentsController extends Controller
     }
 
     /**
-     * Display a listing of the customers.
+     * Display a listing of the students.
      *
      * @return Illuminate\View\View
      */
     public function index(Request $request)
     {
         /**
-         * Ajax call by datatable for listing of the drivers.
+         * Ajax call by datatable for listing of the students.
          */
        
         if ($request->ajax()) {
@@ -72,32 +71,25 @@ class StudentsController extends Controller
             return $datatable;
         }
 
-        
-
-
-
-
         $student = User::paginate(25);
         return view('students.index', compact('student'));
     }
 
     /**
-     * Show the form for creating a new customer.
+     * Show the form for creating a new student.
      *
      * @return Illuminate\View\View
      */
     public function create()
     {
-        //$country_code = Country::pluck('phone_code', 'id')->all();
-        $nationalities = Country::pluck('name', 'id')->all();
-        $courses = Course::pluck('course', 'id')->all();
-        $currency = Currency::pluck('symbol', 'id')->all();
-        //$cities =  City::where('is_active', 1)->pluck('name', 'id')->all();
+        $nationalities  = Country::pluck('name', 'id')->all();
+        $courses        = Course::pluck('course', 'id')->all();
+        $currency       = Currency::pluck('symbol', 'id')->all();
         return view('students.create', compact('nationalities','courses','currency'));
     }
 
     /**
-     * Store a new customer in the storage.
+     * Store a new student in the storage.
      *
      * @param Illuminate\Http\Request $request
      *
@@ -131,8 +123,75 @@ class StudentsController extends Controller
             ->with('success_message', trans('students.model_was_added'));
         
     }
+
+
+     /**
+     * Display the specified student.
+     *
+     * @param int $id-','id')->all();
+     * /**
+     * Show the form for editing the specified student.
+     *
+     * @param int $id
+     *
+     */
+    public function edit($id)
+    {
+
+        $user           = User::with('student')->findOrFail($id);
+        $nationalities  = Country::pluck('name', 'id')->all();
+        $courses        = Course::pluck('course', 'id')->all();
+        $currency       = Currency::pluck('symbol', 'id')->all();
+        return view('students.edit', compact('nationalities','courses','currency','user'));
+
+    }
+
     /**
-     * Display the specified customer.
+     * Update the specified driver in the storage.
+     *
+     * @param int $id
+     * @param Illuminate\Http\Request $request
+     *
+     * @return Illuminate\Http\RedirectResponse | Illuminate\Routing\Redirector
+     */
+    public function update($id, Request $request)
+    {
+
+        $data                   = $this->getData($request, $id);
+        $user                   = User::findOrFail($id);
+        $data['country_id']     = $data['country']; 
+        $data['state']          = $request->state;
+        $data['address']        = $request->address;
+        $data['user_type_id']   = 4;
+        if ($request->hasFile('profile_image')) {
+            $profile_image_path = $request->file('profile_image')->store('students/profile');
+            $data['profile_image'] =  $profile_image_path;
+        } else {
+            $data['profile_image'] =  $user->profile_image;
+        }
+        //Update the password only if provided
+        if ($data['password'] && !empty($data['password']))
+            $data['password'] = Hash::make($data['password']); //Encrypting password
+        else
+            unset($data['password']);
+        $user->update($data);
+        
+        $customer                  =  Student::where('user_id', $id)->first();
+        $student['country_id']     =  $data['country'];
+        $student['course_id']      =  $request->course;
+        $student['currency_id']    =  $request->currency;
+        $student['is_registered']  =  $request->is_registered;
+        $student['is_active']      =  $request->is_active;
+        $customer->update($student);
+        return redirect()->route('students.student.index')
+            ->with('success_message', trans('students.model_was_updated'));
+    }
+
+
+
+
+    /**
+     * Display the specified student.
      *
      * @param int $id
      *
@@ -154,7 +213,7 @@ class StudentsController extends Controller
 
 
     /**
-     * Remove the specified driver from the storage.
+     * Remove the specified student from the storage.
      *
      * @param int $id
      *
