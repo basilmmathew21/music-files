@@ -28,7 +28,7 @@ class AlterTestimonialsTable extends Migration
     {
         Schema::table('testimonials', function (Blueprint $table) {
             \DB::statement("ALTER TABLE testimonials MODIFY `status` ENUM('pending','approved', 'rejected')  NULL;");
-            \DB::statement("ALTER TABLE testimonials MODIFY `is_active` TinyIntDEFAULT 0;");
+            \DB::statement("ALTER TABLE testimonials MODIFY `is_active` TinyInt DEFAULT 0;");
         });
     }
 }
