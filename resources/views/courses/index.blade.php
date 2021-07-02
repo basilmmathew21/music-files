@@ -60,6 +60,7 @@
                         <tr>
                             <th>{{ trans('users.slno') }}</th>
                             <th>{{ trans('users.course') }}</th>
+                            <th>{{ trans('users.status') }}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -90,7 +91,8 @@
                 },
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                    {data: 'course', name: 'course'},                   
+                    {data: 'course', name: 'course'},  
+                    {data: 'status', name: 'status'},                   
                     {data: 'action', name: 'action', orderable: false, searchable: false},
                 ]
             });
