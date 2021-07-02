@@ -65,7 +65,7 @@
 <div class="form-group {{ $errors->has('dob') ? 'has-error' : '' }}">
     <label for="dob" class="col-md-2 control-label">{{ trans('students.dob') }}</label>
     <div class="col-md-10">
-        <input class="form-control" name="dob" type="text" id="email"
+        <input class="form-control datepicker" name="dob" type="text" id="dob"
             value="{{ old('dob', optional($user)->dob) }}" minlength="1" maxlength="255" required="true"
             placeholder="{{ trans('students.dob__placeholder') }}">
         {!! $errors->first('dob', '<p class="text-danger">:message</p>') !!}

@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Exception;
 use DataTables;
 use DB;
+use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -102,6 +103,7 @@ class StudentsController extends Controller
         $data['country_id']     = $data['country']; //country
         $data['state']          = $request->state;
         $data['address']        = $request->address;
+        $data['dob']            = Carbon::createFromFormat('d-m-y',$request->dob)->format('Y-m-d');
         $data['user_type_id']   = 4;
         if ($request->hasFile('profile_image')) {
 
@@ -138,7 +140,9 @@ class StudentsController extends Controller
     public function edit($id)
     {
 
-        $user           = User::with('student')->findOrFail($id);
+        $user           = User::with('student')
+                                ->select(['users.*',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%y") as dob')])
+                                ->findOrFail($id);
         $nationalities  = Country::pluck('name', 'id')->all();
         $courses        = Course::pluck('course', 'id')->all();
         $currency       = Currency::pluck('symbol', 'id')->all();
@@ -159,9 +163,10 @@ class StudentsController extends Controller
 
         $data                   = $this->getData($request, $id);
         $user                   = User::findOrFail($id);
-        $data['country_id']     = $data['country']; 
+        $data['country_id']     = $request->country; 
         $data['state']          = $request->state;
         $data['address']        = $request->address;
+        $data['dob']            = Carbon::createFromFormat('d-m-y',$request->dob)->format('Y-m-d');
         $data['user_type_id']   = 4;
         if ($request->hasFile('profile_image')) {
             $profile_image_path = $request->file('profile_image')->store('students/profile');
