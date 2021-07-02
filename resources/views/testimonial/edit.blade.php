@@ -8,10 +8,6 @@
             <i class="fas fa-list-alt"></i>
         </a>
 
-        <a href="{{ route('testimonials.testimonial.create') }}" class="btn btn-success" title="{{ trans('testimonial.create') }}">
-            <i class="fas fa-plus-circle"></i>
-        </a>
-
     </div>
 @stop
 
