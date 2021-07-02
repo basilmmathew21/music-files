@@ -55,9 +55,9 @@
     <label for="gender" class="col-md-2 control-label">{{ trans('students.gender') }}</label>
 	<div class="col-md-10">
         <select name="gender" class="form-control">
-		        <option value="Male">Male</option>
-				<option value="Female">Female</option>
-                <option value="Other">Other</option>
+		        <option value="Male" @if(old('gender') == "Male") selected @endif>Male</option>
+				<option value="Female" @if(old('gender') == "Female") selected @endif>Female</option>
+                <option value="Other" @if(old('gender') == "Other") selected @endif>Other</option>
         </select>
 	</div>
 </div>
@@ -87,7 +87,7 @@
         <select name="course" class="form-control">
 			@if(isset($courses))
 				@foreach ($courses as $id => $course)
-				<option value="{{ $id }}" <?php if(in_array($id,$courses)) { ?> selected="selected" <?php } ?>>{{ $course }}</option>
+				<option value="{{ $id }}"  @if(old('course') == $id) selected @endif>{{ $course }}</option>
 				@endforeach
 			@endif
         </select>
@@ -100,7 +100,7 @@
         <select name="country" class="form-control">
 			@if(isset($nationalities))
 				@foreach ($nationalities as $id => $nation)
-				<option value="{{ $id }}" <?php if(in_array($id,$nationalities)) { ?> selected="selected" <?php } ?>>{{ $nation }}</option>
+				<option value="{{ $id }}" @if(old('country') == $id) selected @endif>{{ $nation }}</option>
 				@endforeach
 			@endif
         </select>
@@ -113,7 +113,7 @@
         <select name="currency" class="form-control">
 			@if(isset($currency))
 				@foreach ($currency as $id => $curcy)
-				<option value="{{ $id }}" <?php if(in_array($id,$currency)) { ?> selected="selected" <?php } ?>>{{ $curcy }}</option>
+				<option value="{{ $id }}" @if(old('currency') == $id) selected @endif>{{ $curcy }}</option>
 				@endforeach
 			@endif
         </select>
@@ -146,8 +146,8 @@
 	<div class="col-md-10">
     
         <select name="status" class="form-control">
-		        <option value="1">Active</option>
-				<option value="0">Inactive</option>
+                <option value="1" @if(old('status') == "1") selected @endif>Active</option>
+				<option value="0" @if(old('status') == "0") selected @endif>Inactive</option>
         </select>
 	</div>
 </div>

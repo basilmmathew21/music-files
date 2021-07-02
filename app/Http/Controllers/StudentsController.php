@@ -182,7 +182,7 @@ class StudentsController extends Controller
         $user->update($data);
         
         $customer                  =  Student::where('user_id', $id)->first();
-        $student['country_id']     =  $data['country'];
+        $student['country_id']     =  $request->country;
         $student['course_id']      =  $request->course;
         $student['currency_id']    =  $request->currency;
         $student['is_registered']  =  $request->is_registered;
