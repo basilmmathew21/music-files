@@ -271,7 +271,7 @@ return [
           // 'route'  => 'tutors.tutor.index',
             'text' => 'Students',
             'route'  => 'students.student.index',
-            'icon'    => 'icon-34-users',
+            'icon'    => 'fa fa-book',
             'can' => ['view users'],
         ],
     ],
