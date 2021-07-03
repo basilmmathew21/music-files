@@ -249,8 +249,9 @@ class TutorController extends Controller
             $check_email=0;
 
             
-        //Check Phone number Duplication
-        $user_phone = User::where('phone', '=', $request->phone)->first();
+        //Check Phonenumber  Duplication
+        $user_phone = User::where('phone', '=', $request->phone)
+                         ->where('id','!=',$id)->first();
         
         if($user_phone)
            $check_phone=1;
@@ -268,6 +269,7 @@ class TutorController extends Controller
         }
         else
         {
+            
             $fileNameToStore="";
             if ($request->hasFile('profile_image')) {
                 $filenameWithExt = $request->file('profile_image')->getClientOriginalName();
