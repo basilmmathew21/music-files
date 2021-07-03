@@ -184,13 +184,16 @@ class StudentsController extends Controller
             unset($data['password']);
         $user->update($data);
         
-        $customer                  =  Student::where('user_id', $id)->first();
-        $student['country_id']     =  $request->country;
-        $student['course_id']      =  $request->course;
-        $student['currency_id']    =  $request->currency;
-        $student['is_registered']  =  $request->is_registered;
-        $student['is_active']      =  $request->is_active;
-        $customer->update($student);
+        $studentDetais                  =  Student::where('user_id', $id)->first();
+        
+        if($studentDetais && $studentDetais != null){
+            $student['country_id']     =  $request->country;
+            $student['course_id']      =  $request->course;
+            $student['currency_id']    =  $request->currency;
+            $student['is_registered']  =  $request->is_registered;
+            $student['is_active']      =  $request->is_active;
+            $studentDetais->update($student);
+        }
         return redirect()->route('students.student.index')
             ->with('success_message', trans('students.model_was_updated'));
     }
