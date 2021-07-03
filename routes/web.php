@@ -106,6 +106,27 @@ Route::group([
         ->name('students.student.destroy');
 });
 
+
+Route::group([  
+    'middleware' => ['permission:view users'],
+    'prefix' => 'tutors',
+], function () {
+    Route::get('/', 'TutorController@index')
+        ->name('tutors.tutor.index');
+    Route::get('/create', 'TutorController@create')
+        ->name('tutors.tutor.create');
+    Route::get('/show/{tutor}', 'TutorController@show')
+        ->name('tutors.tutor.show');
+    Route::get('/{tutor}/edit', 'TutorController@edit')
+        ->name('tutors.tutor.edit');
+    Route::post('/', 'TutorController@store')
+        ->name('tutors.tutor.store');
+    Route::put('tutor/{tutor}', 'TutorController@update')
+        ->name('tutors.tutor.update');
+    Route::delete('/tutor/{tutor}', 'TutorController@destroy')
+        ->name('tutors.tutor.destroy');
+});
+
 Route::group([ 
     'middleware' => ['permission:view testimonials'],
     'prefix' => 'testimonial',
@@ -119,4 +140,3 @@ Route::group([
         Route::delete('/delete/{id}', 'TestimonialsController@destroy')->name('testimonials.testimonial.destroy');
         Route::get('/index', 'TestimonialsController@index')->name('testimonials.testimonial.index');
     });
-

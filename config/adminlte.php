@@ -275,11 +275,18 @@ return [
             'can' => ['view users'],
 
         ],
+        [
+            'text' => 'Tutors',
+            'route'  => 'tutors.tutor.index',
+            'icon'    => 'icon-34-users',
+            'can' => ['view tutors'],
+        ],
         [    'text' => 'Testmonial',
             'route'  => 'testimonials.testimonial.index',
             'icon'    => 'fa fa-globe',
             'can' => ['view users'],
-        ]        
+        ]  
+              
     ],
 
 
