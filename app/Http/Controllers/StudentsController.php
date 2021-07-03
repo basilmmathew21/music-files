@@ -85,7 +85,7 @@ class StudentsController extends Controller
     {
         $nationalities  = Country::pluck('name', 'id')->all();
         $courses        = Course::pluck('course', 'id')->all();
-        $currency       = Currency::pluck('symbol', 'id')->all();
+        $currency       = Currency::select(['symbol','code', 'id'])->get();
         return view('students.create', compact('nationalities','courses','currency'));
     }
 
@@ -147,7 +147,7 @@ class StudentsController extends Controller
                                 ->findOrFail($id);
         $nationalities  = Country::pluck('name', 'id')->all();
         $courses        = Course::pluck('course', 'id')->all();
-        $currency       = Currency::pluck('symbol', 'id')->all();
+        $currency       = Currency::select(['symbol','code', 'id'])->get();
         return view('students.edit', compact('nationalities','courses','currency','user'));
 
     }
@@ -213,7 +213,7 @@ class StudentsController extends Controller
                     ->leftJoin('courses', 'students.course_id', '=', 'courses.id')
                     ->leftJoin('currencies', 'students.currency_id', '=', 'currencies.id')
                     ->leftJoin('user_types', 'users.user_type_id', '=', 'user_types.id')
-                    ->select(['users.*','user_types.user_type','currencies.code','students.is_registered','courses.course','countries.name AS country_name',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%y") as dob'),DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
+                    ->select(['users.*','user_types.user_type','currencies.code','currencies.symbol','students.is_registered','courses.course','countries.name AS country_name',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%y") as dob'),DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
                     ->findOrFail($id);
         return view('students.show', compact('user'));
     }
