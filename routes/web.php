@@ -62,9 +62,8 @@ Route::group([
             ->name('settings.settings.edit'); 
     Route::put('settings/{settings}', 'SettingsController@update')
             ->name('settings.settings.update');
-       
-   
 });
+
 Route::group([
     'middleware' => ['permission:view courses'],
     'prefix' => 'courses',
@@ -81,14 +80,13 @@ Route::group([
         ->name('courses.course.update');
     Route::delete('/course/{course}', 'CoursesController@destroy')
         ->name('courses.course.destroy');
-
-       
- });
- Route::group([  
-    'middleware' => ['permission:view users'],
+    });
+         
+Route::group([ 
+    'middleware' => ['permission:view students'],
     'prefix' => 'students',
 ], function () {
-    Route::get('/', 'StudentsController@index')
+    Route::get('/students', 'StudentsController@index')
         ->name('students.student.index');
     Route::get('/create', 'StudentsController@create')
         ->name('students.student.create');
@@ -103,6 +101,7 @@ Route::group([
     Route::delete('/student/{student}', 'StudentsController@destroy')
         ->name('students.student.destroy');
 });
+
 
 Route::group([  
     'middleware' => ['permission:view users'],
@@ -124,3 +123,16 @@ Route::group([
         ->name('tutors.tutor.destroy');
 });
 
+Route::group([ 
+    'middleware' => ['permission:view testimonials'],
+    'prefix' => 'testimonial',
+], function () {
+
+        Route::get('/show/{id}', 'TestimonialsController@show')->name('testimonials.testimonial.show');
+        Route::get('/{id}/edit', 'TestimonialsController@edit')->name('testimonials.testimonial.edit');
+
+        Route::get('/create', 'TestimonialsController@create')->name('testimonials.testimonial.create');
+        Route::put('/update/{id}', 'TestimonialsController@update')->name('testimonials.testimonial.update');
+        Route::delete('/delete/{id}', 'TestimonialsController@destroy')->name('testimonials.testimonial.destroy');
+        Route::get('/index', 'TestimonialsController@index')->name('testimonials.testimonial.index');
+    });

@@ -55,9 +55,9 @@
     <label for="gender" class="col-md-2 control-label">{{ trans('students.gender') }}</label>
 	<div class="col-md-10">
         <select name="gender" class="form-control">
-		        <option value="Male" @if(old('gender') == "Male") selected @endif>Male</option>
-				<option value="Female" @if(old('gender') == "Female") selected @endif>Female</option>
-                <option value="Other" @if(old('gender') == "Other") selected @endif>Other</option>
+		        <option value="Male" @if($user->gender =='Male') selected @endif>Male</option>
+				<option value="Female" @if($user->gender =='Female') selected @endif>Female</option>
+                <option value="Other" @if($user->gender =='Other') selected @endif>Other</option>
         </select>
 	</div>
 </div>
@@ -65,7 +65,7 @@
 <div class="form-group {{ $errors->has('dob') ? 'has-error' : '' }}">
     <label for="dob" class="col-md-2 control-label">{{ trans('students.dob') }}</label>
     <div class="col-md-10">
-        <input class="form-control datepicker" name="dob" type="text" id="dob"
+        <input class="form-control" name="dob" type="text" id="dob"
             value="{{ old('dob', optional($user)->dob) }}" minlength="1" maxlength="255" required="true"
             placeholder="{{ trans('students.dob__placeholder') }}">
         {!! $errors->first('dob', '<p class="text-danger">:message</p>') !!}
@@ -87,7 +87,7 @@
         <select name="course" class="form-control">
 			@if(isset($courses))
 				@foreach ($courses as $id => $course)
-				<option value="{{ $id }}"  @if(old('course') == $id) selected @endif>{{ $course }}</option>
+				<option value="{{ $id }}" @if($user->course_id == $id) selected @endif>{{ $course }}</option>
 				@endforeach
 			@endif
         </select>
@@ -100,7 +100,7 @@
         <select name="country" class="form-control">
 			@if(isset($nationalities))
 				@foreach ($nationalities as $id => $nation)
-				<option value="{{ $id }}" @if(old('country') == $id) selected @endif>{{ $nation }}</option>
+				<option value="{{ $id }}" @if($user->country_id == $id) selected @endif>{{ $nation }}</option>
 				@endforeach
 			@endif
         </select>
@@ -113,7 +113,7 @@
         <select name="currency" class="form-control">
 			@if(isset($currency))
 				@foreach ($currency as $id => $curcy)
-				<option value="{{ $id }}" @if(old('currency') == $id) selected @endif>{{ $curcy }}</option>
+				<option value="{{ $id }}" @if($user->currency_id == $id) selected @endif>{{ $curcy }}</option>
 				@endforeach
 			@endif
         </select>
@@ -146,8 +146,8 @@
 	<div class="col-md-10">
     
         <select name="status" class="form-control">
-                <option value="1" @if(old('status') == "1") selected @endif>Active</option>
-				<option value="0" @if(old('status') == "0") selected @endif>Inactive</option>
+		        <option value="1" <?php if($user->is_active == "Active") { ?> selected="selected" <?php } ?> >Active</option>
+				<option value="0" <?php if($user->is_active == "Inactive") { ?> selected="selected" <?php } ?>>Inactive</option>
         </select>
 	</div>
 </div>

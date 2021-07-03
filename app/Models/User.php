@@ -50,7 +50,12 @@ class User extends Authenticatable
         'password',
         'is_active',
         'user_type_id',
-        'country_id'
+        'country_id',
+        'gender',
+        'dob',
+        'state',
+        'address',
+        'profile_image',
     ];
 
     /**
@@ -90,6 +95,19 @@ class User extends Authenticatable
     {
         return $value ? 'Active' : 'Inactive';
     }
+
+
+    /**
+     * Get the User Status.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getIsRegisteredAttribute($value)
+    {
+        return $value ? 'Reg' : 'Not Reg';
+    }
+
 
     public function adminlte_image()
     {

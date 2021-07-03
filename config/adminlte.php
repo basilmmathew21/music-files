@@ -269,7 +269,7 @@ return [
         [
             'text' => 'Students',
             'route'  => 'students.student.index',
-            'icon'    => 'icon-34-users',
+            'icon'    => 'fa fa-book',
             'can' => ['view users'],
         ],
         [
@@ -278,6 +278,12 @@ return [
             'icon'    => 'icon-34-users',
             'can' => ['view tutors'],
         ],
+        [    'text' => 'Testmonial',
+            'route'  => 'testimonials.testimonial.index',
+            'icon'    => 'fa fa-globe',
+            'can' => ['view users'],
+        ]  
+              
     ],
 
 

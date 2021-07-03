@@ -17,9 +17,18 @@ class CoursesController extends Controller
      */
     public function index(Request $request)
     {
+        
         if ($request->ajax()) {           
 
             $data = Courses::all();
+            foreach($data as $d)
+            {
+                if($d['is_active']==1)
+                    $d['status']='Active';
+                else
+                    $d['status']='Inactive';
+                
+            }
             $datatable =  Datatables::of($data)
             ->filter(function ($instance) use ($request) {
                 if ($request->has('keyword') && $request->get('keyword')) {
