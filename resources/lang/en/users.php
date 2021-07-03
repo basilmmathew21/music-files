@@ -159,5 +159,23 @@ return [
 'show_all_course'=>'Show All Courses',
 
 
+//Tutors
+'tutors'=>'Tutors',
+'create_tutor'=>'Add Tutor',
+'status_t'=>'Status',
+'confirm_delete_tutor'=>'Click Ok to delete Tutor.',
+'delete_tutor'=>'Delete Tutor',
+'teach_stream'=>'Teaching Stream',
+'edu_quali'=>'Educational Qualification',
+'teach_exp'=>'Teaching Experience',
+'perf_exp'=>'Performance Experience',
+'other_det'=>'Other Details',
+'show_all_tutor'=>'Show All Tutors',
+'create_tutor'=>'Create Tutor',
+'show_tutor'=>'Show Tutor',
+'edit_tutor'=>'Edit Tutor',
+'back'=>'Back',
+'date_info'=>'Enter dob in yyyy-mm-dd',
+
 
 ];

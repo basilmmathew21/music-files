@@ -53,7 +53,6 @@ Route::group([
 });
 
 Route::group([
-<<<<<<< HEAD
     'middleware' => ['permission:view settings'],
     'prefix' => 'settings',
 ], function () {
@@ -82,10 +81,10 @@ Route::group([
         ->name('courses.course.update');
     Route::delete('/course/{course}', 'CoursesController@destroy')
         ->name('courses.course.destroy');
+
        
- 
-   
-=======
+ });
+ Route::group([  
     'middleware' => ['permission:view users'],
     'prefix' => 'students',
 ], function () {
@@ -103,5 +102,25 @@ Route::group([
         ->name('students.student.update');
     Route::delete('/student/{student}', 'StudentsController@destroy')
         ->name('students.student.destroy');
->>>>>>> a8c6f2d0a54d7dc5cae284a52a9b31dde20c5d97
 });
+
+Route::group([  
+    'middleware' => ['permission:view users'],
+    'prefix' => 'tutors',
+], function () {
+    Route::get('/', 'TutorController@index')
+        ->name('tutors.tutor.index');
+    Route::get('/create', 'TutorController@create')
+        ->name('tutors.tutor.create');
+    Route::get('/show/{tutor}', 'TutorController@show')
+        ->name('tutors.tutor.show');
+    Route::get('/{tutor}/edit', 'TutorController@edit')
+        ->name('tutors.tutor.edit');
+    Route::post('/', 'TutorController@store')
+        ->name('tutors.tutor.store');
+    Route::put('tutor/{tutor}', 'TutorController@update')
+        ->name('tutors.tutor.update');
+    Route::delete('/tutor/{tutor}', 'TutorController@destroy')
+        ->name('tutors.tutor.destroy');
+});
+
