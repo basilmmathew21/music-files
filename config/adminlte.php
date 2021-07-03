@@ -273,8 +273,13 @@ return [
             'route'  => 'students.student.index',
             'icon'    => 'fa fa-book',
             'can' => ['view users'],
-        ]
 
+        ],
+        [    'text' => 'Testmonial',
+            'route'  => 'testimonials.testimonial.index',
+            'icon'    => 'fa fa-globe',
+            'can' => ['view users'],
+        ]        
     ],
 
 
