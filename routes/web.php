@@ -65,8 +65,6 @@ Route::group([
             ->name('settings.settings.edit'); 
     Route::put('settings/{settings}', 'SettingsController@update')
             ->name('settings.settings.update');
-       
-   
 });
 
 Route::group([
@@ -87,11 +85,12 @@ Route::group([
         ->name('courses.course.destroy');
     });
 
-Route::group([
-    'middleware' => ['permission:view users'],
+        
+Route::group([ 
+    'middleware' => ['permission:view students'],
     'prefix' => 'students',
 ], function () {
-    Route::get('/', 'StudentsController@index')
+    Route::get('/students', 'StudentsController@index')
         ->name('students.student.index');
     Route::get('/create', 'StudentsController@create')
         ->name('students.student.create');
