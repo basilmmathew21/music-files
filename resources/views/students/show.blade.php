@@ -65,7 +65,7 @@
                     </dd>
                     <dt>{{ trans('students.status') }}</dt>
                     <dd>
-                    @if($user->is_active == 1)
+                    @if($user->is_active == 'Active')
                         Yes
                     @else
                         No

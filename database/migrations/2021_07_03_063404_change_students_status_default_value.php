@@ -16,8 +16,6 @@ class ChangeStudentsStatusDefaultValue extends Migration
         Schema::table('students', function (Blueprint $table) {
             $table->boolean('is_active')->default(0)->change();
         });
-        
-        
     }
 
     /**
