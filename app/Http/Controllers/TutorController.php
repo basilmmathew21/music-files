@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DataTables;
 use DB;
+
 use App\Models\Tutor;
 use App\Models\User;
 use App\Models\Country;
@@ -90,7 +91,7 @@ class TutorController extends Controller
     {
 
         $validatedData = $request->validate([
-            'dob' => 'required|date',
+            
             'email' => 'required|regex:/(.+)@(.+)\.(.+)/i',
             'phone' => 'required|digits:10',
     
@@ -192,7 +193,10 @@ class TutorController extends Controller
      */
     public function edit($id)
     {
-        $user = User::findOrFail($id);
+        $user = DB::table('users')
+        ->select('*',DB::raw('DATE_FORMAT(dob, "%d-%m-%y") as dob'))
+        ->where('id',$id)
+        ->get()->first();
        // 
       
       
@@ -234,7 +238,7 @@ class TutorController extends Controller
     {
         
         $validatedData = $request->validate([
-            'dob' => 'required|date',
+           
             'email' => 'required|regex:/(.+)@(.+)\.(.+)/i',
             'phone' => 'required|digits:10'
     

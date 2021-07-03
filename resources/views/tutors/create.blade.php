@@ -51,4 +51,17 @@
 
 @endsection
 
-
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+<link id="bsdp-css" href="https://unpkg.com/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker3.min.css" rel="stylesheet">
+<script src="https://unpkg.com/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript">
+                $(function () {
+                    $('#dob').datepicker({
+                        format: "dd-mm-yy",
+                        calendarWeeks: true,
+                        autoclose: true,
+                        todayHighlight: true, 
+                        orientation: "auto"
+                    });
+                });
+</script>
