@@ -289,6 +289,14 @@ return [
             ]
         ],
 
+      
+        [
+            'text' => 'Tutor Enquiry',
+            'route'  => 'tutorenquiries.tutorenquiry.index',
+            'icon'    => 'fa fa-question',
+            'can' => ['view tutors'],
+        ],
+              
     ],
 
 
