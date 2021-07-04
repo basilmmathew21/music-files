@@ -56,7 +56,7 @@
 <div class="form-group {{ $errors->has('dob') ? 'has-error' : '' }}">
     <label for="phone" class="col-md-2 control-label">{{ trans('students.dob') }}</label>
     <div class="col-md-10">
-        <input class="form-control" name="dob" type="text" id="dob"
+        <input class="form-control datepicker" name="dob" type="text" id="dob"
             value="{{ old('dob', optional($user)->dob) }}" minlength="1" maxlength="255" required="true"
             placeholder="{{ trans('users.date_info')}}">
         {!! $errors->first('dob', '<p class="text-danger">:message</p>') !!}
@@ -118,7 +118,11 @@
     
     
         <input  name="profile_image" type="file" id="profile_image" value="">
-        <img id = "preview"  alt = "Preview image"  src="{{asset($image)}}"   />
+        @if(!$image)
+            <img id = "preview"  alt = "Preview image" src="https://www.riobeauty.co.uk/images/product_image_not_found.gif" />
+        @else
+            <img id = "preview"  alt = "Preview image" src="{{asset($image)}}" />
+        @endif
         {!! $errors->first('profile_image', '<p class="text-danger">:message</p>') !!}
     </div>
 </div>
@@ -126,7 +130,7 @@
 <div class="form-group">
     <label for="address" class="col-md-2 control-label">{{ trans('students.address') }}</label>
     <div class="col-md-10">
-        <textarea class="form-control" name="address" type="text" id="name" value="{{ old('address', optional($user)->address) }}"
+        <textarea class="form-control" name="address" type="text" id="address" value="{{ old('address', optional($user)->address) }}"
             minlength="1" maxlength="255"  placeholder="Enter Address here...">
         {!! $errors->first('address', '<p class="text-danger">:message</p>') !!}
         </textarea>
@@ -233,17 +237,31 @@
 @stop
 
 @section('js')
-
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
 <script type="text/javascript" src="{{ URL::asset('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('vendor/jquery/jquery.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('vendor/select2/js/select2.min.js') }}"></script>
+
+
+<link id="bsdp-css" href="https://unpkg.com/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker3.min.css" rel="stylesheet">
+<script src="https://unpkg.com/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
 
 <script>
  $(document).ready(function() {
     
           $('#studentpicker').select2();
          
+         
         });
+         $(function () {
+                    $('#dob').datepicker({
+                        format: "dd-mm-yy",
+                        calendarWeeks: true,
+                        autoclose: true,
+                        todayHighlight: true, 
+                        orientation: "auto"
+                    });
+                });
 $("#profile_image").change(function() {
             display(this);
 });
@@ -258,5 +276,7 @@ $("#profile_image").change(function() {
       reader.readAsDataURL(input.files[0]);
    }
 }
+
+            
         </script>
 @stop

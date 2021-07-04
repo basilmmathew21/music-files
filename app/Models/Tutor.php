@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 
 class Tutor extends Model
@@ -28,7 +29,7 @@ class Tutor extends Model
             'phone'			 =>	  $request->phone,
             'user_type_id'	 		 =>    $user_type_id,
             'gender'	 			 =>   $request->gender,
-            'dob'	 		 =>  $request->dob,
+            'dob'	 		 =>  Carbon::createFromFormat('d-m-y',$request->dob)->format('Y-m-d'),
             'country_id'  		 =>  $country_id,
             'state'	 		 =>   $request->state,
             'address'			 =>	  $request->address,
@@ -93,7 +94,7 @@ class Tutor extends Model
             'phone'			 =>	  $request->phone,
             'user_type_id'	 		 =>    $user_type_id,
             'gender'	 			 =>   $request->gender,
-            'dob'	 		 =>  $request->dob,
+            'dob'	 		 =>  Carbon::createFromFormat('d-m-y',$request->dob)->format('Y-m-d'),
             'country_id'  		 =>  $country_id,
             'state'	 		 =>   $request->state,
             'address'			 =>	  $request->address,
