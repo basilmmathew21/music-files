@@ -248,6 +248,12 @@ return [
             'can' => ['view dashboard'],
         ],
         [
+            'text' => 'Profile',
+            'route'  => 'profiles.profile.index',
+            'icon'    => 'fa fa-image',
+            'can' => ['view profile'],
+        ],
+        [
             'text' => 'users',
             'route'  => 'users.user.index',
             'icon'    => 'icon-34-users',

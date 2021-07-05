@@ -9,6 +9,7 @@ return [
     'department' => 'Department',
     'department__placeholder' => 'Select Department here...',
     'surname' => 'Surname',
+    'profile' =>  'Profile',
     'surname__placeholder' => 'Enter surname here...',
     'email' => 'Email',
     'email__placeholder' => 'Enter email here...',

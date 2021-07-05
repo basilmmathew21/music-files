@@ -140,3 +140,15 @@ Route::group([
         Route::delete('/delete/{id}', 'TestimonialsController@destroy')->name('testimonials.testimonial.destroy');
         Route::get('/index', 'TestimonialsController@index')->name('testimonials.testimonial.index');
     });
+
+    Route::group([
+        'middleware' => ['permission:view users'],
+        'prefix' => 'profile',
+    ], function () {
+        Route::get('/profile', 'ProfilesController@index')
+            ->name('profiles.profile.index');   
+        Route::get('/{profile}/edit', 'ProfilesController@edit')
+                ->name('profiles.profile.edit'); 
+        Route::put('profile/{profile}', 'ProfilesController@update')
+                ->name('profiles.profile.update');
+    });
