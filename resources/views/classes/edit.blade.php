@@ -1,14 +1,14 @@
 @extends('adminlte::page')
 
 @section('content_header')
-    <h1 class="m-0 text-dark">{{ !empty($classes->name) ? $classes->name : 'User' }}</h1>
+    <h1 class="m-0 text-dark">{{ !empty($classes->name) ? 'Class-'.$classes->name : 'User' }}</h1>
     <div class="btn-group btn-group-sm pull-right" role="group">
 
-        <a href="{{ route('students.student.index') }}" class="btn btn-primary" title="{{ trans('students.show_all') }}">
+        <a href="{{ route('tutor.classes.index') }}" class="btn btn-primary" title="{{ trans('classes.show_all') }}">
             <i class="fas fa-list-alt"></i>
         </a>
 
-        <a href="{{ route('students.student.create') }}" class="btn btn-success" title="{{ trans('students.create') }}">
+        <a href="{{ route('tutor.classes.create') }}" class="btn btn-success" title="{{ trans('classes.create') }}">
             <i class="fas fa-plus-circle"></i>
         </a>
 
@@ -29,7 +29,7 @@
                 </ul>
             @endif
 
-            <form method="POST" action="{{ route('students.student.update', $classes->id) }}" id="edit_student_form" name="edit_student_form" accept-charset="UTF-8" class="form-horizontal">
+            <form method="POST" action="{{ route('tutor.classes.update', $classes->id) }}" id="edit_student_form" name="edit_student_form" accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
             {{ csrf_field() }}
             <input name="_method" type="hidden" value="PUT">
             @include ('classes.edit_form', [

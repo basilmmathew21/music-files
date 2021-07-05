@@ -42,14 +42,14 @@
                 <div class="col-md-12">
                     <form method="POST" id="search-form" class="form-inline" role="form">
                         <div class="form-group ">
-                            <label class="mb-2 mr-sm-2">{{ trans('students.filters') }} : </label>
+                            <label class="mb-2 mr-sm-2">{{ trans('classes.filters') }} : </label>
                         </div>                        
                         <div class="form-group">
-                            <label for="keyword" class="mb-2 mr-sm-2">{{__('students.keyword_filter')}}</label>
+                            <label for="keyword" class="mb-2 mr-sm-2">{{__('classes.keyword_filter')}}</label>
                             <input type="textbox" class="form-control mb-2 mr-sm-2" name="keyword" id="keyword"
                                 value="">
                         </div>
-                        <button type="submit" class="btn btn-primary mb-2 mr-sm-2">{{ trans('students.search') }}</button>
+                        <button type="submit" class="btn btn-primary mb-2 mr-sm-2">{{ trans('classes.search') }}</button>
                     </form>
                 </div>
             </div>
@@ -59,7 +59,7 @@
                 <table id="dataList" class="display table table-striped">
                     <thead>
                         <tr>
-                            <th>{{ trans('students.slno') }}</th>
+                            <th>{{ trans('classes.slno') }}</th>
                             <th>{{ trans('classes.student') }}</th>
 							<th>{{ trans('classes.date') }}</th>
                             

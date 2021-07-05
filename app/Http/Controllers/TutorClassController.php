@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\TutorClass;
+use App\Models\User;
 use DataTables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -34,8 +35,11 @@ class TutorClassController extends Controller
          * Ajax call by datatable for listing of the students.
          */
 
+         $logged_in_id = auth()->user()->id;
+
         if ($request->ajax()) {
             $data = TutorClass::leftJoin('users', 'classes.student_user_id', '=', 'users.id')
+            ->where('tutor_user_id',$logged_in_id)
                     ->select(['classes.*','users.name'])->get();
 
             $datatable = DataTables::of($data)
@@ -89,7 +93,7 @@ class TutorClassController extends Controller
   
   
         $classes = TutorClass::leftJoin('users', 'classes.student_user_id', '=', 'users.id')
-                 ->where('classes.id',$id)->first();
+                 ->where('classes.id',$id)->select(['classes.*','users.name'])->first();
         
         return view('classes.show', compact('classes','files'));
     }
@@ -101,7 +105,10 @@ class TutorClassController extends Controller
      */
     public function create()
     {
-        return view('classes.create');
+        
+        $students  = User::where('user_type_id',4)->pluck('name', 'id')->all();
+        //echo '<pre>';print_r($students);exit;
+        return view('classes.create',compact('students'));
     }
 
     /**
@@ -114,7 +121,7 @@ class TutorClassController extends Controller
     public function store(Request $request)
     {
         $data = $this->getData($request);
-        $data['tutor_user_id'] = 3;
+        $data['tutor_user_id'] = auth()->user()->id;
         $data['date'] = Carbon::createFromFormat('d-m-y',$request->date)->format('Y-m-d');
         $cls_id=TutorClass::create($data)->id;
         
@@ -148,7 +155,7 @@ class TutorClassController extends Controller
     public function edit($id)
     {
         $classes = TutorClass::leftJoin('users', 'classes.student_user_id', '=', 'users.id')
-        ->where('classes.id',$id)->first();
+        ->where('classes.id',$id)->select(['classes.*','users.name'])->first();
 
         $path = public_path('uploads/files_'.$id);
 
@@ -160,7 +167,9 @@ class TutorClassController extends Controller
         //print_r($files);exit;
         }
 
-        return view('classes.edit', compact('classes','files'));
+        $students  = User::where('user_type_id',4)->pluck('name', 'id')->all();
+
+        return view('classes.edit', compact('classes','files','students'));
     }
 
     /**
@@ -173,16 +182,29 @@ class TutorClassController extends Controller
      */
     public function update($id, Request $request)
     {
+        
         $data = $this->getData($request, $id);
-        $user = User::findOrFail($id);
-        if (!trim($data['password']))
-            unset($data['password']);
-        else
-            $data['password'] = Hash::make($data['password']); //Encrypting password
+        
+        $user = TutorClass::findOrFail($id);
+       
         $user->update($data);
 
-        return redirect()->route('users.user.index')
-            ->with('success_message', trans('users.model_was_updated'));
+        $files = $request->file('attachment');
+        //var_dump($files);exit;
+        if ($request->hasFile('attachment')) {
+            $file_count=1;
+            foreach ($files as $file) {
+                $fileName = time().'-'.$file_count.'.'.$file->extension();  
+
+   
+
+                $file->move(public_path('uploads/files_'.$id), $fileName);
+                $file_count++;
+            }
+        }
+
+        return redirect()->route('tutor.classes.index')
+            ->with('success_message', trans('classes.model_was_updated'));
     }
 
     protected function getData(Request $request, $id = 0)
@@ -194,19 +216,7 @@ class TutorClassController extends Controller
             'summary' => 'required',
         ];
 
-        //Validating unique for update ignoring the same record
-        if ($id) {
-            $rules = [
-                'name' => 'required|string|min:1|max:255',
-                'email' => [
-                    'required',
-                    'min:1',
-                    'max:255',
-                    Rule::unique('users')->ignore($id),
-                ],
-                'password' => 'nullable|string|min:1|max:255',
-            ];
-        }
+    
 
         $data = $request->validate($rules);
 
@@ -230,11 +240,11 @@ class TutorClassController extends Controller
             
 
             return redirect()->route('tutor.classes.index')
-                ->with('success_message', trans('users.model_was_deleted'));
+                ->with('success_message', trans('classes.model_was_deleted'));
         } catch (Exception $exception) {
 
             return back()->withInput()
-                ->withErrors(['unexpected_error' => trans('users.unexpected_error')]);
+                ->withErrors(['unexpected_error' => trans('classes.unexpected_error')]);
         }
     }
 

@@ -13,8 +13,9 @@
 	<div class="col-md-10">
         <select name="student_user_id" class="form-control">
 			
-				<option value="4" >aaaaa</option>
-			
+			@foreach ($students as $k => $student)
+				<option value="{{$k}}" >{{$student}}</option>
+			@endforeach
         </select>
 	</div>
 </div>

@@ -4,7 +4,10 @@
 	<div class="col-md-10">
         <select name="student_user_id" class="form-control">
 			
-				<option value="4" @if($classes->gender =='Male') selected @endif>aaaaa</option>
+				
+				@foreach ($students as $k => $student)
+				<option value="{{$k}}" @if($classes->student_user_id ==$k) selected @endif>{{$student}}</option>
+			@endforeach
 			
         </select>
 	</div>

@@ -3,7 +3,7 @@
 @section('content_header')
     <h1 class="m-0 text-dark">{{ trans('classes.create') }}</h1>
     <div class="btn-group btn-group-sm pull-right" role="group">
-        <a href="{{ route('users.user.index') }}" class="btn btn-primary" title="{{ trans('users.show_all') }}">
+        <a href="{{ route('tutor.classes.index') }}" class="btn btn-primary" title="{{ trans('classes.show_all') }}">
             <i class="fas fa-list-alt"></i>
         </a>
     </div>

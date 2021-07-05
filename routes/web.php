@@ -156,7 +156,7 @@ Route::group([
             ->name('tutor.classes.edit');
         Route::post('/', 'TutorClassController@store')
             ->name('tutor.classes.store');
-        Route::put('user/{user}', 'UsersController@update')
+        Route::put('update/{id}', 'TutorClassController@update')
             ->name('tutor.classes.update');
         Route::delete('/tutor/classes/{id}', 'TutorClassController@destroy')
             ->name('tutor.classes.destroy');
