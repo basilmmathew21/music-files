@@ -140,3 +140,14 @@ Route::group([
         Route::delete('/delete/{id}', 'TestimonialsController@destroy')->name('testimonials.testimonial.destroy');
         Route::get('/index', 'TestimonialsController@index')->name('testimonials.testimonial.index');
     });
+
+    Route::group([  
+        'middleware' => ['permission:view tutorenquiries'],
+        'prefix' => 'tutorenquiries',
+    ], function () {
+        Route::get('/', 'TutorEnquiryController@index')
+            ->name('tutorenquiries.tutorenquiry.index');      
+        Route::get('/show/{tutorenquiry}', 'TutorEnquiryController@show')
+            ->name('tutorenquiries.tutorenquiry.show');
+       
+    });
