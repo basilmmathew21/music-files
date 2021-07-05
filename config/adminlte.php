@@ -294,6 +294,12 @@ return [
                 ],
             ]
         ], 
+        [
+            'text' => 'Classes',
+            'route'  => 'tutor.classes.index',
+            'icon'    => 'fas fa-chalkboard-teacher',
+            'can' => ['view dashboard'],
+        ],
               
     ],
 

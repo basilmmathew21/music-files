@@ -37,7 +37,7 @@
 
 <h3>{{ trans('classes.files') }}</h3>
                     @foreach ($files as $file)
-                            <a target="_blank" href="{{asset('uploads/files_16/'.$file)}}">{{ $file }}</a>
+                            <a target="_blank" href="{{asset('uploads/files_'.$classes->id.'/'.$file)}}">{{ $file }}</a>
 							<a href="#" style="float:right;margin-right:20%" onclick="return deleteImage('<?php echo 'uploads/files_16/'.$file; ?>')"><i class="fas fa-trash-alt"></i> </a>
 							</br>
                         @endforeach
@@ -55,10 +55,10 @@ function deleteImage(file)
           url: "{{ route('tutor.classes.remove_file') }}",
           data: {'file' : file },
           success: function (response) {
-             // do something
+             location.reload(); 
           },
           error: function () {
-             // do something
+             alert('Error.please try again');
           }
         });
     }

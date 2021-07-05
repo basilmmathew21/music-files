@@ -40,7 +40,7 @@ class TutorClassController extends Controller
         if ($request->ajax()) {
             $data = TutorClass::leftJoin('users', 'classes.student_user_id', '=', 'users.id')
             ->where('tutor_user_id',$logged_in_id)
-                    ->select(['classes.*','users.name'])->get();
+                    ->select(['classes.*','users.name',DB::raw('DATE_FORMAT(classes.date, "%d-%b-%Y") as date')])->get();
 
             $datatable = DataTables::of($data)
                 ->filter(function ($instance) use ($request) {
@@ -93,7 +93,7 @@ class TutorClassController extends Controller
   
   
         $classes = TutorClass::leftJoin('users', 'classes.student_user_id', '=', 'users.id')
-                 ->where('classes.id',$id)->select(['classes.*','users.name'])->first();
+                 ->where('classes.id',$id)->select(['classes.*','users.name',DB::raw('DATE_FORMAT(classes.date, "%d-%b-%Y") as date')])->first();
         
         return view('classes.show', compact('classes','files'));
     }
@@ -155,7 +155,7 @@ class TutorClassController extends Controller
     public function edit($id)
     {
         $classes = TutorClass::leftJoin('users', 'classes.student_user_id', '=', 'users.id')
-        ->where('classes.id',$id)->select(['classes.*','users.name'])->first();
+        ->where('classes.id',$id)->select(['classes.*','users.name',DB::raw('DATE_FORMAT(classes.date, "%d-%m-%y") as date')])->first();
 
         $path = public_path('uploads/files_'.$id);
 
@@ -186,6 +186,8 @@ class TutorClassController extends Controller
         $data = $this->getData($request, $id);
         
         $user = TutorClass::findOrFail($id);
+
+        $data['date'] = Carbon::createFromFormat('d-m-y',$request->date)->format('Y-m-d');
        
         $user->update($data);
 
