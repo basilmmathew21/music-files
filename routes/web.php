@@ -140,3 +140,25 @@ Route::group([
         Route::delete('/delete/{id}', 'TestimonialsController@destroy')->name('testimonials.testimonial.destroy');
         Route::get('/index', 'TestimonialsController@index')->name('testimonials.testimonial.index');
     });
+
+
+    Route::group([
+        'middleware' => ['auth'],
+        'prefix' => 'tutor/classes',
+    ], function () {
+        Route::get('/', 'TutorClassController@index')
+            ->name('tutor.classes.index');
+        Route::get('/create', 'TutorClassController@create')
+            ->name('tutor.classes.create');
+        Route::get('/show/{user}', 'TutorClassController@show')
+            ->name('tutor.classes.show');
+        Route::get('/{user}/edit', 'UsersController@edit')
+            ->name('tutor.classes.edit');
+        Route::post('/', 'TutorClassController@store')
+            ->name('tutor.classes.store');
+        Route::put('user/{user}', 'UsersController@update')
+            ->name('tutor.classes.update');
+        Route::delete('/tutor/classes/{id}', 'TutorClassController@destroy')
+            ->name('tutor.classes.destroy');
+    
+    });
