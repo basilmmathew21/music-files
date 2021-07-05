@@ -162,3 +162,13 @@ Route::group([
             ->name('tutor.classes.destroy');
     
     });
+    Route::group([  
+        'middleware' => ['permission:view tutorenquiries'],
+        'prefix' => 'tutorenquiries',
+    ], function () {
+        Route::get('/', 'TutorEnquiryController@index')
+            ->name('tutorenquiries.tutorenquiry.index');      
+        Route::get('/show/{tutorenquiry}', 'TutorEnquiryController@show')
+            ->name('tutorenquiries.tutorenquiry.show');
+       
+    });
