@@ -42,7 +42,10 @@
                     <dt>{{ trans('classes.summary') }}</dt>
                     <dd>{{ $classes->summary }}</dd>
                     
-                    
+					<dt>{{ trans('classes.files') }}</dt>
+                    @foreach ($files as $file)
+                            <dd>{{ $file }}</dd>
+                        @endforeach
 
                 </dl>
                 

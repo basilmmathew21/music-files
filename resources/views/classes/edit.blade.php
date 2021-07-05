@@ -1,7 +1,7 @@
 @extends('adminlte::page')
 
 @section('content_header')
-    <h1 class="m-0 text-dark">{{ !empty($user->name) ? $user->name : 'User' }}</h1>
+    <h1 class="m-0 text-dark">{{ !empty($classes->name) ? $classes->name : 'User' }}</h1>
     <div class="btn-group btn-group-sm pull-right" role="group">
 
         <a href="{{ route('students.student.index') }}" class="btn btn-primary" title="{{ trans('students.show_all') }}">
@@ -29,11 +29,11 @@
                 </ul>
             @endif
 
-            <form method="POST" action="{{ route('students.student.update', $user->id) }}" id="edit_student_form" name="edit_student_form" accept-charset="UTF-8" class="form-horizontal">
+            <form method="POST" action="{{ route('students.student.update', $classes->id) }}" id="edit_student_form" name="edit_student_form" accept-charset="UTF-8" class="form-horizontal">
             {{ csrf_field() }}
             <input name="_method" type="hidden" value="PUT">
-            @include ('students.edit_form', [
-                                        'user' => $user,
+            @include ('classes.edit_form', [
+                                        'user' => $classes,
                                       ])
 
                 <div class="form-group">

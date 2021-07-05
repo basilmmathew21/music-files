@@ -76,10 +76,22 @@ class TutorClassController extends Controller
      */
     public function show($id)
     {
+
+        $path = public_path('uploads/files_'.$id);
+
+        $files=array();
+        if (is_dir($path)) {
+        $files = scandir($path);
+        $files = array_diff(scandir($path), array('.', '..'));
+  
+        //print_r($files);exit;
+        }
+  
+  
         $classes = TutorClass::leftJoin('users', 'classes.student_user_id', '=', 'users.id')
                  ->where('classes.id',$id)->first();
         
-        return view('classes.show', compact('classes'));
+        return view('classes.show', compact('classes','files'));
     }
 
     /**
@@ -123,6 +135,54 @@ class TutorClassController extends Controller
 
         return redirect()->route('tutor.classes.index')
             ->with('success_message', trans('users.model_was_added'));
+    }
+
+
+     /**
+     * Show the form for editing the specified classes.
+     *
+     * @param int $id
+     *
+     * @return Illuminate\View\View
+     */
+    public function edit($id)
+    {
+        $classes = TutorClass::leftJoin('users', 'classes.student_user_id', '=', 'users.id')
+        ->where('classes.id',$id)->first();
+
+        $path = public_path('uploads/files_'.$id);
+
+        $files=array();
+        if (is_dir($path)) {
+        $files = scandir($path);
+        $files = array_diff(scandir($path), array('.', '..'));
+  
+        //print_r($files);exit;
+        }
+
+        return view('classes.edit', compact('classes','files'));
+    }
+
+    /**
+     * Update the specified classes in the storage.
+     *
+     * @param int $id
+     * @param Illuminate\Http\Request $request
+     *
+     * @return Illuminate\Http\RedirectResponse | Illuminate\Routing\Redirector
+     */
+    public function update($id, Request $request)
+    {
+        $data = $this->getData($request, $id);
+        $user = User::findOrFail($id);
+        if (!trim($data['password']))
+            unset($data['password']);
+        else
+            $data['password'] = Hash::make($data['password']); //Encrypting password
+        $user->update($data);
+
+        return redirect()->route('users.user.index')
+            ->with('success_message', trans('users.model_was_updated'));
     }
 
     protected function getData(Request $request, $id = 0)

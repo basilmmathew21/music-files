@@ -152,7 +152,7 @@ Route::group([
             ->name('tutor.classes.create');
         Route::get('/show/{user}', 'TutorClassController@show')
             ->name('tutor.classes.show');
-        Route::get('/{user}/edit', 'UsersController@edit')
+        Route::get('/{id}/edit', 'TutorClassController@edit')
             ->name('tutor.classes.edit');
         Route::post('/', 'TutorClassController@store')
             ->name('tutor.classes.store');
