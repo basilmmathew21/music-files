@@ -160,6 +160,8 @@ Route::group([
             ->name('tutor.classes.update');
         Route::delete('/tutor/classes/{id}', 'TutorClassController@destroy')
             ->name('tutor.classes.destroy');
+            Route::get('/remove_file', 'TutorClassController@removeFile')
+            ->name('tutor.classes.remove_file');
     
     });
     Route::group([  

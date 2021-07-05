@@ -248,4 +248,11 @@ class TutorClassController extends Controller
         }
     }
 
+
+    public function removeFile(Request $request)
+    {
+        $file=$request->input('file');
+        unlink($file);
+    }
+
 }
