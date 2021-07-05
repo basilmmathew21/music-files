@@ -274,6 +274,12 @@ return [
             'can' => ['view tutors'],
         ],
         [
+            'text' => 'Tutor Enquiry',
+            'route'  => 'tutorenquiries.tutorenquiry.index',
+            'icon'    => 'fa fa-question',
+            'can' => ['view tutors'],
+        ],
+        [
             'text' => 'Testmonial',
             'route'  => 'testimonials.testimonial.index',
             'icon'    => 'fa fa-globe',
@@ -293,8 +299,8 @@ return [
                     'can' => ['view courses'],
                 ],
             ]
-        ],
-
+        ], 
+              
     ],
 
 
