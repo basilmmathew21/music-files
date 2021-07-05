@@ -180,4 +180,12 @@ return [
 'date_info'=>'Enter dob in yyyy-mm-dd',
 
 
+//Tutor Enquiry
+
+'show_enquiry'=>'Show Details',
+'date_of_enquiry'=>'Date Of Enquiry',
+'enquiry_listing'=>'Tutor Enquiry Listing',
+'show_all_enquiry'=>'Show All Tutor Enquiries',
+
+
 ];

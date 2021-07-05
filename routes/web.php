@@ -141,6 +141,20 @@ Route::group([
         Route::get('/index', 'TestimonialsController@index')->name('testimonials.testimonial.index');
     });
 
+
+    Route::group([  
+        'middleware' => ['permission:view tutorenquiries'],
+        'prefix' => 'tutorenquiries',
+    ], function () {
+        Route::get('/', 'TutorEnquiryController@index')
+            ->name('tutorenquiries.tutorenquiry.index');      
+        Route::get('/show/{tutorenquiry}', 'TutorEnquiryController@show')
+            ->name('tutorenquiries.tutorenquiry.show');
+       
+
+    });
+
+
     Route::group([
         'middleware' => ['permission:view users'],
         'prefix' => 'profile',
@@ -151,4 +165,4 @@ Route::group([
                 ->name('profiles.profile.edit'); 
         Route::put('profile/{profile}', 'ProfilesController@update')
                 ->name('profiles.profile.update');
-    });
+     });
