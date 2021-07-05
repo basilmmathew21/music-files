@@ -48,6 +48,8 @@
                     <dd>{{ $user->dob }}</dd>
                     <dt>{{ trans('students.country') }}</dt>
                     <dd>{{ $user->country_name }}</dd>
+                    <dt>{{ trans('students.currency') }}</dt>
+                    <dd> {{ $user->code }}({{$user->symbol}})</dd>
                     <dt>{{ trans('students.state') }}</dt>
                     <dd>{{ $user->state }}</dd>
                     <dt>{{ trans('students.address') }}</dt>
@@ -63,7 +65,7 @@
                     </dd>
                     <dt>{{ trans('students.status') }}</dt>
                     <dd>
-                    @if($user->is_active == 1)
+                    @if($user->is_active == 'Active')
                         Yes
                     @else
                         No

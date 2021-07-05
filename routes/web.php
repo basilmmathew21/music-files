@@ -32,10 +32,12 @@ Route::get('send-mail', function () {
     dd("Email is Sent.");
 }); */
 //Route::get("send-email", 'EmailController@sendEmail')->name('first.email');
+
 Route::group([
     'middleware' => ['permission:view users'],
     'prefix' => 'users',
 ], function () {
+    
     Route::get('/', 'UsersController@index')
         ->name('users.user.index');
     Route::get('/create', 'UsersController@create')
@@ -51,6 +53,7 @@ Route::group([
     Route::delete('/user/{user}', 'UsersController@destroy')
         ->name('users.user.destroy');
 });
+
 
 Route::group([
     'middleware' => ['permission:view settings'],
@@ -81,7 +84,8 @@ Route::group([
     Route::delete('/course/{course}', 'CoursesController@destroy')
         ->name('courses.course.destroy');
     });
-         
+
+        
 Route::group([ 
     'middleware' => ['permission:view students'],
     'prefix' => 'students',
@@ -101,6 +105,28 @@ Route::group([
     Route::delete('/student/{student}', 'StudentsController@destroy')
         ->name('students.student.destroy');
 });
+
+
+Route::group([  
+    'middleware' => ['permission:view users'],
+    'prefix' => 'tutors',
+], function () {
+    Route::get('/', 'TutorController@index')
+        ->name('tutors.tutor.index');
+    Route::get('/create', 'TutorController@create')
+        ->name('tutors.tutor.create');
+    Route::get('/show/{tutor}', 'TutorController@show')
+        ->name('tutors.tutor.show');
+    Route::get('/{tutor}/edit', 'TutorController@edit')
+        ->name('tutors.tutor.edit');
+    Route::post('/', 'TutorController@store')
+        ->name('tutors.tutor.store');
+    Route::put('tutor/{tutor}', 'TutorController@update')
+        ->name('tutors.tutor.update');
+    Route::delete('/tutor/{tutor}', 'TutorController@destroy')
+        ->name('tutors.tutor.destroy');
+});
+
 Route::group([ 
     'middleware' => ['permission:view testimonials'],
     'prefix' => 'testimonial',

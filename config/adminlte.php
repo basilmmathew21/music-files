@@ -247,7 +247,6 @@ return [
             'icon'    => 'icon-01-dashboard-icon',
             'can' => ['view dashboard'],
         ],
-
         [
             'text' => 'users',
             'route'  => 'users.user.index',
@@ -255,31 +254,43 @@ return [
             'can' => ['view users'],
         ],
         [
-            'text' => 'settings',
-            'route'  => 'settings.settings.index',
-            'icon'    => 'fa fa-cog',
-            'can' => ['view settings'],
-        ],
-        [
-            'text' => 'Courses',
-            'route'  => 'courses.course.index',
-            'icon'    => 'fa fa-graduation-cap',
-            'can' => ['view courses'],
-        ],
-        [
-            //'text' => 'Manage Tutors',
-          // 'route'  => 'tutors.tutor.index',
+
             'text' => 'Students',
             'route'  => 'students.student.index',
             'icon'    => 'fa fa-book',
             'can' => ['view users'],
+
         ],
-        [    'text' => 'Testmonial',
+        [
+            'text' => 'Tutors',
+            'route'  => 'tutors.tutor.index',
+            'icon'    => 'icon-34-users',
+            'can' => ['view tutors'],
+        ],
+        [
+            'text' => 'Testmonial',
             'route'  => 'testimonials.testimonial.index',
             'icon'    => 'fa fa-globe',
             'can' => ['view users'],
-        ]        
+        ],
+        [
+            'text' => 'settings',
+            'icon'    => 'fa fa-cog',
+            'submenu' => [
+                [
+                    'text' => 'settings',
+                    'route'  => 'settings.settings.index',
+                    'can' => ['view settings'],
+                ], [
+                    'text' => 'Courses',
+                    'route'  => 'courses.course.index',
+                    'can' => ['view courses'],
+                ],
+            ]
+        ],
+
     ],
+
 
 
     /*
