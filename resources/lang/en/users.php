@@ -176,7 +176,7 @@ return [
 'show_tutor'=>'Show Tutor',
 'edit_tutor'=>'Edit Tutor',
 'back'=>'Back',
-'date_info'=>'Enter dob in yyyy-mm-dd',
+'date_info'=>'Enter dob in dd-mm-yyyy',
 'profile_image'=>'Profile Image',
 
 

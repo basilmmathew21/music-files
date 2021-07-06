@@ -59,7 +59,7 @@
         <input class="form-control datepicker" name="dob" type="text" id="dob"
             value="{{ old('dob', optional($user)->dob) }}" minlength="1" maxlength="255" required="true"
             placeholder="{{ trans('users.date_info')}}">
-        {!! $errors->first('dob', '<p class="text-danger">:message</p>') !!}
+        <p class="text-danger" id="dob_err"></p>
     </div>
 </div>
 
@@ -276,7 +276,21 @@ $("#profile_image").change(function() {
       reader.readAsDataURL(input.files[0]);
    }
 }
+function isValidDate() {
+    var dateString=$('#dob').val();
+    
+  var regEx = /^\d{2}-\d{2}-\d{4}$/;
+  if(!dateString.match(regEx))
+  {
+    $('#dob_err').html('Invalid date');
+    $('#dob').val('');
+    $('#dob').focus();
 
+    return false;  // Invalid format
+
+  } 
+  
+}
             
         </script>
 @stop

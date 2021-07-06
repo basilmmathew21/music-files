@@ -29,7 +29,7 @@
             @endif
 
 
-            <form method="POST" action="{{ route('tutors.tutor.store') }}" accept-charset="UTF-8" id="create_user_form" name="create_user_form" class="form-horizontal" enctype='multipart/form-data'>
+            <form method="POST" action="{{ route('tutors.tutor.store') }}" accept-charset="UTF-8" id="create_user_form" name="create_user_form" class="form-horizontal" enctype='multipart/form-data' onsubmit="return isValidDate();">
             {{ csrf_field() }}
             @include ('tutors.form', [
                                         'user' => null,

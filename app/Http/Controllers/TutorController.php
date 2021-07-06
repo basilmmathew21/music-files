@@ -197,7 +197,7 @@ class TutorController extends Controller
     public function edit($id)
     {
         $user = DB::table('users')
-        ->select('*',DB::raw('DATE_FORMAT(dob, "%d-%m-%y") as dob'))
+        ->select('*',DB::raw('DATE_FORMAT(dob, "%d-%m-%Y") as dob'))
         ->where('id',$id)
         ->get()->first();
        // 
