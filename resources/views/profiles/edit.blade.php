@@ -2,17 +2,7 @@
 
 @section('content_header')
     <h1 class="m-0 text-dark">{{ !empty($user->name) ? $user->name : 'User' }}</h1>
-    <div class="btn-group btn-group-sm pull-right" role="group">
-
-        <a href="{{ route('students.student.index') }}" class="btn btn-primary" title="{{ trans('students.show_all') }}">
-            <i class="fas fa-list-alt"></i>
-        </a>
-
-        <a href="{{ route('students.student.create') }}" class="btn btn-success" title="{{ trans('students.create') }}">
-            <i class="fas fa-plus-circle"></i>
-        </a>
-
-    </div>
+  
 @stop
 
 @section('content')
@@ -29,7 +19,7 @@
                 </ul>
             @endif
 
-            <form method="POST" action="{{ route('profiles.profile.update', $user->id) }}" id="edit_student_form" name="edit_student_form" accept-charset="UTF-8" class="form-horizontal">
+            <form method="POST" action="{{ route('profiles.profile.update', $user->id) }}" id="edit_student_form" name="edit_student_form" accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
             {{ csrf_field() }}
             <input name="_method" type="hidden" value="PUT">
             @include ('profiles.edit_form', [
@@ -39,7 +29,9 @@
                     <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input class="btn btn-primary" type="submit" value="{{ trans('students.update') }}">
+                        <a href="{{ URL::to('profile/profile')}}" type="button" class="btn btn-default">{{ trans('users.back') }}</a>
                     </div>
+                    
                 </div>
             </form>
  </div> </div>

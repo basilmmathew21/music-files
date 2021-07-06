@@ -10,6 +10,8 @@ return [
     'department__placeholder' => 'Select Department here...',
     'surname' => 'Surname',
     'profile' =>  'Profile',
+    'nation'  => 'Nationality',
+    'profile_image' => 'Profile Image',
     'surname__placeholder' => 'Enter surname here...',
     'email' => 'Email',
     'email__placeholder' => 'Enter email here...',

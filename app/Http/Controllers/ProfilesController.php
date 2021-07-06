@@ -37,52 +37,15 @@ class ProfilesController extends Controller
      */
     public function index(Request $request)
     {
-        /**
-         * Ajax call by datatable for listing of the students.
-         */
-       
-        if ($request->ajax()) {
-             $data = User::with('student')
-            ->join('countries', 'users.country_id', '=', 'countries.id')
-            ->leftJoin('students', 'students.user_id', '=', 'users.id')
-            ->leftJoin('courses', 'students.course_id', '=', 'courses.id')
-            ->select(['users.*','students.is_active as is_active','students.is_registered','courses.course','countries.name AS country_name',DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
-            ->where('user_type_id', 4)
-            ->get();
-
-            $datatable =  DataTables::of($data)
-                ->filter(function ($instance) use ($request) {
-                    if ($request->has('keyword') && $request->get('keyword')) {
-                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains(Str::lower($row['name']), Str::lower($request->get('keyword'))) ? true : false;
-                        });
-                    }
-                    if ($request->has('keyword') && $request->get('keyword')) {
-                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains(Str::lower($row['phone'] . $row['email'] . $row['name'] ), Str::lower($request->get('keyword'))) ? true : false;
-                        });
-                    }
-
-                })
-                ->addIndexColumn()
-                ->addColumn('action', function ($student) {
-                    return view('students.datatable', compact('student'));
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-            return $datatable;
-        }
-
         $id     = Auth::user()->id;
         $user   = User::with('student')
         ->join('countries', 'users.country_id', '=', 'countries.id')
         ->leftJoin('students', 'students.user_id', '=', 'users.id')
-        ->leftJoin('courses', 'students.course_id', '=', 'courses.id')
         ->leftJoin('currencies', 'students.currency_id', '=', 'currencies.id')
         ->leftJoin('user_types', 'users.user_type_id', '=', 'user_types.id')
-        ->select(['users.*','students.is_active as is_active','user_types.user_type','currencies.code','currencies.symbol','students.is_registered','courses.course','countries.name AS country_name',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%y") as dob'),DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
+        ->select(['users.*','students.is_active as is_active','user_types.user_type','currencies.code','currencies.symbol','students.is_registered','countries.name AS country_name',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%y") as dob'),DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
         ->findOrFail($id);
-
+        
         return view('profiles.index', compact('user'));
     }
 
@@ -123,7 +86,6 @@ class ProfilesController extends Controller
      */
     public function update($id, Request $request)
     {
-
         $data                   = $this->getData($request, $id);
         $user                   = User::findOrFail($id);
         $data['country_id']     = $request->country; 
@@ -131,10 +93,11 @@ class ProfilesController extends Controller
         $data['address']        = $request->address;
         $data['dob']            = Carbon::createFromFormat('d-m-y',$request->dob)->format('Y-m-d');
         $data['user_type_id']   = 4;
-        $data['is_active']      = $request->status;
+        //$data['is_active']      = $request->status;
         if ($request->hasFile('profile_image')) {
-            $profile_image_path = $request->file('profile_image')->store('students/profile');
-            $data['profile_image'] =  $profile_image_path;
+            $profile_image_path = $request->file('profile_image')->store('public/students/profile');
+            $profile_image_path = str_replace("public/", "", $profile_image_path);
+           $data['profile_image'] =  $profile_image_path;
         } else {
             $data['profile_image'] =  $user->profile_image;
         }
@@ -144,9 +107,8 @@ class ProfilesController extends Controller
         else
             unset($data['password']);
         $user->update($data);
-        
+        /*
         $studentDetais                  =  Student::where('user_id', $id)->first();
-        
         if($studentDetais && $studentDetais != null){
             $student['country_id']     =  $request->country;
             $student['course_id']      =  $request->course;
@@ -155,60 +117,10 @@ class ProfilesController extends Controller
             $student['is_active']      =  $request->is_active;
             $studentDetais->update($student);
         }
+        */
         return redirect()->route('profiles.profile.index')
             ->with('success_message', trans('users.model_was_updated'));
     }
-
-
-
-
-    /**
-     * Display the specified student.
-     *
-     * @param int $id
-     *
-     * @return Illuminate\View\View
-     */
-    public function show($id)
-    {
-        $user = User::with('student')
-                    ->join('countries', 'users.country_id', '=', 'countries.id')
-                    ->leftJoin('students', 'students.user_id', '=', 'users.id')
-                    ->leftJoin('courses', 'students.course_id', '=', 'courses.id')
-                    ->leftJoin('currencies', 'students.currency_id', '=', 'currencies.id')
-                    ->leftJoin('user_types', 'users.user_type_id', '=', 'user_types.id')
-                    ->select(['users.*','students.is_active as is_active','user_types.user_type','currencies.code','currencies.symbol','students.is_registered','courses.course','countries.name AS country_name',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%y") as dob'),DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
-                    ->findOrFail($id);
-        return view('students.show', compact('user'));
-    }
-
-
-
-    /**
-     * Remove the specified student from the storage.
-     *
-     * @param int $id
-     *
-     * @return Illuminate\Http\RedirectResponse | Illuminate\Routing\Redirector
-     */
-    public function destroy($id)
-    {
-        try {
-            $student = Student::where('user_id', $id);
-            $student->delete();
-
-            $user = User::findOrFail($id);
-            $user->delete();
-
-            return redirect()->route('students.index')
-                ->with('success_message', trans('students.model_was_deleted'));
-        } catch (Exception $exception) {
-
-            return back()->withInput()
-                ->withErrors(['unexpected_error' => trans('students.unexpected_error')]);
-        }
-    }
-
 
     /**
      * Get the request's data from the request.
