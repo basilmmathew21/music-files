@@ -12,6 +12,9 @@ use App\Models\Country;
 use App\Models\Currency;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Lang;
+use Mail;
+use Illuminate\Support\Facades\Hash;
+
 
 
 
@@ -310,6 +313,45 @@ class TutorController extends Controller
         $message = Lang::get("Tutor Succesfully Deleted");
         return redirect()->route('tutors.tutor.index')
         ->with('success_message', $message);
+    }
+
+    public function sendcredentials($id)
+    {
+        // fetch the details
+        $user=User::where('id',$id)->get()->first();
+        $password =  Hash::make(Str::random(8));
+        //Accept the Enquiry
+        $active= User::where('id', $id)->update(['is_active' => 1]);
+
+        //Reset password 
+
+        $update_pass= User::where('id', $id)->update(['password' => $password]);
+        
+        //Send Login Credentials
+
+        $data['title'] = "Login Credentials";
+        $data['username']=$user->email;
+        $data['password']=$password;
+ 
+        Mail::send('emails.email', $data, function($message) {
+ 
+            $message->to($user->email, 'Receiver Name')
+ 
+                    ->subject('Login Credentials');
+        });
+ 
+       /* if (Mail::failures()) {
+           return response()->Fail('Sorry! Please try again latter');
+         }else{
+           return response()->success('Great! Successfully send in your mail');
+         }*/
+
+
+
+        return redirect()->route('tutors.tutor.index')
+        ->with('success_message', 'Credentials Send Succesfully');
+
+
     }
    
 }

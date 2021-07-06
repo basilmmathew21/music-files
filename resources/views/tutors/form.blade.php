@@ -150,8 +150,7 @@
     <label for="address" class="col-md-2 control-label">Educational Qualification</label>
     <div class="col-md-10">
         <textarea class="form-control" name="educational_qualification" type="text" id="educational_qualification" value=""
-            minlength="1" maxlength="255"  placeholder="">
-            @if(isset($tutor) && !empty($tutor))  {{ optional($tutor[0])->educational_qualification }} @endif
+            minlength="1" maxlength="255"  placeholder="">@if(isset($tutor) && !empty($tutor))  {{ optional($tutor[0])->educational_qualification }} @endif
         {!! $errors->first('educational_qualification', '<p class="text-danger">:message</p>') !!}
         </textarea>
     </div>
@@ -160,7 +159,7 @@
     <label for="address" class="col-md-2 control-label">Teaching Experience</label>
     <div class="col-md-10">
         <textarea class="form-control" name="teaching_experience" type="text" id="teaching_experience" value=""
-            minlength="1" maxlength="255"  placeholder=""> @if(isset($tutor) && !empty($tutor)) {{ optional($tutor[0])->teaching_experience}} @endif
+            minlength="1" maxlength="255"  placeholder="">@if(isset($tutor) && !empty($tutor)) {{ optional($tutor[0])->teaching_experience}} @endif
         {!! $errors->first('teaching_experience', '<p class="text-danger">:message</p>') !!}
         </textarea>
     </div>
@@ -178,7 +177,7 @@
     <label for="address" class="col-md-2 control-label">Other Details</label>
     <div class="col-md-10">
         <textarea class="form-control" name="other_details" type="text" id="other_details" value=""
-            minlength="1" maxlength="255" placeholder=""> @if(isset($tutor) && !empty($tutor)) {{optional($tutor[0])->other_details}} @endif
+            minlength="1" maxlength="255" placeholder="">@if(isset($tutor) && !empty($tutor)) {{optional($tutor[0])->other_details}} @endif
         {!! $errors->first('other_details', '<p class="text-danger">:message</p>') !!}
         </textarea>
     </div>
@@ -226,8 +225,9 @@
     <label for="name" class="col-md-2 control-label">{{ trans('students.status') }}</label>
 	<div class="col-md-10">
         <select name="status" class="form-control">
-		        <option value="1" <?php if(optional($user)->is_active=='1') { ?> echo "selected" <?php } ?>>Active</option>
-				<option value="0" <?php if(optional($user)->is_active=='0') { ?> echo "selected" <?php } ?>>Inactive</option>
+		        <option value="1" <?php if(optional($user)->is_active=='1') { ?> selected <?php } ?>>Active</option>
+                <option value="0" <?php if(optional($user)->is_active=='0') { ?> selected <?php } ?>>InActive</option>
+				
         </select>
 	</div>
 </div>
