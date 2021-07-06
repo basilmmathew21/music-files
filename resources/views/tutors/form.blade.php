@@ -255,7 +255,7 @@
         });
          $(function () {
                     $('#dob').datepicker({
-                        format: "dd-mm-yy",
+                        format: "dd-mm-yyyy",
                         calendarWeeks: true,
                         autoclose: true,
                         todayHighlight: true, 

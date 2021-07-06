@@ -20,6 +20,7 @@ class Tutor extends Model
         $password = Hash::make($request->password); //Encrypting password
         $country_id    = $request->country; //country
         $user_type_id = 3;
+        $dob=Carbon::parse($request->dob)->format('Y-m-d');
 
         //User Table
 
@@ -29,7 +30,7 @@ class Tutor extends Model
             'phone'			 =>	  $request->phone,
             'user_type_id'	 		 =>    $user_type_id,
             'gender'	 			 =>   $request->gender,
-            'dob'	 		 =>  Carbon::createFromFormat('d-m-y',$request->dob)->format('Y-m-d'),
+            'dob'	 		 =>  $dob,
             'country_id'  		 =>  $country_id,
             'state'	 		 =>   $request->state,
             'address'			 =>	  $request->address,
@@ -85,6 +86,7 @@ class Tutor extends Model
         
         $country_id    = $request->country; //country
         $user_type_id = 3;
+        $dob=Carbon::parse($request->dob)->format('Y-m-d');
 
         //User Table
 
@@ -94,7 +96,7 @@ class Tutor extends Model
             'phone'			 =>	  $request->phone,
             'user_type_id'	 		 =>    $user_type_id,
             'gender'	 			 =>   $request->gender,
-            'dob'	 		 =>  Carbon::createFromFormat('d-m-y',$request->dob)->format('Y-m-d'),
+            'dob'	 		 =>  $dob,
             'country_id'  		 =>  $country_id,
             'state'	 		 =>   $request->state,
             'address'			 =>	  $request->address,
