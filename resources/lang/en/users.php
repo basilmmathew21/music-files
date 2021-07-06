@@ -177,6 +177,7 @@ return [
 'edit_tutor'=>'Edit Tutor',
 'back'=>'Back',
 'date_info'=>'Enter dob in yyyy-mm-dd',
+'profile_image'=>'Profile Image',
 
 
 //Tutor Enquiry

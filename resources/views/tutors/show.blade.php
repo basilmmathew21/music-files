@@ -33,6 +33,23 @@
                     <dd>{{ $user->gender }}</dd>
                     <dt>{{ trans('users.dob') }}</dt>
                     <dd>{{ $user->dob }}</dd>
+                    <dt>{{trans('users.profile_image')}}</dt>
+                    <dd>
+                    <?php
+                         if($user->profile_image)
+                            {
+                             $image="storage/images/profile/".$user->profile_image;
+                            }
+                        else
+                            $image="";
+                    ?>
+
+                      @if(!$image)
+                             <img width=200 height=200 id = "preview"  alt = "Preview image" src="https://www.riobeauty.co.uk/images/product_image_not_found.gif" />
+                          @else
+                                <img width=200 height=200 id = "preview"  alt = "Preview image" src="{{asset($image)}}" />
+                           @endif
+                    </dd>
                     <dt>{{ trans('users.country') }}</dt>
                     <dd>{{ $user->country_name }}</dd>
                     <dt>{{ trans('users.state') }}</dt>
