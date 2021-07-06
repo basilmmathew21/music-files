@@ -263,13 +263,11 @@ class StudentsController extends Controller
             'email' => [
                 'required',
                 Rule::unique('users')->where(function ($query) {
-                    $query->where('user_type_id', 4);
                 }),
             ],
             'phone' => [
                 'required',
                 Rule::unique('users')->where(function ($query) {
-                    $query->where('user_type_id', 4);
                 }),
             ],
             'password' => 'required|string|min:1|max:255',
@@ -286,13 +284,11 @@ class StudentsController extends Controller
                 'email' => [
                     'required',
                     Rule::unique('users')->ignore($id)->where(function ($query) {
-                        $query->where('user_type_id', 4);
                     }),
                 ],
                 'phone' => [
                     'required',
                     Rule::unique('users')->ignore($id)->where(function ($query) {
-                        $query->where('user_type_id', 4);
                     }),
                 ],
                 'password' => 'nullable|string|min:1|max:255',

@@ -39,6 +39,7 @@
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input class="btn btn-primary" type="submit" value="{{ trans('users.add') }}">
+                        <a href="{{ URL::to('students/students')}}" type="button" class="btn btn-default">{{ trans('students.back') }}</a>
                     </div>
                 </div>
 

@@ -251,7 +251,7 @@ return [
             'text' => 'Profile',
             'route'  => 'profiles.profile.index',
             'icon'    => 'fa fa-image',
-            'can' => ['view profile'],
+            'can' => ['view users'],
         ],
         [
             'text' => 'users',
