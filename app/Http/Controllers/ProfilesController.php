@@ -95,7 +95,7 @@ class ProfilesController extends Controller
         $data['user_type_id']   = 4;
         //$data['is_active']      = $request->status;
         if ($request->hasFile('profile_image')) {
-            $profile_image_path = $request->file('profile_image')->store('public/students/profile');
+            $profile_image_path = $request->file('profile_image')->store('public/images/profile');
             $profile_image_path = str_replace("public/", "", $profile_image_path);
            $data['profile_image'] =  $profile_image_path;
         } else {
