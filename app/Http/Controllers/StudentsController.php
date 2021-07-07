@@ -103,8 +103,9 @@ class StudentsController extends Controller
         $data['country_id']     = $data['country']; //country
         $data['state']          = $request->state;
         $data['address']        = $request->address;
-        $data['dob']            = Carbon::createFromFormat('d-m-y',$request->dob)->format('Y-m-d');
+        $data['dob']            = Carbon::createFromFormat('d-m-Y',$request->dob)->format('Y-m-d');
         $data['user_type_id']   = 4;
+        $data['is_active']      =  $request->status;
         if ($request->hasFile('profile_image')) {
 
             $profile_image_path = $request->file('profile_image')->store('students/profile');
@@ -143,7 +144,7 @@ class StudentsController extends Controller
 
         $user           = User::with('student')
                                 ->leftJoin('students', 'students.user_id', '=', 'users.id')
-                                ->select(['users.*','students.is_active as is_active','students.is_registered','students.country_id','students.course_id','students.currency_id',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%y") as dob')])
+                                ->select(['users.*','students.is_active as is_active','students.is_registered','students.country_id','students.course_id','students.currency_id',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%Y") as dob')])
                                 ->findOrFail($id);
         $nationalities  = Country::pluck('name', 'id')->all();
         $courses        = Course::pluck('course', 'id')->all();
@@ -168,7 +169,7 @@ class StudentsController extends Controller
         $data['country_id']     = $request->country; 
         $data['state']          = $request->state;
         $data['address']        = $request->address;
-        $data['dob']            = Carbon::createFromFormat('d-m-y',$request->dob)->format('Y-m-d');
+        $data['dob']            = Carbon::createFromFormat('d-m-Y',$request->dob)->format('Y-m-d');
         $data['user_type_id']   = 4;
         $data['is_active']      = $request->status;
         if ($request->hasFile('profile_image')) {
@@ -191,7 +192,7 @@ class StudentsController extends Controller
             $student['course_id']      =  $request->course;
             $student['currency_id']    =  $request->currency;
             $student['is_registered']  =  $request->is_registered;
-            $student['is_active']      =  $request->is_active;
+            $student['is_active']      =  $request->status;
             $studentDetais->update($student);
         }
         return redirect()->route('students.student.index')
@@ -216,7 +217,7 @@ class StudentsController extends Controller
                     ->leftJoin('courses', 'students.course_id', '=', 'courses.id')
                     ->leftJoin('currencies', 'students.currency_id', '=', 'currencies.id')
                     ->leftJoin('user_types', 'users.user_type_id', '=', 'user_types.id')
-                    ->select(['users.*','students.is_active as is_active','user_types.user_type','currencies.code','currencies.symbol','students.is_registered','courses.course','countries.name AS country_name',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%y") as dob'),DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
+                    ->select(['users.*','students.is_active as is_active','user_types.user_type','currencies.code','currencies.symbol','students.is_registered','courses.course','countries.name AS country_name',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%Y") as dob'),DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
                     ->findOrFail($id);
         return view('students.show', compact('user'));
     }

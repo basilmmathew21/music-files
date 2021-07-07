@@ -148,7 +148,6 @@
 <div class="form-group">
     <label for="name" class="col-md-2 control-label">{{ trans('students.status') }}</label>
 	<div class="col-md-10">
-    
         <select name="status" class="form-control">
         <option value="">--Select--</option>
 		        <option value="1" <?php if($user->is_active == "Active") { ?> selected="selected" <?php } ?> >Active</option>

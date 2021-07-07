@@ -98,7 +98,7 @@ Route::group([
         ->name('students.student.show');
     Route::get('/{student}/edit', 'StudentsController@edit')
         ->name('students.student.edit');
-    Route::post('/', 'StudentsController@store')
+    Route::post('/store', 'StudentsController@store')
         ->name('students.student.store');
     Route::put('student/{student}', 'StudentsController@update')
         ->name('students.student.update');
