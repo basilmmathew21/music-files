@@ -142,6 +142,28 @@ Route::group([
     });
 
 
+    Route::group([
+        'middleware' => ['permission:view classess'],
+        'prefix' => 'tutor/classes',
+    ], function () {
+        Route::get('/', 'TutorClassController@index')
+            ->name('tutor.classes.index');
+        Route::get('/create', 'TutorClassController@create')
+            ->name('tutor.classes.create');
+        Route::get('/show/{user}', 'TutorClassController@show')
+            ->name('tutor.classes.show');
+        Route::get('/{id}/edit', 'TutorClassController@edit')
+            ->name('tutor.classes.edit');
+        Route::post('/', 'TutorClassController@store')
+            ->name('tutor.classes.store');
+        Route::put('update/{id}', 'TutorClassController@update')
+            ->name('tutor.classes.update');
+        Route::delete('/tutor/classes/{id}', 'TutorClassController@destroy')
+            ->name('tutor.classes.destroy');
+            Route::get('/remove_file', 'TutorClassController@removeFile')
+            ->name('tutor.classes.remove_file');
+    
+    });
     Route::group([  
         'middleware' => ['permission:view tutorenquiries'],
         'prefix' => 'tutorenquiries',
