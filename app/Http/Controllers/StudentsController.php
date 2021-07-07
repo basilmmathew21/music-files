@@ -262,19 +262,18 @@ class StudentsController extends Controller
         $rules = [
             'name' => 'required|string|min:1|max:255',
             'email' => [
-                'required',
+                'regex:/(.+)@(.+)\.(.+)/i',
                 Rule::unique('users')->where(function ($query) {
                 }),
             ],
             'phone' => [
-                'required',
+                'digits:10',
                 Rule::unique('users')->where(function ($query) {
                 }),
             ],
-            'password' => 'required|string|min:1|max:255',
+            'password' => 'string|min:8|max:255',
             'gender' => 'nullable',
-            'dob' => 'nullable',
-            'country' => 'nullable',
+            'dob' => 'date_format:d-m-Y',
             'profile_image' => 'nullable|mimes:jpg,jpeg,png|max:5120',
         
         ];
@@ -283,16 +282,16 @@ class StudentsController extends Controller
         if ($id) {
             $rules = array_merge($rules,[
                 'email' => [
-                    'required',
+                    'regex:/(.+)@(.+)\.(.+)/i',
                     Rule::unique('users')->ignore($id)->where(function ($query) {
                     }),
                 ],
                 'phone' => [
-                    'required',
+                    'digits:10',
                     Rule::unique('users')->ignore($id)->where(function ($query) {
                     }),
                 ],
-                'password' => 'nullable|string|min:1|max:255',
+                'password' => 'nullable|string|min:8g|max:255',
             ]);
         }
         
