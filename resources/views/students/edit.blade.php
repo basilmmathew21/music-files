@@ -54,11 +54,9 @@
 <script type="text/javascript">
                 $(function () {
                     $('#dob').datepicker({
-                        format: "dd-mm-yy",
-                        calendarWeeks: true,
+                        format: "dd-mm-yyyy",
                         autoclose: true,
                         todayHighlight: true, 
-                        orientation: "auto"
                     });
                 });
 </script>
