@@ -17,6 +17,11 @@ class TutorEnquiryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct(TutorEnquiry $TutorEnquiry)
+    {
+        $this->TutorEnquiry = $TutorEnquiry;
+        
+    }
     public function index(Request $request)
     {
         
@@ -66,11 +71,20 @@ class TutorEnquiryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function accept($id)
     {
-        //
+       
+       $this->TutorEnquiry->accept_register($id);
+      return redirect()->route('tutorenquiries.tutorenquiry.index')
+       ->with('success_message', 'Enquiry Accepted');
     }
-
+    public function reject($id)
+    {
+       
+       $this->TutorEnquiry->reject_enquiry($id);
+      return redirect()->route('tutorenquiries.tutorenquiry.index')
+       ->with('success_message', 'Enquiry Rejected');
+    }
     /**
      * Display the specified resource.
      *
@@ -84,6 +98,8 @@ class TutorEnquiryController extends Controller
         ->select(['tutor_enquiries.*','countries.name AS country_name','tutor_enquiries.dob',DB::raw('DATE_FORMAT(tutor_enquiries.dob, "%d-%m-%y") as dob'),DB::raw('CONCAT(countries.code," ",tutor_enquiries.phone) as phone')])
         ->first();
        // 
+       if($tutor->status=='new')
+            $read= TutorEnquiry::where('id', $id)->update(['status' => 'read']);
        
         $tutor->teaching_stream=($tutor->teaching_stream)?$tutor->teaching_stream:'-';
         $tutor->educational_qualification=($tutor->educational_qualification)?$tutor->educational_qualification:'-';

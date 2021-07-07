@@ -4,7 +4,7 @@
 <h1 class="m-0 text-dark">{{ isset($tutor->name) ? $tutor->name : 'User' }}</h1>
 <div class="btn-group btn-group-sm pull-right" role="group">   
         <div class="btn-group btn-group-sm" role="group">
-            <a href="{{ route('tutors.tutor.index') }}" class="btn btn-primary" title="{{ trans('users.show_all_enquiry') }}">
+            <a href="{{ route('tutorenquiries.tutorenquiry.index') }}" class="btn btn-primary" title="{{ trans('users.show_all_enquiry') }}">
                 <i class="fas fa-list-alt"></i>
             </a>
            

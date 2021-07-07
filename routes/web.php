@@ -125,6 +125,8 @@ Route::group([
         ->name('tutors.tutor.update');
     Route::delete('/tutor/{tutor}', 'TutorController@destroy')
         ->name('tutors.tutor.destroy');
+    Route::get('/sendcredentials/{tutor}', 'TutorController@sendcredentials')
+        ->name('tutors.tutor.sendcredentials');
 });
 
 Route::group([ 
@@ -172,6 +174,11 @@ Route::group([
             ->name('tutorenquiries.tutorenquiry.index');      
         Route::get('/show/{tutorenquiry}', 'TutorEnquiryController@show')
             ->name('tutorenquiries.tutorenquiry.show');
+        Route::get('/accept/{tutorenquiry}', 'TutorEnquiryController@accept')
+            ->name('tutorenquiries.tutorenquiry.accept');
+        Route::get('/reject/{tutorenquiry}', 'TutorEnquiryController@reject')
+            ->name('tutorenquiries.tutorenquiry.reject');
+       
        
 
     });
