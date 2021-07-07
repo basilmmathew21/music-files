@@ -143,7 +143,7 @@ Route::group([
 
 
     Route::group([
-        'middleware' => ['auth'],
+        'middleware' => ['permission:view classess'],
         'prefix' => 'tutor/classes',
     ], function () {
         Route::get('/', 'TutorClassController@index')
