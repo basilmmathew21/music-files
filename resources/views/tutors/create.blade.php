@@ -29,7 +29,7 @@
             @endif
 
 
-            <form method="POST" action="{{ route('tutors.tutor.store') }}" accept-charset="UTF-8" id="create_user_form" name="create_user_form" class="form-horizontal" enctype='multipart/form-data'>
+            <form method="POST" action="{{ route('tutors.tutor.store') }}" accept-charset="UTF-8" id="create_user_form" name="create_user_form" class="form-horizontal" enctype='multipart/form-data' onsubmit="return isValidDate();">
             {{ csrf_field() }}
             @include ('tutors.form', [
                                         'user' => null,
@@ -51,17 +51,4 @@
 
 @endsection
 
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
-<link id="bsdp-css" href="https://unpkg.com/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker3.min.css" rel="stylesheet">
-<script src="https://unpkg.com/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
-<script type="text/javascript">
-                $(function () {
-                    $('#dob').datepicker({
-                        format: "dd-mm-yy",
-                        calendarWeeks: true,
-                        autoclose: true,
-                        todayHighlight: true, 
-                        orientation: "auto"
-                    });
-                });
-</script>
+
