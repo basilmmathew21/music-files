@@ -10,7 +10,7 @@
 <div class="form-group {{ $errors->has('email') ? 'has-error' : '' }}">
     <label for="email" class="col-md-2 control-label">{{ trans('users.email') }}</label>
     <div class="col-md-10">
-        <input class="form-control" name="email" type="text" id="email"
+        <input class="form-control" name="email" type="email" id="email"
             value="{{ old('email', optional($user)->email) }}" minlength="1" maxlength="255" required="true"
             placeholder="{{ trans('users.email__placeholder') }}">
         {!! $errors->first('email', '<p class="text-danger">:message</p>') !!}
@@ -23,7 +23,7 @@
     <label for="password" class="col-md-2 control-label">{{ trans('users.password') }}</label>
     <div class="col-md-10">
         <input class="form-control" name="password" type="password" id="password"
-            value="{{ old('password', optional($user)->password) }}" minlength="1" maxlength="255" required="true"
+            value="{{ old('password', optional($user)->password) }}" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required
             placeholder="{{ trans('users.password__placeholder') }}">
         {!! $errors->first('password', '<p class="text-danger">:message</p>') !!}
     </div>
@@ -34,7 +34,8 @@
     <label for="password" class="col-md-2 control-label">{{ trans('users.password') }}</label>
     <div class="col-md-10">
         <input class="form-control" name="password" type="password" id="password"
-            value="" minlength="1" maxlength="255" 
+            value="" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"             
+            title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"              
             placeholder="{{ trans('users.password_edit__placeholder') }}">
         {!! $errors->first('password', '<p class="text-danger">:message</p>') !!}
     </div>
@@ -48,8 +49,9 @@
       <label >Male</label>
       <input type="radio" id="gender_female" name="gender" value="Female" <?php if(optional($user)->gender=='Female') { ?> checked <?php } ?>>
       <label >Female</label>
-      <input type="radio" id="gender_others" name="gender" value="Others" <?php if(optional($user)->gender=='Others') { ?> checked <?php } ?>>
+      <input type="radio" id="gender_others" name="gender" value="Other" <?php if(optional($user)->gender=='Other') { ?> checked <?php } ?>>
       <label >Others</label>
+    <p class="text-danger" id="gender_err"></p>
 	</div>
 </div>
 
@@ -277,7 +279,28 @@ $("#profile_image").change(function() {
    }
 }
 function isValidDate() {
-    var dateString=$('#dob').val();
+    
+//gender validation
+
+var all= 1;
+$("input:radio").each(function(){
+  var name = $(this).attr("name");
+  if($("input:radio[name="+name+"]:checked").length == 0)
+  {
+    all = 0;
+  }
+});
+if(all==0)
+{
+    $('#gender_err').html('Gender required');
+   // $('#gender_err').focus();
+    return false;
+}
+    
+else
+    return true;
+    //dob validation
+  var dateString=$('#dob').val();
     
   var regEx = /^\d{2}-\d{2}-\d{4}$/;
   if(!dateString.match(regEx))
