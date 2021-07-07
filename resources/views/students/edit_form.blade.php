@@ -117,7 +117,7 @@
         <option value="">--Select--</option>
 			@if(isset($currency))
 				@foreach ($currency as $curcy)
-				<option value="{{ $curcy['id'] }}" @if($curcy->id == $id) selected @endif>  {{ $curcy->code }}({{$curcy->symbol}})</option>
+				<option value="{{ $curcy['id'] }}" @if($curcy->id == $curcy['id']) selected @endif>  {{ $curcy->code }}({{$curcy->symbol}})</option>
 				@endforeach
 			@endif
         </select>
