@@ -119,9 +119,9 @@
     
         <input  name="profile_image" type="file" id="profile_image" value="">
         @if(!$image)
-            <img id = "preview"  alt = "Preview image" src="https://www.riobeauty.co.uk/images/product_image_not_found.gif" />
+            <img width=200 height=200 id = "preview"  alt = "Preview image" src="https://www.riobeauty.co.uk/images/product_image_not_found.gif" />
         @else
-            <img id = "preview"  alt = "Preview image" src="{{asset($image)}}" />
+            <img width=200 height=200 id = "preview"  alt = "Preview image" src="{{asset($image)}}" />
         @endif
         {!! $errors->first('profile_image', '<p class="text-danger">:message</p>') !!}
     </div>
