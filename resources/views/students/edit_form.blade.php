@@ -126,6 +126,18 @@
 
 
 
+
+<div class="form-group {{ $errors->has('class_fee') ? 'has-error' : '' }}">
+    <label for="state" class="col-md-2 control-label">{{ trans('students.fee') }}</label>
+    <div class="col-md-10">
+        <input class="form-control" name="class_fee" type="text" id="class_fee" value="{{ old('class_fee', optional($user)->class_fee) }}"
+            minlength="1" maxlength="255" placeholder="{{ trans('students.fee__placeholder') }}">
+        {!! $errors->first('class_fee', '<p class="text-danger">:message</p>') !!}
+    </div>
+</div>
+
+
+
 <div class="form-group {{ $errors->has('state') ? 'has-error' : '' }}">
     <label for="state" class="col-md-2 control-label">{{ trans('students.state') }}</label>
     <div class="col-md-10">
