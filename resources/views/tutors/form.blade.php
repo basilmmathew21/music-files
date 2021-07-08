@@ -132,56 +132,44 @@
 <div class="form-group">
     <label for="address" class="col-md-2 control-label">{{ trans('students.address') }}</label>
     <div class="col-md-10">
-        <textarea class="form-control" name="address" type="text" id="address" value="{{ old('address', optional($user)->address) }}"
-            minlength="1" maxlength="255"  placeholder="Enter Address here...">
+        <textarea class="form-control" name="address" type="text" id="address" value="{{ old('address', optional($user)->address) }}" minlength="1" maxlength="255"  placeholder="Enter Address here..."></textarea>
         {!! $errors->first('address', '<p class="text-danger">:message</p>') !!}
-        </textarea>
     </div>
 </div>
 <div class="form-group">
     <label for="address" class="col-md-2 control-label">Teaching Stream</label>
     <div class="col-md-10">
-        <textarea class="form-control" name="teaching_stream" type="text" id="teaching_stream" value=""
-            minlength="1" maxlength="255"  placeholder="">
-            @if(isset($tutor) && !empty($tutor)) {{ optional($tutor[0])->teaching_stream}} @endif
+        <textarea class="form-control" name="teaching_stream" type="text" id="teaching_stream" value="" minlength="1" maxlength="255"  placeholder="">@if(isset($tutor) && !empty($tutor)) {{ optional($tutor[0])->teaching_stream}} @endif</textarea>
         {!! $errors->first('teaching_stream', '<p class="text-danger">:message</p>') !!}
-        </textarea>
     </div>
 </div>
 <div class="form-group">
     <label for="address" class="col-md-2 control-label">Educational Qualification</label>
     <div class="col-md-10">
-        <textarea class="form-control" name="educational_qualification" type="text" id="educational_qualification" value=""
-            minlength="1" maxlength="255"  placeholder="">@if(isset($tutor) && !empty($tutor))  {{ optional($tutor[0])->educational_qualification }} @endif
+        <textarea class="form-control" name="educational_qualification" type="text" id="educational_qualification" value="" minlength="1" maxlength="255"  placeholder="">@if(isset($tutor) && !empty($tutor))  {{ optional($tutor[0])->educational_qualification }} @endif</textarea>
         {!! $errors->first('educational_qualification', '<p class="text-danger">:message</p>') !!}
-        </textarea>
     </div>
 </div>
 <div class="form-group">
     <label for="address" class="col-md-2 control-label">Teaching Experience</label>
     <div class="col-md-10">
-        <textarea class="form-control" name="teaching_experience" type="text" id="teaching_experience" value=""
-            minlength="1" maxlength="255"  placeholder="">@if(isset($tutor) && !empty($tutor)) {{ optional($tutor[0])->teaching_experience}} @endif
+        <textarea class="form-control" name="teaching_experience" type="text" id="teaching_experience" value="" minlength="1" maxlength="255"  placeholder="">@if(isset($tutor) && !empty($tutor)) {{ optional($tutor[0])->teaching_experience}} @endif</textarea>
         {!! $errors->first('teaching_experience', '<p class="text-danger">:message</p>') !!}
-        </textarea>
+
     </div>
 </div>
 <div class="form-group">
     <label for="address" class="col-md-2 control-label">Performance Experience</label>
     <div class="col-md-10">
-        <textarea class="form-control" name="performance_experience" type="text" id="performance_experience" value=""
-            minlength="1" maxlength="255"  placeholder="">@if(isset($tutor) && !empty($tutor)) {{ optional($tutor[0])->performance_experience}} @endif
+        <textarea class="form-control" name="performance_experience" type="text" id="performance_experience" value="" minlength="1" maxlength="255"  placeholder="">@if(isset($tutor) && !empty($tutor)) {{ optional($tutor[0])->performance_experience}} @endif</textarea>
         {!! $errors->first('performance_experience', '<p class="text-danger">:message</p>') !!}
-        </textarea>
     </div>
 </div>
 <div class="form-group">
     <label for="address" class="col-md-2 control-label">Other Details</label>
     <div class="col-md-10">
-        <textarea class="form-control" name="other_details" type="text" id="other_details" value=""
-            minlength="1" maxlength="255" placeholder="">@if(isset($tutor) && !empty($tutor)) {{optional($tutor[0])->other_details}} @endif
+        <textarea class="form-control" name="other_details" type="text" id="other_details" value="" minlength="1" maxlength="255" placeholder="">@if(isset($tutor) && !empty($tutor)) {{optional($tutor[0])->other_details}} @endif</textarea>
         {!! $errors->first('other_details', '<p class="text-danger">:message</p>') !!}
-        </textarea>
     </div>
 </div>
 

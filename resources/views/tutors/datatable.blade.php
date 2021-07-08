@@ -16,9 +16,7 @@
             <i class="fas fa-trash-alt"></i>
         </button>
 
-       @if($tutor->status=='InActive') <a href="{{ route('tutors.tutor.sendcredentials', $tutor->id) }}" class="btn btn-success" title=""  onclick="return confirm('{{ trans('users.login_credentials_msg') }}')">Accept and Send Login Credentials
-        </a>
-       @endif
+     
         
     </div>
 </form>

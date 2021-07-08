@@ -333,9 +333,9 @@ class TutorController extends Controller
         $data['username']=$user->email;
         $data['password']=$password;
  
-        Mail::send('emails.email', $data, function($message) {
+       /* Mail::send('emails.email', $data, function($message) {
  
-            $message->to($user->email, 'Receiver Name')
+            $message->to("gncbenny@gmail.com", 'Receiver Name')
  
                     ->subject('Login Credentials');
         });

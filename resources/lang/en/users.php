@@ -190,7 +190,7 @@ return [
 'enquiry_listing'=>'Tutor Enquiry Listing',
 'show_all_enquiry'=>'Show All Tutor Enquiries',
 
-'login_credentials_msg'=>'Are you sure that you want to reset the password and send the login credentials',
+'login_credentials_msg'=>'Are you sure that you want to activate the tutor with resetting the password and send the login credentials',
 'accept_enquiry_msg'=>'Are you sure that you want to accept the enquiry and register as tutor',
 'reject_enquiry_msg'=>'Are you sure that you want to reject the enquiry',
 
