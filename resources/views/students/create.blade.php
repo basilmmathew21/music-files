@@ -63,4 +63,9 @@
                         todayHighlight: true, 
                     });
                 });
+                $( document ).ready(function() {
+                    $(".sidebar").height(1295);  
+                });
+               
+
 </script>
