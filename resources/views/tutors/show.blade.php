@@ -84,6 +84,10 @@
             </div>
         </div>
     </div>
+    @if($user->is_active==0) <a href="{{ route('tutors.tutor.sendcredentials', $user->id) }}" class="btn btn-success" title=""  onclick="return confirm('{{ trans('users.login_credentials_msg') }}')">Accept and Send Login Credentials
+        </a>
+       @endif
+       <a href="{{ URL::to('tutors/')}}" type="button" class="btn btn-default">{{ trans('users.back') }}</a>
 </div>
 
 @endsection

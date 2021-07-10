@@ -60,6 +60,13 @@
             </div>
         </div>
     </div>
+    @if($tutor->status!='accepted') <a href="{{ route('tutorenquiries.tutorenquiry.accept', $tutor->id) }}" class="btn btn-success" title="Accept the enquiry and register as a Tutor" onclick="return confirm('{{ trans('users.accept_enquiry_msg') }}')">
+            Accept and Register as a Tutor
+        </a>@endif
+        @if($tutor->status!='accepted' && $tutor->status!='rejected' )  <a href="{{ route('tutorenquiries.tutorenquiry.reject', $tutor->id) }}" class="btn btn-danger" title="Reject the enquiry" onclick="return confirm('{{ trans('users.reject_enquiry_msg') }}')">
+            Reject
+        </a>@endif
+        <a href="{{ URL::to('tutorenquiries/')}}" type="button" class="btn btn-default">{{ trans('users.back') }}</a>
 </div>
 
 @endsection
