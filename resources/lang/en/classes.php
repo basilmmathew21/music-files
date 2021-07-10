@@ -60,7 +60,7 @@ return [
     'student' => 'Student',
     'date' => 'Date',
     'create' => 'Add Class Details',
-    'summary' => 'summary',
+    'summary' => 'Summary',
     'delete' => 'Delete Class Details',
     'edit' => 'Edit Class Details',
     'show' => 'Show Class Details',

@@ -9,7 +9,7 @@
 </div>
 -->
 <div class="form-group">
-    <label for="name" class="col-md-2 control-label">{{ trans('classes.student') }}</label>
+    <label for="name" class="col-md-2 control-label">{{ trans('classes.student') }}<sup style="color:red">*</sup></label>
 	<div class="col-md-10">
         <select name="student_user_id" class="form-control">
 			
@@ -23,17 +23,17 @@
 
 
 <div class="form-group {{ $errors->has('dob') ? 'has-error' : '' }}">
-    <label for="dob" class="col-md-2 control-label">{{ trans('classes.date') }}</label>
+    <label for="dob" class="col-md-2 control-label">{{ trans('classes.date') }}<sup style="color:red">*</sup></label>
     <div class="col-md-10">
         <input class="form-control datepicker" name="date" type="text" id="dob"
             value="{{ old('dob', optional($user)->dob) }}" minlength="1" maxlength="255" required="true"
-            placeholder="{{ trans('students.dob__placeholder') }}">
+            placeholder="{{ trans('students.dob__placeholder') }}" readonly>
         {!! $errors->first('dob', '<p class="text-danger">:message</p>') !!}
     </div>
 </div>
 
 <div class="form-group {{ $errors->has('dob') ? 'has-error' : '' }}">
-    <label for="dob" class="col-md-2 control-label">{{ trans('classes.summary') }}</label>
+    <label for="dob" class="col-md-2 control-label">{{ trans('classes.summary') }}<sup style="color:red">*</sup></label>
     <div class="col-md-10">
         <textarea class="form-control datepicker" name="summary" id="summary"></textarea> 
 		{!! $errors->first('dob', '<p class="text-danger">:message</p>') !!}

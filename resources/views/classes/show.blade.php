@@ -44,7 +44,7 @@
                     
 					<dt>{{ trans('classes.files') }}</dt>
                     @foreach ($files as $file)
-                            <dd>{{ $file }}</dd>
+                            <dd><a href="{{asset('uploads/files_'.$classes->id.'/'.$file)}}" download>{{ $file }}</a></dd>
                         @endforeach
 
                 </dl>
