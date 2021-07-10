@@ -142,7 +142,7 @@ class ProfilesController extends Controller
                 Rule::unique('users')->where(function ($query) {
                 }),
             ],
-            'password' => 'min:8|max:255',
+            'password' => 'required|string|min:8|max:255',
             'gender' => 'nullable',
             'dob' => 'date_format:d-m-Y',
             'profile_image' => 'nullable|mimes:jpg,jpeg,png|max:5120',
@@ -162,7 +162,7 @@ class ProfilesController extends Controller
                     Rule::unique('users')->ignore($id)->where(function ($query) {
                     }),
                 ],
-                'password' => 'nullable|min:8|max:255',
+                'password' => 'nullable|string|min:8|max:255',
             ]);
         }
         
