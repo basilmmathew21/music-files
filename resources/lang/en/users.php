@@ -162,7 +162,8 @@ return [
 'show_all_course'=>'Show All Courses',
 'status'=>'Status',
 
-
+'fee_collection'    =>  'Fee Collection',
+'model_fee_updated' => 'User paid fee successfully.',
 //Tutors
 'tutors'=>'Tutors',
 'create_tutor'=>'Add Tutor',

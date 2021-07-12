@@ -254,6 +254,12 @@ return [
             'can' => ['view users'],
         ],
         [
+            'text' => 'Fee Payment',
+            'route'  => 'feepayment.fee.index',
+            'icon'    => 'fa fa-check',
+            'can' => ['view fee_payment'],
+        ],
+        [
             'text' => 'users',
             'route'  => 'users.user.index',
             'icon'    => 'icon-34-users',
