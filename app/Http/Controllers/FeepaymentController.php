@@ -67,39 +67,38 @@ class FeepaymentController extends Controller
      */
     public function update($id, Request $request)
     {
-        $data      = $this->getData($request, $id);
-       
-        $studentDetais    =  Student::where('user_id', $id)->first();
-        /*
-        if($studentDetais && $studentDetais != null){
-            $student['credits']      =  $studentDetais->credits + $data['class_fee'];
-           $studentDetais->update($student);
-        }
-        */
-        $paymentDetails     = User
+        $data             = $this->getData($request, $id);
+        $studentDetais    = Student::where('user_id', $id)->first();
+        $paymentDetails   = User
         ::Join('students', 'students.user_id', '=', 'users.id')
-       ->leftJoin('classes', 'students.user_id', '=', 'classes.student_user_id')
+       ->Join('classes', 'students.user_id', '=', 'classes.student_user_id')
        ->select(['students.class_fee','classes.id as classIds'])
        ->where('classes.is_paid','0')
        ->where('users.id',$id)
        ->get();
+       
        $amountPay   =   $request->class_fee;
-       foreach($paymentDetails as $payment){
-        $classInfo                  = Classes::findOrFail($payment['classIds']);
-        $paymentData['date']        = date("Y-m-d"); 
-        $paymentData['is_paid']     = 1;
-        $amountPay  = $amountPay - $studentDetais['class_fee'];
-        if(($amountPay >= $studentDetais->class_fee) ||  ($amountPay == 0)){
-           $classInfo->update($paymentData);
-            echo "<br>1";
-            $student['credits']      =  $studentDetais->credits + $studentDetais['class_fee'];
-            $studentDetais->update($student);
-        }else if(($amountPay < $studentDetais->class_fee) &&  ($amountPay > 0)){
-            echo "<br>2";
-            $student['credits']      =  $studentDetais->credits + $amountPay;
-            $studentDetais->update($student);
+       if(count($paymentDetails) != 0){
+           foreach($paymentDetails as $payment){
+                $classInfo                  = Classes::findOrFail($payment['classIds']);
+                $paymentData['date']        = date("Y-m-d"); 
+                $paymentData['is_paid']     = 1;
+                $amountPay  = $amountPay - $studentDetais['class_fee'];
+                if(($amountPay >= $studentDetais->class_fee) ||  ($amountPay == 0)){
+                $classInfo->update($paymentData);
+                    $student['credits']      =  $studentDetais->credits + $studentDetais['class_fee'];
+                    $studentDetais->update($student);
+                }else if(($amountPay < $studentDetais->class_fee) &&  ($amountPay > 0)){
+                    $student['credits']      =  $studentDetais->credits + $amountPay;
+                    $studentDetais->update($student);
+                }
+            }
+        }else{
+            if($studentDetais && $studentDetais != null){
+                $student['credits']      =  $studentDetais->credits + $data['class_fee'];
+               $studentDetais->update($student);
+            }
         }
-       }
        
  
         return redirect()->route('feepayment.fee.index')
