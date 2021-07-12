@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Student;
 use App\Models\TutorClass;
 use App\Models\User;
 use DataTables;
@@ -105,8 +106,8 @@ class TutorClassController extends Controller
      */
     public function create()
     {
-        
-        $students  = User::where('user_type_id',4)->pluck('name', 'id')->all();
+       
+        $students  = User::where('user_type_id',4)->pluck('name', 'id');
         //echo '<pre>';print_r($students);exit;
         return view('classes.create',compact('students'));
     }
@@ -122,6 +123,15 @@ class TutorClassController extends Controller
     {
         $data = $this->getData($request);
         $data['tutor_user_id'] = auth()->user()->id;
+        $student = Student::where('user_id',$data['student_user_id'])->first();
+        if ($student->credits>=$student->class_fee){
+            $data['is_paid'] = 1;
+            $student->credits = $student->credits - $student->class_fee;
+            $student->save();
+        }
+        // print_r($student);exit;
+        $data['currency_id'] = $student->currency_id;
+        $data['class_fee'] = $student->class_fee;
         $data['date'] = Carbon::createFromFormat('d-m-y',$request->date)->format('Y-m-d');
         $cls_id=TutorClass::create($data)->id;
         

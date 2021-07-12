@@ -25,4 +25,20 @@ class Classes extends Model
         'student_user_id','tutor_user_id','date','summary','is_paid'
     ];
 
+    /**
+     * Get the Student record associated with the user.
+     */
+    public function student_user()
+    {
+        return $this->hasOne(User::class,'student_user_id');
+    }
+
+     /**
+     * Get the Tutor record associated with the user.
+     */
+    public function tutor_user()
+    {
+        return $this->hasOne(Tutor::class,'tutor_user_id');
+    }
+
 }

@@ -22,7 +22,7 @@ class TutorClass extends Model
      * @var array
      */
     protected $fillable = [
-        'student_user_id','tutor_user_id','date','summary'
+        'student_user_id','tutor_user_id','currency_id','class_fee','date','summary','is_paid'
     ];
 
     

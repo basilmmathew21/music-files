@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Laravel\Passport\HasApiTokens;
-use App\Models\Student;
+//use App\Models\Student;
 
 
 class User extends Authenticatable
@@ -129,6 +129,14 @@ class User extends Authenticatable
      */
     public function student()
     {
-        return $this->hasOne(Student::class);
+        return $this->hasOne(Student::class,'user_id');
+    }
+
+     /**
+     * Get the Tutor record associated with the user.
+     */
+    public function tutor()
+    {
+        return $this->hasOne(Tutor::class);
     }
 }

@@ -257,7 +257,7 @@ return [
             'text' => 'Fee Payment',
             'route'  => 'feepayment.fee.index',
             'icon'    => 'fa fa-check',
-            'can' => ['view fee_payment'],
+            'can' => ['view fee payment'],
         ],
         [
             'text' => 'users',
