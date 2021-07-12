@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Student extends Model
+class Classes extends Model
 {
     use HasFactory;
-
-    /**
+	
+	/**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'students';
+    protected $table = 'classes';
     
     /**
      * Attributes that should be mass-assignable.
@@ -22,16 +22,7 @@ class Student extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id','country_id','course_id','currency_id','class_fee','is_active','credits'
+        'student_user_id','tutor_user_id','date','summary','is_paid'
     ];
 
-    /**
-     * Get the user that student belongs.
-     */
-    public function user()
-    {
-        return $this->belongsTo(User::class,'user_id');
-    }
-
-    
 }

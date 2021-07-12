@@ -195,3 +195,14 @@ Route::group([
         Route::put('profile/{profile}', 'ProfilesController@update')
                 ->name('profiles.profile.update');
      });
+
+     Route::group([
+        'middleware' => ['permission:view fee payment'],
+        'prefix' => 'fee',
+    ], function () {
+        Route::get('/feepay', 'FeepaymentController@index')
+            ->name('feepayment.fee.index'); 
+       
+        Route::put('feepay/{fee}', 'FeepaymentController@update')
+                ->name('feepayment.fee.update');
+     });
