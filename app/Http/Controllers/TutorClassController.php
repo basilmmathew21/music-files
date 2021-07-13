@@ -124,12 +124,12 @@ class TutorClassController extends Controller
         $data = $this->getData($request);
         $data['tutor_user_id'] = auth()->user()->id;
         $student = Student::where('user_id',$data['student_user_id'])->first();
-        if ($student->credits>=$student->class_fee){
+       /*  if ($student->credits>=$student->class_fee){ //Automatically pay with the credits
             $data['is_paid'] = 1;
             $student->credits = $student->credits - $student->class_fee;
             $student->save();
-        }
-        // print_r($student);exit;
+        } */
+        
         $data['currency_id'] = $student->currency_id;
         $data['class_fee'] = $student->class_fee;
         $data['date'] = Carbon::createFromFormat('d-m-y',$request->date)->format('Y-m-d');
