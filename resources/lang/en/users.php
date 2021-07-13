@@ -164,6 +164,7 @@ return [
 
 'fee_collection'    =>  'Fee Collection',
 'model_fee_updated' => 'User paid fee successfully.',
+'paynow'            =>  'Pay Now',
 //Tutors
 'tutors'=>'Tutors',
 'create_tutor'=>'Add Tutor',
