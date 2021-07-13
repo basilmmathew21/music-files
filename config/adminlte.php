@@ -292,6 +292,12 @@ return [
             'can' => ['view users'],
         ],
         [
+            'text' => 'Payments',
+            'route'  => 'payments.payments.index',
+            'icon'    => 'fa fa-credit-card',
+            'can' => ['view users'],
+        ],
+        [
             'text' => 'settings',
             'icon'    => 'fa fa-cog',
             'submenu' => [

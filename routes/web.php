@@ -143,6 +143,20 @@ Route::group([
         Route::get('/index', 'TestimonialsController@index')->name('testimonials.testimonial.index');
     });
 
+Route::group([ 
+    'middleware' => ['permission:view payments'],
+    'prefix' => 'payments',
+], function () {
+
+        Route::get('/show/{id}', 'PaymentController@show')->name('payments.payments.show');
+        Route::get('/{id}/edit', 'PaymentController@edit')->name('payments.payments.edit');
+        Route::get('/store', 'PaymentController@store')->name('payments.payments.store');
+        Route::get('/create', 'PaymentController@create')->name('payments.payments.create');
+        Route::put('/update/{id}', 'PaymentController@update')->name('payments.payments.update');
+        Route::delete('/delete/{id}', 'PaymentController@destroy')->name('payments.payments.destroy');
+        Route::get('/index', 'PaymentController@index')->name('payments.payments.index');
+    });
+
 
     Route::group([
         'middleware' => ['permission:view classess'],
