@@ -10,7 +10,7 @@
             <a href="{{ route('payments.payments.index') }}" class="btn btn-primary" title="{{ trans('paymenthistory.show_all') }}">
                 <i class="fas fa-list-alt"></i>
             </a>
-            {{$payment->id}}
+            
             <a href="{{ route('payments.payments.edit', $payment->main_id ) }}" class="btn btn-primary"
                 title="{{ trans('paymenthistory.edit') }}">
                 <i class="fas fa-edit"></i>
