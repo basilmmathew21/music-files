@@ -103,8 +103,20 @@ class FeepaymentController extends Controller
                 }
             }
             if($amountPay > 0){
-                $student['credits']      =  $studentDetais->credits + $amountPay;
+                $student['credits']         =  $studentDetais->credits + $amountPay;
                 $studentDetais->update($student);
+
+                $data                       = array();
+                $data['student_user_id']    = $id;
+                $data['tutor_user_id']      = 0;
+                $data['fee_type']           = 'class_fee';
+                $data['payment_date']       = date("Y-m-d H:i:s");
+                $data['currency_id']        = $studentDetais->currency_id;
+                $data['amount']             = $amountPay;
+                $data['no_of_classes']      = $request->no_of_classes;
+                $data['payment_method_id']  = '1';
+                $data['status']             ='paid';
+                PaymentHistory::create($data);
             }
         }else{
             if($studentDetais && $studentDetais != null){
