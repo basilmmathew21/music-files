@@ -100,11 +100,11 @@ class FeepaymentController extends Controller
                     $data['payment_method_id']  = '1';
                     $data['status']             ='paid';
                     PaymentHistory::create($data);
-
-                }else if(($amountPay < $studentDetais->class_fee) &&  ($amountPay > 0)){
-                    $student['credits']      =  $studentDetais->credits - $amountPay;
-                    $studentDetais->update($student);
                 }
+            }
+            if($amountPay > 0){
+                $student['credits']      =  $studentDetais->credits + $amountPay;
+                $studentDetais->update($student);
             }
         }else{
             if($studentDetais && $studentDetais != null){
