@@ -151,7 +151,7 @@ body {
 
             <div class="py-2 px-3">
                 <div class="second pl-2 d-flex py-2">
-                <div class="form-check"><span style="display:none;" id="one_class_fee">{{$user->class_fee}}</span></div>
+                <div class="form-check"><span style="display:none;" id="one_class_fee">@if($user->class_fee) {{$user->class_fee}} @else 0 @endif</span></div>
                     <div class="border-left pl-2"><span class="head">No of classes</span>
                         <div class="d-flex">
                             <select id="no_of_classes" name="no_of_classes" class="form-control ml-1" required="true">
