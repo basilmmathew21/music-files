@@ -43,7 +43,7 @@ class StudentsController extends Controller
         if ($request->ajax()) {
              $data = User::with('student')
             ->join('countries', 'users.country_id', '=', 'countries.id')
-            ->leftJoin('students', 'students.user_id', '=', 'users.id')
+            ->join('students', 'students.user_id', '=', 'users.id')
             ->leftJoin('courses', 'students.course_id', '=', 'courses.id')
             ->select(['users.*','students.is_active as is_active','students.is_registered','courses.course','countries.name AS country_name',DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
             ->where('user_type_id', 4)
