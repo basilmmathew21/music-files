@@ -13,13 +13,14 @@ body {
 .container {
     width: 600px;
    /* background-color: #fff;*/
-    padding-top: 100px;
-    padding-bottom: 100px
+    padding-top: 10px;
+    padding-bottom: 100px,
+    height:2500px;
 }
 
 .card {
     background-color: #fff;
-    width: 300px;
+    width: 400px;
     border-radius: 15px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)
 }
@@ -118,6 +119,7 @@ body {
     @endif
 
 <div class="container d-flex justify-content-center mt-5">
+    <div class="main-body">
     <div class="card">
         <div>
 		<form method="POST" action="{{ route('feepayment.fee.update',$user->id) }}" accept-charset="UTF-8" id="update_fee_form" name="update_fee_form" class="form-horizontal">
@@ -133,43 +135,74 @@ body {
                 <div class="first pl-2 d-flex py-2">
                     <div class="form-check"> </div>
                     <div class="border-left pl-2"><span class="head">Total credits</span>
-                        <div><span class="dollar">{{$user->symbol}}</span><span class="amount">{{$user->credits}}</span></div>
+                        <div><span class="dollar">{{$user->symbol}}</span><span class="amount">{{ $user->credits}}</span></div>
                     </div>
                 </div>
             </div>
             <div class="py-2 px-3">
                 <div class="first pl-2 d-flex py-2">
-                    <div class="form-check"> <input type="radio" name="optradio" class="form-check-input mt-3 dot" checked> </div>
+                    <div class="form-check"> </div>
                     <div class="border-left pl-2"><span class="head">Total amount due</span>
-                        <div><span class="dollar">{{$user->symbol}}</span><span class="amount">{{($payment * $user->class_fee) }}</span></div>
+                        <div><span class="dollar">{{$user->symbol}}</span><span class="amount">{{$payment * $user->class_fee}}</span></div>
                     </div>
                 </div>
             </div>
+
+
             <div class="py-2 px-3">
                 <div class="second pl-2 d-flex py-2">
-                    <div class="form-check"> <input type="radio" name="optradio" class="form-check-input mt-3 dot"> </div>
+                <div class="form-check"><span style="display:none;" id="one_class_fee">@if($user->class_fee) {{$user->class_fee}} @else 0 @endif</span></div>
+                    <div class="border-left pl-2"><span class="head">No of classes</span>
+                        <div class="d-flex">
+                            <select id="no_of_classes" name="no_of_classes" class="form-control ml-1" required="true">
+                                <option value="">--Select--</option>
+                                <?php for($i=1;$i<=10;$i++) { ?>
+                                <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+				 </div>
+				<div>
+					{!! $errors->first('no_of_classes', '<p class="text-danger">:message</p>') !!}
+				</div>
+            </div>
+
+            <div class="py-2 px-3">
+                <div class="second pl-2 d-flex py-2">
+                    <div class="form-check"></div>
                     <div class="border-left pl-2"><span class="head">Pay amount</span>
-                        <div class="d-flex"><span class="dollar">{{$user->symbol}}</span>
-						<input type="text" name="class_fee" class="form-control ml-1" required="true" placeholder="0">
+                        <div class="d-flex"><span class="dollar"  style="padding-top:5px;">{{$user->symbol}}</span>
+						    <input type="text" id="class_fee" name="class_fee" class="form-control ml-1" required="true" readonly placeholder="0">
 						</div>
                     </div>
-					
-                </div>
+				</div>
 				<div>
 					{!! $errors->first('class_fee', '<p class="text-danger">:message</p>') !!}
 				</div>
             </div>
             <div class="d-flex justify-content-between px-3 pt-4 pb-3">
-            <div class="col-md-offset-2 col-md-10">  
-              <input class="btn btn-primary" type="submit" value="{{ trans('users.update') }}">
-              <a href="{{ URL::to('feepay')}}" type="button" class="btn btn-default">{{ trans('users.back') }}</a>
-            </div>
+                <div class="col-md-offset-2 col-md-10">  
+                    <input class="btn btn-primary" type="submit" value="{{ trans('users.paynow') }}">
+                </div>
             </div>
 		</form>
+        </div>
         </div>
     </div>
 </div>
 
 @endsection
 @section('js')
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+            $("#no_of_classes").change(function(){
+                var one_class_fee = parseInt($("#one_class_fee").text());
+                var no_of_classes = parseInt($(this).val());
+                var class_fee     = one_class_fee*no_of_classes;
+                $("#class_fee").val(class_fee);
+            });
+    });
+</script>
 @stop

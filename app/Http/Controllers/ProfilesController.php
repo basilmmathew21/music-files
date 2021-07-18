@@ -91,7 +91,6 @@ class ProfilesController extends Controller
         $data['state']          = $request->state;
         $data['address']        = $request->address;
         $data['dob']            = Carbon::createFromFormat('d-m-Y',$request->dob)->format('Y-m-d');
-        $data['user_type_id']   = 4;
         //$data['is_active']      = $request->status;
         if ($request->hasFile('profile_image')) {
             $profile_image_path = $request->file('profile_image')->store('public/images/profile');

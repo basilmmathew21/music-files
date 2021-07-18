@@ -8,7 +8,7 @@ use App\Models\User;
 use App\Models\Currency;
 use App\Models\Student;
 use App\Models\Classes;
-
+use App\Models\PaymentHistory;
 use Illuminate\Http\Request;
 use Exception;
 use DataTables;
@@ -86,17 +86,54 @@ class FeepaymentController extends Controller
                 $amountPay  = $amountPay - $studentDetais['class_fee'];
                 if(($amountPay >= $studentDetais->class_fee) ||  ($amountPay == 0)){
                 $classInfo->update($paymentData);
-                    $student['credits']      =  $studentDetais->credits + $studentDetais['class_fee'];
+                    $student['credits']      =  $studentDetais->credits - $studentDetais['class_fee'];
                     $studentDetais->update($student);
-                }else if(($amountPay < $studentDetais->class_fee) &&  ($amountPay > 0)){
-                    $student['credits']      =  $studentDetais->credits + $amountPay;
-                    $studentDetais->update($student);
+
+                    $data                       = array();
+                    $data['student_user_id']    = $id;
+                    $data['tutor_user_id']      = $classInfo->tutor_user_id;
+                    $data['fee_type']           = 'class_fee';
+                    $data['payment_date']       = date("Y-m-d H:i:s");
+                    $data['currency_id']        = $studentDetais->currency_id;
+                    $data['amount']             = $studentDetais['class_fee'];
+                    $data['no_of_classes']      = $request->no_of_classes;
+                    $data['payment_method_id']  = '1';
+                    $data['status']             ='paid';
+                    PaymentHistory::create($data);
                 }
+            }
+            if($amountPay > 0){
+                $student['credits']         =  $studentDetais->credits + $amountPay;
+                $studentDetais->update($student);
+
+                $data                       = array();
+                $data['student_user_id']    = $id;
+                $data['tutor_user_id']      = 0;
+                $data['fee_type']           = 'class_fee';
+                $data['payment_date']       = date("Y-m-d H:i:s");
+                $data['currency_id']        = $studentDetais->currency_id;
+                $data['amount']             = $amountPay;
+                $data['no_of_classes']      = $request->no_of_classes;
+                $data['payment_method_id']  = '1';
+                $data['status']             ='paid';
+                PaymentHistory::create($data);
             }
         }else{
             if($studentDetais && $studentDetais != null){
-                $student['credits']      =  $studentDetais->credits + $data['class_fee'];
+               $student['credits']      =  $studentDetais->credits + $data['class_fee'];
                $studentDetais->update($student);
+
+               $data                       = array();
+               $data['student_user_id']    = $id;
+               $data['tutor_user_id']      = 0;
+               $data['fee_type']           = 'class_fee';
+               $data['payment_date']       = date("Y-m-d H:i:s");
+               $data['currency_id']        = $studentDetais->currency_id;
+               $data['amount']             = $request->class_fee;
+               $data['no_of_classes']      = $request->no_of_classes;
+               $data['payment_method_id']  = '1';
+               $data['status']             ='paid';
+               PaymentHistory::create($data);
             }
         }
        
