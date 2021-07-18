@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\App;
 use App\Models\User;
+use DB;
 
 class HomeController extends Controller
 {
@@ -50,6 +51,23 @@ class HomeController extends Controller
                     //->where('users.is_active','1')
                     ->sum('credits');
 
-        return view('home', compact('users','students','tutors','credits'));
+        $studentInfo = User::with('student')
+                    ->join('countries', 'users.country_id', '=', 'countries.id')
+                    ->join('students', 'students.user_id', '=', 'users.id')
+                    ->leftJoin('courses', 'students.course_id', '=', 'courses.id')
+                    ->select(['users.*','students.is_active as is_active','students.is_registered','courses.course','countries.name AS country_name',DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
+                    ->where('user_type_id', 4)
+                    ->limit(10)
+                    ->orderBy('students.created_at','desc')
+                    ->get();
+        
+        $tutorInfo  = DB::table('users')
+                    ->join('countries', 'users.country_id', '=', 'countries.id')
+                    ->select(['users.*','countries.name AS country_name',DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
+                    ->where('user_type_id', 3)
+                    ->limit(10)
+                    ->get();
+
+        return view('home', compact('users','students','tutors','credits','studentInfo','tutorInfo'));
     }
 }

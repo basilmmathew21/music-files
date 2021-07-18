@@ -83,36 +83,40 @@
         <!-- Main row -->
         <div class="row">
           <!-- Left col -->
-          <section class="col-lg-7 connectedSortable">
+          <section class="col-lg-6 connectedSortable">
             <!-- Custom tabs (Charts with tabs)-->
             <div class="card">
-              <div class="card-header">
+             <div class="card-header">
                 <h3 class="card-title">
-                  <i class="fas fa-chart-pie mr-1"></i>
-                  Registrations
-                </h3>
-                <!--
-                <div class="card-tools">
-                  <ul class="nav nav-pills ml-auto">
-                    <li class="nav-item">
-                      <a class="nav-link active" href="#revenue-chart" data-toggle="tab">Area</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="#sales-chart" data-toggle="tab">Donut</a>
-                    </li>
-                  </ul>
-                </div>
-                -->
-              </div><!-- /.card-header -->
-              <div class="card-body">
-                <div class="tab-content p-0">
-					<div class="card-body">
-						<div class="chart">
-						  <canvas id="areaChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-						</div>
-					  </div>
-                </div>
-              </div><!-- /.card-body -->
+				 <a href="{{ route('students.student.index') }}">Student Registrations
+				</a>
+				</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body p-0">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th style="width: 10px">#</th>
+                      <th>Name</th>
+                      <th>Email</th>
+					  <th>Gender</th>
+                      <th>Course</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+				  <?php foreach($studentInfo as $key => $student){ ?>
+                    <tr>
+					  <td>{{ $key + 1 }}</td>
+                      <td>{{ $student->name }}</td>
+                      <td>{{ $student->email }}</td>
+                      <td>{{ $student->gender }}</td>
+                      <td>{{ $student->course }}</td>
+                    </tr>
+				  <?php } ?> 
+                  </tbody>
+                </table>
+              </div>
             </div>
             <!-- /.card -->
 
@@ -123,11 +127,46 @@
 
             <!-- /.card -->
           </section>
+		  
           <!-- /.Left col -->
           <!-- right col (We are only adding the ID to make the widgets sortable)-->
-          <section class="col-lg-5 connectedSortable">
+		 
+          <section class="col-lg-6 connectedSortable">
 
-            
+            <div class="card">
+				<div class="card-header">
+					<h3 class="card-title">
+						<a href="{{ route('tutors.tutor.index') }}">Tutors Information
+						</a>
+					</h3>
+				</div>
+			  
+              <!-- /.card-header -->
+              <div class="card-body p-0">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th style="width: 10px">#</th>
+                      <th>Name</th>
+                      <th>Email</th>
+					  <th>Gender</th>
+                     
+                    </tr>
+                  </thead>
+                  <tbody>
+				  <?php foreach($tutorInfo as $key => $tutor){ ?>
+                    <tr>
+					  <td>{{ $key + 1 }}</td>
+                      <td>{{ $tutor->name }}</td>
+                      <td>{{ $tutor->email }}</td>
+                      <td>{{ $tutor->gender }}</td>
+                      
+                    </tr>
+				  <?php } ?> 
+                  </tbody>
+                </table>
+              </div>
+            </div>
 
             <!-- solid sales graph -->
             
