@@ -125,8 +125,9 @@
 </div>
 
 
+
 <div class="form-group {{ $errors->has('class_fee') ? 'has-error' : '' }}">
-    <label for="class fee" class="col-md-2 control-label">{{ trans('students.fee') }}</label>
+    <label for="class fee" class="col-md-2 control-label"><span style="color:red">*</span>{{ trans('students.fee') }}</label>
     <div class="col-md-10">
         <input class="form-control" name="class_fee" type="text" id="class_fee" value="{{ old('class_fee', optional($user)->class_fee) }}"
             minlength="1" maxlength="255" required="true" placeholder="{{ trans('students.fee__placeholder') }}">
@@ -152,6 +153,18 @@
             minlength="1" maxlength="255" placeholder="{{ trans('students.address__placeholder') }}">{{ old('address', optional($user)->address) }}
             {!! $errors->first('address', '<p class="text-danger">:message</p>') !!}
         </textarea>
+    </div>
+</div>
+
+<div class="form-group {{ $errors->has('is_registered') ? 'has-error' : '' }}">
+    <label for="class fee" class="col-md-2 control-label">{{ trans('students.reg') }}</label>
+    <div class="col-md-10">
+  
+    <select name="is_registered" class="form-control">
+                <option value="">--Select--</option>
+                <option value="1" @if(old('is_registered') == "1") selected @endif>Yes</option>
+				<option value="0" @if(old('is_registered') == "0") selected @endif>No</option>
+        </select>
     </div>
 </div>
 

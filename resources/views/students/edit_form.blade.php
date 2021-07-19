@@ -117,7 +117,7 @@
         <option value="">--Select--</option>
 			@if(isset($currency))
 				@foreach ($currency as $curcy)
-				<option value="{{ $curcy['id'] }}" @if($curcy->id == $curcy['id']) selected @endif>  {{ $curcy->code }}({{$curcy->symbol}})</option>
+				<option value="{{ $curcy['id'] }}" @if($user->currency_id == $curcy['id']) selected @endif>  {{ $curcy->code }}({{$curcy->symbol}})</option>
 				@endforeach
 			@endif
         </select>
@@ -154,6 +154,18 @@
             minlength="1" maxlength="255" placeholder="{{ trans('students.address__placeholder') }}">{{ old('address', optional($user)->address) }}
             {!! $errors->first('address', '<p class="text-danger">:message</p>') !!}
         </textarea>
+    </div>
+</div>
+
+<div class="form-group {{ $errors->has('is_registered') ? 'has-error' : '' }}">
+    <label for="class fee" class="col-md-2 control-label">{{ trans('students.reg') }}</label>
+    <div class="col-md-10">
+  
+    <select name="is_registered" class="form-control">
+                <option value="">--Select--</option>
+                <option value="1" <?php if($user->is_registered == "Reg") { ?> selected="selected" <?php } ?>>Yes</option>
+				<option value="0" <?php if($user->is_registered == "Not Reg") { ?> selected="selected" <?php } ?>>No</option>
+        </select>
     </div>
 </div>
 

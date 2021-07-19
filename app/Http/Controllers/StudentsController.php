@@ -105,7 +105,7 @@ class StudentsController extends Controller
         $data['address']        = $request->address;
         $data['dob']            = Carbon::createFromFormat('d-m-Y',$request->dob)->format('Y-m-d');
         $data['user_type_id']   = 4;
-        $data['is_active']      =  $request->status;
+        $data['is_active']      =  $request->status?$request->status:0; 
         if ($request->hasFile('profile_image')) {
 
             $profile_image_path = $request->file('profile_image')->store('students/profile');
@@ -120,7 +120,7 @@ class StudentsController extends Controller
         $student['currency_id']    =  $request->currency;
         $student['class_fee']      =  $request->class_fee;
         $student['is_registered']  =  1;
-        $student['is_active']      =  $request->status;
+        $student['is_active']      =  $request->status?$request->status:0;
         Student::create($student);
         
         return redirect()->route('students.student.index')
@@ -172,7 +172,13 @@ class StudentsController extends Controller
         $data['address']        = $request->address;
         $data['dob']            = Carbon::createFromFormat('d-m-Y',$request->dob)->format('Y-m-d');
         $data['user_type_id']   = 4;
-        $data['is_active']      = $request->status;
+        $data['is_active']      = $request->status?$request->status:$user->is_active;
+        if($data['is_active'] == "Active"){
+            $data['is_active']      = 1;
+        }else if($data['is_active'] == "Inactive"){
+            $data['is_active']      = 0;
+        }
+        
         if ($request->hasFile('profile_image')) {
             $profile_image_path = $request->file('profile_image')->store('students/profile');
             $data['profile_image'] =  $profile_image_path;
@@ -195,6 +201,23 @@ class StudentsController extends Controller
             $student['class_fee']      =  $request->class_fee;
             $student['is_registered']  =  $request->is_registered;
             $student['is_active']      =  $request->status;
+            if($student['is_active'] == "Active"){
+                $student['is_active']      = 1;
+            }else if($student['is_active'] == "Inactive"){
+                $student['is_active']      = 0;
+            }
+           
+            if($student['is_active'] == NULL){
+                if($studentDetais->is_active == "Active"){
+                    $student['is_active']      = 1;
+                }else{
+                    $student['is_active']      = 0;
+                }
+            }
+            if($student['is_registered'] == NULL){
+                $student['is_registered']    =  $studentDetais->is_registered;
+            }
+            
             $studentDetais->update($student);
         }
         return redirect()->route('students.student.index')
