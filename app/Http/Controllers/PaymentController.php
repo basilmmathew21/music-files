@@ -41,8 +41,9 @@ class PaymentController extends Controller
             ->join('users as u', 's.user_id', '=', 'u.id')
             ->join('tutors as t', 't.user_id', '=', 'p.tutor_user_id')
             ->join('users as us','t.user_id', '=', 'us.id')
-            //->join('currencies as c','p.currency_id','=','c.id')
-            ->select('p.*','us.name as tutor_name','u.name as student_name')
+            ->join('payment_methods as pm','p.payment_method_id','=','pm.id')
+            ->join('currencies as c','p.currency_id','=','c.id')
+            ->select('p.*','us.name as tutor_name','u.name as student_name','c.*','pm.payment_method')
             ->get();
         $datatable =  DataTables::of($data)
                 ->filter(function ($instance) use ($request) {
