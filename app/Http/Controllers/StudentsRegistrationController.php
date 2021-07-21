@@ -16,6 +16,8 @@ use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Redirect;
+
 
 class StudentsRegistrationController extends Controller
 {
@@ -76,10 +78,8 @@ class StudentsRegistrationController extends Controller
         $student['is_registered']  =  0;
         $student['is_active']      =  0;
         Student::create($student);
-        
-        return redirect()->route('home')
-            ->with('success_message', trans('students.model_was_added'));
-        
+
+        return Redirect::to('login')->with('success_message',"Registration Successful");;
 
     }
  
