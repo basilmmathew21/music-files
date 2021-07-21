@@ -73,8 +73,8 @@ class StudentsRegistrationController extends Controller
         $student['course_id']      =  $request->course;
         $student['currency_id']    =  $request->currency;
         $student['class_fee']      =  0;
-        $student['is_registered']  =  1;
-        $student['is_active']      =  $request->status?$request->status:0;
+        $student['is_registered']  =  0;
+        $student['is_active']      =  0;
         Student::create($student);
         
         return redirect()->route('home')

@@ -155,7 +155,7 @@
         </textarea>
     </div>
 </div>
-
+<!--
 <div class="form-group {{ $errors->has('is_registered') ? 'has-error' : '' }}">
     <label for="class fee" class="col-md-2 control-label">{{ trans('students.reg') }}</label>
     <div class="col-md-10">
@@ -179,3 +179,4 @@
         </select>
 	</div>
 </div>
+-->
