@@ -196,7 +196,7 @@ return [
 
     //'register_url' => 'register',
 
-    'register_url' => false,
+    'register_url' => '/registration',
 
     'password_reset_url' => 'password/reset',
 
