@@ -190,11 +190,14 @@ return [
 
     'dashboard_url' => 'home',
 
+    //'dashboard_url' => true,
+
     'logout_url' => 'logout',
 
     'login_url' => 'login',
 
-    //'register_url' => 'register',
+    'register_url' => 'register',
+
 
     'register_url' => '/registration',
 
@@ -204,7 +207,7 @@ return [
 
     'password_email_url' => 'password/email',
 
-    'profile_url' => false,
+    'profile_url' => 'profile/profile',
 
     /*
     |--------------------------------------------------------------------------
@@ -246,6 +249,8 @@ return [
             'route'  => 'home',
             'icon'    => 'icon-01-dashboard-icon',
             'can' => ['view dashboard'],
+            'can'         => 'manage-logout',
+            'role'        => 'User',
         ],
         [
             'text' => 'Profile',
