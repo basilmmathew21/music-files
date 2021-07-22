@@ -74,7 +74,17 @@
 
     </form>
 @stop
+@if(Session::has('success_message') or Session::has('error_message'))
+        <div class="alert alert-success">
+            <i class="fas fa-check-circle"></i>
+            {!! session('success_message') !!}
+            {!! session('error_message') !!}
+            <button type="button" class="close" data-dismiss="alert" aria-label="close">
+                <span aria-hidden="true">&times;</span>
+            </button>
 
+        </div>
+    @endif
 @section('auth_footer')
     {{-- Password reset link --}}
     @if($password_reset_url)
