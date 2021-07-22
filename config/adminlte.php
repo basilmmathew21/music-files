@@ -64,12 +64,13 @@ return [
     |
     */
 
-    'usermenu_enabled' => true,
-    'usermenu_header' => false,
+    'usermenu_enabled' => false,
+    'usermenu_header' => true,
     'usermenu_header_class' => 'bg-primary',
     'usermenu_image' => false,
     'usermenu_desc' => false,
-    'usermenu_profile_url' => false,
+    'usermenu_profile_url' => 'profile',
+    
 
     /*
     |--------------------------------------------------------------------------
@@ -206,7 +207,7 @@ return [
 
     'password_email_url' => 'password/email',
 
-    'profile_url' => 'profile/profile',
+    
 
     /*
     |--------------------------------------------------------------------------
@@ -250,12 +251,6 @@ return [
             'can' => ['view dashboard'],
             'can'         => 'manage-logout',
             'role'        => 'User',
-        ],
-        [
-            'text' => 'Profile',
-            'route'  => 'profiles.profile.index',
-            'icon'    => 'fa fa-image',
-            'can' => ['view users'],
         ],
         [
             'text' => 'Fee Payment',

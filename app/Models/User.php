@@ -121,9 +121,8 @@ class User extends Authenticatable
 
     public function adminlte_profile_url()
     {
-        return 'profile/username';
+        return 'profile/profile';
     }
-
     /**
      * Get the Student record associated with the user.
      */
