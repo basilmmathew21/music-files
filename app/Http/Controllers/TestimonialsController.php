@@ -39,6 +39,7 @@ class TestimonialsController extends Controller
         if ($request->ajax()) {
              $data = Testimonial::select('testimonials.*','users.name')
             ->join('users', 'users.id', '=', 'testimonials.user_id')
+            ->where('testimonials.user_id','=',\Auth::user()->id)
             ->get();
 
             $datatable =  DataTables::of($data)
@@ -70,6 +71,7 @@ class TestimonialsController extends Controller
      */
     public function create()
     {
+
         return view('testimonial.create');
     }
 
@@ -82,13 +84,14 @@ class TestimonialsController extends Controller
      */
     public function store(Request $request)
     {
+
         $data = $this->getData($request);
         $data['title']       = $request->title; //Encrypting password
         $data['description']     = $request->description; //country
-        $data['status']          = $request->status;
-        $data['is_active']        = $request->is_active;
+        $data['status']          = 'pending';
+        $data['is_active']        = '1';
         $data['user_id']            =  \Auth::user()->id;
-        Testimonial::create($student);
+        Testimonial::create($data);
         
         return redirect()->route('testimonials.testimonial.index')
             ->with('success_message', trans('testimonial.model_was_added'));
@@ -189,7 +192,7 @@ class TestimonialsController extends Controller
         $rules = [
             'title' => 'required|string|min:1|max:255',
             'description' => 'required|string',
-            'status' => 'required',
+            //'status' => 'required',
             'is_active' => 'nullable'
         ];
 

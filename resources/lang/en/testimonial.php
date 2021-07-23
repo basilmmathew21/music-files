@@ -3,6 +3,7 @@
 return [
     'slno' => 'No',
     'id' => 'Id',
+    'active' => 'Active',
     'id__placeholder' => 'Enter id here...',
     'title' => 'Title',
     'title__placeholder' => 'Enter title here...',
