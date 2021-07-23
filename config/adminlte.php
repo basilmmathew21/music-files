@@ -197,7 +197,7 @@ return [
 
     'login_url' => 'login',
 
-    'register_url' => 'register',
+    'register_url' => 'registration',
 
     //'register_url' => true,
 
