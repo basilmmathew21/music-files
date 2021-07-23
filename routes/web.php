@@ -130,18 +130,19 @@ Route::group([
 });
 
 Route::group([ 
-    'middleware' => ['permission:view testimonials'],
+    'middleware' => ['permission:view dashboard'],
     'prefix' => 'testimonial',
 ], function () {
 
-        Route::get('/show/{id}', 'TestimonialsController@show')->name('testimonials.testimonial.show');
-        Route::get('/{id}/edit', 'TestimonialsController@edit')->name('testimonials.testimonial.edit');
-
-        Route::get('/create', 'TestimonialsController@create')->name('testimonials.testimonial.create');
-        Route::put('/update/{id}', 'TestimonialsController@update')->name('testimonials.testimonial.update');
-        Route::delete('/delete/{id}', 'TestimonialsController@destroy')->name('testimonials.testimonial.destroy');
-        Route::get('/index', 'TestimonialsController@index')->name('testimonials.testimonial.index');
+    Route::get('/show/{id}', 'TestimonialsController@show')->name('testimonials.testimonial.show');
+    Route::get('/{id}/edit', 'TestimonialsController@edit')->name('testimonials.testimonial.edit');
+    Route::get('/create', 'TestimonialsController@create')->name('testimonials.testimonial.create');
+    Route::post('/store', 'TestimonialsController@store')->name('testimonials.testimonial.store');
+    Route::put('/update/{id}', 'TestimonialsController@update')->name('testimonials.testimonial.update');
+    Route::delete('/delete/{id}', 'TestimonialsController@destroy')->name('testimonials.testimonial.destroy');
+    Route::get('/index', 'TestimonialsController@index')->name('testimonials.testimonial.index');
     });
+
 
 Route::group([ 
     'middleware' => ['permission:view payments'],

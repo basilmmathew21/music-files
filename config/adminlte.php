@@ -289,7 +289,7 @@ return [
             'text' => 'Testmonial',
             'route'  => 'testimonials.testimonial.index',
             'icon'    => 'fa fa-globe',
-            'can' => ['view users'],
+            'can' => ['view dashboard'],
         ],
         [
             'text' => 'Payments',
