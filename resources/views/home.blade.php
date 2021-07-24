@@ -93,25 +93,27 @@
 				</h3>
               </div>
               <!-- /.card-header -->
-              <div class="card-body p-0">
+              <div class="card-body p-0 table-responsive">
                 <table class="table table-striped">
                   <thead>
                     <tr>
                       <th style="width: 10px">#</th>
                       <th>Name</th>
                       <th>Email</th>
-					  <th>Gender</th>
+					            <th>Gender</th>
                       <th>Course</th>
+                      <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
-				  <?php foreach($studentInfo as $key => $student){ ?>
+				  <?php foreach($studentInfo as $key => $student){  ?>
                     <tr>
 					  <td>{{ $key + 1 }}</td>
                       <td>{{ $student->name }}</td>
                       <td>{{ $student->email }}</td>
                       <td>{{ $student->gender }}</td>
                       <td>{{ $student->course }}</td>
+                      <td>{{ $student->is_active }}</td>
                     </tr>
 				  <?php } ?> 
                   </tbody>
@@ -142,14 +144,15 @@
 				</div>
 			  
               <!-- /.card-header -->
-              <div class="card-body p-0">
+              <div class="card-body p-0 table-responsive">
                 <table class="table table-striped">
                   <thead>
                     <tr>
                       <th style="width: 10px">#</th>
                       <th>Name</th>
                       <th>Email</th>
-					  <th>Gender</th>
+          					  <th>Gender</th>
+                      <th>Status</th>
                      
                     </tr>
                   </thead>
@@ -160,6 +163,7 @@
                       <td>{{ $tutor->name }}</td>
                       <td>{{ $tutor->email }}</td>
                       <td>{{ $tutor->gender }}</td>
+                      <td>{{ ($tutor->is_active) ? 'Active' : 'Inactive' }}</td>
                       
                     </tr>
 				  <?php } ?> 
