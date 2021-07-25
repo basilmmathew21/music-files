@@ -9,6 +9,7 @@ use DB;
 use Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
 
 
 
@@ -64,35 +65,36 @@ class TutorEnquiryController extends Controller
      */
     public function create()
     {
-        //
+        $country = Country::all();
+        return view('tutor_enquiry.create', compact('country'));
     }
 
     public function store(Request $request)
     {
-        //$data = $request->all();
-        // $validatedData = $request->validate([
-            
-        //     'email' => 'required|regex:/(.+)@(.+)\.(.+)/i|(unique:users,email)',
-        //     'phone' => 'required|digits:10',
-    
-        //    ]);
-        //$data['dob'] = date_format(data_create($request->input['dob']),'Y-m-d');
-        $data = array();
-        $data['name'] = 'ramesh 1';
-        $data['dob'] = '2000-02-27';
-        $data['email'] = 'test1@gmail.com';
-        $data['phone'] = '9879879877';
-        $data['gender'] = 'Male';
-        $data['country_id'] = '1';
-        $data['state'] = 'Kerala';
-        $data['address'] = 'test address';
-        $data['profile_image'] ='image.png';
-        $data['status'] = 'new';
-        $data['teaching_stream'] = 'Carnatic';
-        $data['educational_qualification'] = 'MA.';
-        $data['teaching_experience'] = '5years';
-        $data['performance_experience'] = '10years';
-        $data['other_details'] = 'nil';
+        $data = $request->all();
+        $validatedData = Validator::make($request->all(), [
+            'email' => 'required|regex:/(.+)@(.+)\.(.+)/i|unique:tutor_enquiries',
+            'phone' => 'required|digits:10',
+        ]);
+        //dd($validatedData);
+        if ($validatedData->fails()) {
+            $error['errors'] = $validatedData->errors();
+            return redirect()->route('tutorenquiries.tutorenquiry.create')
+            ->with($error);
+        }
+
+        if($request->has('image')){ 
+                $flag = $request->file('image');
+//dd($flag);
+                $extension = $flag->getClientOriginalExtension();
+
+                $flag->storeAs('/tutor-enquiry', uniqid().time().".".$extension);
+
+                $name = uniqid().time().".".$extension;
+
+                $data['profile_image'] = $name;
+        }
+        $data['dob'] = date_format(date_create($data['dob']),'Y-m-d');
         $data['date_of_enquiry'] = date('Y-m-d');
         TutorEnquiry::create($data);
         $admin = User::find('2');
