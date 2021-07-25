@@ -2,12 +2,13 @@
 
 @section('content_header')
     <h1 class="m-0 text-dark">{{ trans('testimonial.listing') }}</h1>
-     
-     <!-- <div class="btn-group btn-group-sm pull-right" role="group">
+@if(count($testimonial) == '0')
+     <div class="btn-group btn-group-sm pull-right" role="group">
         <a href="{{ route('testimonials.testimonial.create') }}" class="btn btn-success" title="{{ trans('testimonial.create') }}">
             <i class="fas fa-plus-circle"></i>
         </a>
-    </div> -->
+    </div>
+@endif
 
 @stop
 
