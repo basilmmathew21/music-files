@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 use App\Models\TutorEnquiry;
+use App\Models\User;
+use App\Models\Country;
 use DataTables;
 use DB;
-
+use Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -63,6 +65,47 @@ class TutorEnquiryController extends Controller
     public function create()
     {
         //
+    }
+
+    public function store(Request $request)
+    {
+        //$data = $request->all();
+        // $validatedData = $request->validate([
+            
+        //     'email' => 'required|regex:/(.+)@(.+)\.(.+)/i|(unique:users,email)',
+        //     'phone' => 'required|digits:10',
+    
+        //    ]);
+        //$data['dob'] = date_format(data_create($request->input['dob']),'Y-m-d');
+        $data = array();
+        $data['name'] = 'ramesh 1';
+        $data['dob'] = '2000-02-27';
+        $data['email'] = 'test1@gmail.com';
+        $data['phone'] = '9879879877';
+        $data['gender'] = 'Male';
+        $data['country_id'] = '1';
+        $data['state'] = 'Kerala';
+        $data['address'] = 'test address';
+        $data['profile_image'] ='image.png';
+        $data['status'] = 'new';
+        $data['teaching_stream'] = 'Carnatic';
+        $data['educational_qualification'] = 'MA.';
+        $data['teaching_experience'] = '5years';
+        $data['performance_experience'] = '10years';
+        $data['other_details'] = 'nil';
+        $data['date_of_enquiry'] = date('Y-m-d');
+        TutorEnquiry::create($data);
+        $admin = User::find('2');
+        $country = Country::find($data['country_id']);
+        Mail::send('emails.tutor-enquiry', ['data' => $data,'admin' => $admin], function ($m) use ($data,$admin,$country) {
+                $m->from($data['email'], 'Contact Mail');
+                if($data['name'])$m->to($admin['email'], $data['name'])->subject('Contact Mail From '.$data['name']);
+                else $m->to('admin@example.com')->subject('Contact Mail');
+        });
+
+        return redirect()->route('tutorenquiries.tutorenquiry.create')
+            ->with('success_message', trans('Tutor Enquiry Submitted Successfully'));
+        
     }
 
     /**

@@ -196,6 +196,14 @@ Route::group([
        
 
     });
+    Route::group([  
+        'prefix' => 'tutorenquiries',
+    ], function () {
+        Route::get('/store', 'TutorEnquiryController@store')
+            ->name('tutorenquiries.tutorenquiry.store'); 
+        Route::get('/create', 'TutorEnquiryController@create')
+            ->name('tutorenquiries.tutorenquiry.create');      
+    });
 
 
     Route::group([
