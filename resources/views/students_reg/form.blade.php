@@ -26,6 +26,8 @@
   
 </div>
 
+
+
 <div class="input-group mb-3">
         <input class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" name="email" type="text" id="email"
             value="{{ old('email', optional($user)->email) }}" minlength="1" maxlength="255" required="true"
@@ -65,7 +67,7 @@
 
 
 
-<div class="input-group mb-3">
+<div class="form-group">
   
     
     <select name="gender" class="form-control"  required="true">
@@ -74,8 +76,11 @@
 				<option value="Female" @if(old('gender') == "Female") selected @endif>Female</option>
                 <option value="Other" @if(old('gender') == "Other") selected @endif>Other</option>
         </select>
+		
+
     
 </div>
+
 
 <div class="form-group mb-3">
         <input class="form-control datepicker {{ $errors->has('dob') ? 'has-error' : '' }}" name="dob" type="text" id="dob"
@@ -108,7 +113,7 @@
   
 </div>
 
-<div class="input-group mb-3">
+<div class="form-group">
 
         <select name="course" class="form-control"  required="true">
         <option value="" selected disabled>--Choose Course--</option>
@@ -121,7 +126,7 @@
 	
 </div>
 
-<div class="input-group mb-3">
+<div class="form-group">
         <select name="country" class="form-control" required="true">
             <option value="" selected disabled>--Choose Nation--</option>
 			@if(isset($nationalities))
@@ -133,7 +138,7 @@
 	
 </div>
 
-<div class="input-group mb-3">
+<div class="form-group">
         <select name="currency" class="form-control" required="true">
         <option value="" selected disabled>--Choose Currency--</option>
 			@if(isset($currency))
@@ -157,7 +162,7 @@
 </div>
 -->
 
-<div class="input-group mb-3">
+<div class="form-group">
     <input class="form-control {{ $errors->has('state') ? 'has-error' : '' }}" name="state" type="text" id="state" value="{{ old('state', optional($user)->state) }}"
             minlength="1" maxlength="255" placeholder="{{ trans('students.state__placeholder') }}">
             @if($errors->has('state'))
@@ -168,7 +173,7 @@
   
 </div>
 
-<div class="input-group mb-3">
+<div class="form-group">
       <textarea class="form-control {{ $errors->has('state') ? 'has-error' : '' }}" name="address" type="text" id="name" value="{{ old('address', optional($user)->address) }}"
             minlength="1" maxlength="255" placeholder="{{ trans('students.address__placeholder') }}">{{ old('address', optional($user)->address) }}
             {!! $errors->first('address', '<p class="text-danger">:message</p>') !!}

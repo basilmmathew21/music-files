@@ -26,9 +26,8 @@
                     </ul>
                 </div>
             @endif
-
-
-            <form method="POST" action="{{ route('registration.store') }}" accept-charset="UTF-8" id="create_user_form" name="create_user_form" class="form-horizontal">
+			
+			<form method="POST" action="{{ route('registration.store') }}" accept-charset="UTF-8" id="create_user_form" name="create_user_form" class="form-horizontal">
             {{ csrf_field() }}
             {{-- Name field --}}
         
@@ -46,7 +45,6 @@
 
             </form>
 
-       
 
     @stop
 
