@@ -68,3 +68,190 @@
 	margin:0 auto;
 	z-index: 99;
 }
+/* 23 - 07 - aneesh css (designer) */
+        
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;700;900&display=swap');
+        header {
+            background: #eea838;
+            border-bottom: 1px solid #fff;
+            padding: 15px 0px;
+        }
+        
+        .register {
+            background: #f0f0f0;
+            padding: 60px 0px;
+        }
+        
+        .register h3 {
+            font-family: 'Roboto', sans-serif;
+            font-size: 30px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .register h3::after {
+            content: "";
+            position: absolute;
+            margin: 0 auto;
+            width: 60px;
+            height: 3px;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            background: #eea838;
+        }
+        
+        .register-forms {
+            padding: 30px 40px;
+            background: #fdfdfd;
+            margin-bottom: 10px;
+            -webkit-box-shadow: rgb(100 100 111 / 20%) 0px 7px 29px 0px;
+            box-shadow: rgb(100 100 111 / 20%) 0px 7px 29px 0px;
+        }
+        
+        .register-forms .form-check {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        
+        .register-forms .form-label {
+            display: block;
+        }
+        
+        .registerbtn {
+            padding: 5px 20px;
+            border: none;
+            background: #eea838;
+            color: #fff;
+            text-align: center;
+            border-radius: 10px;
+            font-size: 22px;
+            margin: 0 auto;
+            transition: all 0.4s ease-in-out;
+        }
+        
+        .registerbtn:hover {
+            background: #000;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+        
+        .footer {
+            background: #764830;
+            padding: 60px;
+        }
+        
+        .footer h5 {
+            color: #fff;
+            font-size: 15px;
+            font-weight: 400;
+        }
+        
+        .footer h5 i {
+            color: #eeb04b;
+            font-size: 20px;
+        }
+        
+        .footer h5 a {
+            color: #fff;
+            text-decoration: none
+        }
+        
+        .social-icons {
+            display: flex;
+            justify-content: center;
+        }
+        
+        .social-icons li {
+            padding: 0px 5px;
+            list-style: none;
+            color: #eeb04b;
+            font-size: 20px;
+        }
+        
+        .social-icons li a {
+            color: #eeb04b;
+        }
+        
+        .social-icons li a:hover {
+            color: #ec7c45;
+        }
+        
+        .footer p {
+            color: #fff;
+        }
+        
+        .form-control {
+            color: #5a5a59;
+            border-color: #cccccc;
+        }
+        
+        .form-control:focus {
+            color: #5a5a59;
+            background-color: #f8f8f8;
+            border-color: #f8f8f8;
+            outline: 0;
+            box-shadow: none;
+            transition: all .6s ease-in-out;
+            border-color: #cccccc;
+        }
+        
+        .apply.form-control::placeholder {
+            color: #5a5a59;
+        }
+        
+        .form-control:disabled,
+        .form-control[readonly] {
+            opacity: 1;
+            background: rgb(247, 247, 247);
+        }
+        
+        .form-control {
+            height: auto;
+        }
+		/* register css close */
+		
+		
+		/*dashboar css*/
+		
+		.sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link.active, .sidebar-light-primary .nav-sidebar > .nav-item > .nav-link.active {
+    background-color: #eea838 !important;
+    color: #fff;
+}
+.btn-primary {
+    color: #fff;
+    background-color: #eea838!important;
+    border-color: #cea500 !important;
+    box-shadow: none;
+}
+[class*="sidebar-dark-"] {
+    background-color: #764830 !important;
+}
+[class*="sidebar-dark-"] .sidebar a {
+    color: #ffffff !important;
+}
+.card-primary.card-outline {
+    border-top: 3px solid #764830 !important;
+}
+[class*="sidebar-dark"] .brand-link {
+    border-bottom: 1px solid #e5e8ea38;
+    background-color: #eea838!important;
+}
+.btn-info {
+    color: #fff;
+    background-color: #eea838 !important;
+    border-color: #d98f18 !important; 
+    box-shadow: none;
+}
+.page-item.active .page-link {
+    z-index: 3;
+    color: #fff;
+    background-color: #764830  !important;
+    border-color: #764830  !important;
+}
+[class*="sidebar-dark-"] .nav-treeview > .nav-item > .nav-link.active, [class*="sidebar-dark-"] .nav-treeview > .nav-item > .nav-link.active:hover, [class*="sidebar-dark-"] .nav-treeview > .nav-item > .nav-link.active:focus {
+    background-color: rgb(105 105 105 / 90%) !important;
+    color: #343a40;
+}
