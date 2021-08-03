@@ -79,8 +79,22 @@ class StudentsRegistrationController extends Controller
         $student['is_active']      =  0;
         Student::create($student);
 
-        return Redirect::to('login')->with('success_message',"Registration Successful");;
+        return Redirect::to('thankyou')->with('success_message',"Registration Successful");;
 
+    }
+
+
+    /**
+     * Show the form for creating a new student.
+     *
+     * @return Illuminate\View\View
+     */
+    public function thankyou()
+    {
+        $nationalities  = Country::pluck('name', 'id')->all();
+        $courses        = Course::pluck('course', 'id')->all();
+        $currency       = Currency::select(['symbol','code', 'id'])->get();
+        return view('thankyou.thankyou', compact('nationalities','courses','currency'));
     }
  
     /**

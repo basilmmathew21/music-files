@@ -23,7 +23,7 @@ Auth::routes();
 
 Route::get('/registration', 'StudentsRegistrationController@create')->name('registration');
 Route::post('/registration', 'StudentsRegistrationController@store')->name('registration.store');
-
+Route::get('/thankyou', 'StudentsRegistrationController@thankyou')->name('thankyou');
 
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 //Route::get('/email', 'EmailsController@index')->name('email');

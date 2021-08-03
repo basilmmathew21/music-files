@@ -17,52 +17,23 @@
 
 
 
+<h3>{{__('adminlte::adminlte.thankyou_title')}}</h3>
 
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>
+    <p>
 
-<h3>REGISTER WITH MUSICSHIKSHAN</h3>
+        {{ __('adminlte::adminlte.thankyou_registration') }}
 
-@if ($errors->any())
-<div class="alert alert-danger">
-    <ul>
-        @foreach ($errors->all() as $error)
-        <li>{{ $error }}</li>
-        @endforeach
-    </ul>
+    </p>
 </div>
-@endif
-
-<form method="POST" action="{{ route('registration.store') }}" accept-charset="UTF-8" id="create_user_form" name="create_user_form" class="form-horizontal">
-    {{ csrf_field() }}
-    {{-- Name field --}}
-
-    @include ('students_reg.form', [
-    'user' => null,
-    'files' => true
-    ])
-
-    <div class="form-group">
-        <div class="col-md-12 text-center">
-            <input class="btn btn-primary" type="submit" value="Register">
-            <a href="{{ URL::to('login')}}" type="button" class="btn btn-default">Cancel</a>
-        </div>
-    </div>
-
-</form>
-<p class="my-0">
-    <a href="{{ $login_url }}">
-        {{ __('adminlte::adminlte.i_already_have_a_membership') }}
-    </a>
-</p>
-
-
-
-
-
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
 @stop
 
 @section('auth_footer')
-
-
 
 
 <div class="footer">
