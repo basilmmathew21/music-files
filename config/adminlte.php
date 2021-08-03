@@ -347,9 +347,9 @@ return [
                         ], 
                         [
                             
-                                'text' => 'Sent',
-                                'route'  => 'Sms.sms.sent',
-                                'can' => ['view sms'],
+                            'text' => 'Sent',
+                            'route'  => 'Sms.sms.sent',
+                            'can' => ['view sms'],
                                 
                         ], 
                         [
