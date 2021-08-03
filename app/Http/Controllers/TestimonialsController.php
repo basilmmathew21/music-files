@@ -9,9 +9,12 @@ use Exception;
 use DataTables;
 use DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class TestimonialsController extends Controller
 {
@@ -20,9 +23,10 @@ class TestimonialsController extends Controller
      *
      * @return void
      */
-   public function __construct()
+    public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware(['role_or_permission:student']);
     }
 
     /**
@@ -35,21 +39,21 @@ class TestimonialsController extends Controller
         /**
          * Ajax call by datatable for listing of the students.
          */
+
        
         if ($request->ajax()) {
-             $data = Testimonial::select('testimonials.*','users.name')
-            ->join('users', 'users.id', '=', 'testimonials.user_id')
-            ->where('testimonials.user_id','=',\Auth::user()->id)
-            ->get();
+            $data = Testimonial::select('testimonials.*', 'users.name')
+                ->join('users', 'users.id', '=', 'testimonials.user_id')
+                ->where('testimonials.user_id', '=', \Auth::user()->id)
+                ->get();
 
             $datatable =  DataTables::of($data)
                 ->filter(function ($instance) use ($request) {
                     if ($request->has('keyword') && $request->get('keyword')) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains(Str::lower($row['name'] . $row['title'].$row['description'] ), Str::lower($request->get('keyword'))) ? true : false;
+                            return Str::contains(Str::lower($row['name'] . $row['title'] . $row['description']), Str::lower($request->get('keyword'))) ? true : false;
                         });
                     }
-                    
                 })
                 ->addIndexColumn()
                 ->addColumn('action', function ($testimonial) {
@@ -92,14 +96,13 @@ class TestimonialsController extends Controller
         $data['is_active']        = '1';
         $data['user_id']            =  \Auth::user()->id;
         Testimonial::create($data);
-        
+
         return redirect()->route('testimonials.testimonial.index')
             ->with('success_message', trans('testimonial.model_was_added'));
-        
     }
 
 
-      /**
+    /**
      * Display the specified student.
      *
      * @param int $id-','id')->all();
@@ -112,10 +115,8 @@ class TestimonialsController extends Controller
     public function edit($id)
     {
 
-        $testimonial           = Testimonial::with('user')->
-                                findOrFail($id);
+        $testimonial           = Testimonial::with('user')->findOrFail($id);
         return view('testimonial.edit', compact('testimonial'));
-
     }
 
     /**
@@ -149,8 +150,7 @@ class TestimonialsController extends Controller
      */
     public function show($id)
     {
-       $testimonial           = Testimonial::with('user')->
-                                findOrFail($id);
+        $testimonial           = Testimonial::with('user')->findOrFail($id);
         return view('testimonial.show', compact('testimonial'));
     }
 
@@ -199,11 +199,11 @@ class TestimonialsController extends Controller
         //Validating unique for update ignoring the same record
         if ($id) {
             $rules =  [
-            'status' => 'required',
-            'is_active' => 'nullable'
-                ];
+                'status' => 'required',
+                'is_active' => 'nullable'
+            ];
         }
-        
+
         $data = $request->validate($rules);
 
         $data['is_active'] = $request->has('is_active');

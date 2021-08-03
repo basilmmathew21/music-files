@@ -70,7 +70,7 @@ return [
     'usermenu_image' => false,
     'usermenu_desc' => false,
     'usermenu_profile_url' => 'profile',
-    
+
 
     /*
     |--------------------------------------------------------------------------
@@ -207,7 +207,7 @@ return [
 
     'password_email_url' => 'password/email',
 
-    
+
 
     /*
     |--------------------------------------------------------------------------
@@ -256,7 +256,7 @@ return [
             'text' => 'Profile',
             'route'  => 'profiles.profile.index',
             'icon'    => 'fa fa-image',
-            'can' => ['view users'],
+            'can' => ['view dashboard'],
         ],
         [
             'text' => 'Fee Payment',
@@ -265,7 +265,7 @@ return [
             'can' => ['view fee payment'],
         ],
         [
-            'text' => 'users',
+            'text' => 'Users',
             'route'  => 'users.user.index',
             'icon'    => 'icon-34-users',
             'can' => ['view users'],
@@ -275,7 +275,7 @@ return [
             'text' => 'Students',
             'route'  => 'students.student.index',
             'icon'    => 'fa fa-book',
-            'can' => ['view users'],
+            'can' => ['view students'],
 
         ],
         [
@@ -285,26 +285,27 @@ return [
             'can' => ['view tutors'],
         ],
         [
-            'text' => 'Tutor Enquiry',
+            'text' => 'Tutor Enquiries',
             'route'  => 'tutorenquiries.tutorenquiry.index',
             'icon'    => 'fa fa-question',
-            'can' => ['view tutors'],
+            'can' => ['view tutor enquiries'],
         ],
         [
-            'text' => 'Testmonial',
+            'text' => 'Testmonials',
             'route'  => 'testimonials.testimonial.index',
             'icon'    => 'fa fa-globe',
-            'can' => ['view dashboard'],
+            'can' => ['view testimonials'],
         ],
         [
             'text' => 'Payments',
             'route'  => 'payments.payments.index',
             'icon'    => 'fa fa-credit-card',
-            'can' => ['view users'],
+            'can' => ['view payments'],
         ],
         [
             'text' => 'settings',
             'icon'    => 'fa fa-cog',
+            'can' => ['view settings'],
             'submenu' => [
                 [
                     'text' => 'settings',
@@ -316,16 +317,17 @@ return [
                     'can' => ['view courses'],
                 ],
             ]
-        ], 
+        ],
         [
             'text' => 'Classes',
             'route'  => 'tutor.classes.index',
             'icon'    => 'fas fa-chalkboard-teacher',
-            'can' => ['view classess'],
+            'can' => ['view classes'],
         ],
         [
             'text' => 'Sms',
             'icon'    => 'fa fa-envelope',
+            'can' => ['view sms'],
             'submenu' => [
                 [
                     'text' => 'Compose',
@@ -335,53 +337,56 @@ return [
                 [
                     'text' => 'Folders',
                     'icon'    => 'fa fa-folder',
+                    'can' => ['view sms'],
                     'submenu' => [
                         [
                             'text' => 'Inbox',
                             'route'  => 'Sms.sms.inbox',
+                            'can' => ['view sms'],
                            
                         ], 
                         [
                             
                                 'text' => 'Sent',
                                 'route'  => 'Sms.sms.sent',
+                                'can' => ['view sms'],
                                 
                         ], 
                         [
                             
                             'text' => 'Tutor SMS',
-                            'can' => ['view sms'],
+                            'can' => ['view admin sms'],
                             'icon'    => 'fa fa-envelope-o',                            
                             'submenu' => [
                                  [
                                     'text' => 'Inbox',
                                     'route'  => 'Sms.sms.tutorinbox',
-                                    'can' => ['view sms'],
+                                    'can' => ['view admin sms'],
                                  ], 
                                  [
                                 
                                     'text' => 'Sent',
                                     'route'  => 'Sms.sms.tutorsent',
-                                    'can' => ['view sms'],
+                                    'can' => ['view admin sms'],
                                 ], 
                             ],
                         ], 
                         [
                             
                             'text' => 'Student SMS',
-                            'can' => ['view sms'],
+                            'can' => ['view admin sms'],
                             'icon'    => 'fa fa-envelope-o',
                             'submenu' => [
                                  [
                                     'text' => 'Inbox',
                                     'route'  => 'Sms.sms.studentinbox',
-                                    'can' => ['view sms'],
+                                    'can' => ['view admin sms'],
                                  ], 
                                  [
                                 
                                     'text' => 'Sent',
                                     'route'  => 'Sms.sms.studentsent',
-                                    'can' => ['view sms'],
+                                    'can' => ['view admin sms'],
                                 ], 
                             ],
                         ], 
