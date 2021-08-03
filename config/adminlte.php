@@ -253,6 +253,12 @@ return [
             'role'        => 'User',
         ],
         [
+            'text' => 'Profile',
+            'route'  => 'profiles.profile.index',
+            'icon'    => 'fa fa-image',
+            'can' => ['view users'],
+        ],
+        [
             'text' => 'Fee Payment',
             'route'  => 'feepayment.fee.index',
             'icon'    => 'fa fa-check',
