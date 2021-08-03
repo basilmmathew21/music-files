@@ -12,7 +12,7 @@ use Carbon\Carbon;
 class TutorEnquiry extends Model
 {
     use HasFactory;
-
+    protected $fillable = ['name','dob','email','phone','gender','country_id','state','address','profile_image','status','teaching_stream','educational_qualification','teaching_experience','performance_experience','other_details','date_of_enquiry'];
 
     public function accept_register($id){
      

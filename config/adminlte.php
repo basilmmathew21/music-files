@@ -201,9 +201,9 @@ return [
 
     //'register_url' => true,
 
-    'password_reset_url' => 'password/reset',
+    //'password_reset_url' => 'password/reset',
 
-    //'password_reset_url' => false,
+    'password_reset_url' => false,
 
     'password_email_url' => 'password/email',
 
@@ -317,10 +317,76 @@ return [
             'icon'    => 'fas fa-chalkboard-teacher',
             'can' => ['view classess'],
         ],
+        [
+            'text' => 'Sms',
+            'icon'    => 'fa fa-envelope',
+            'submenu' => [
+                [
+                    'text' => 'Compose',
+                    'route'  => 'Sms.sms.compose',
+                   
+                ], 
+                [
+                    'text' => 'Folders',
+                    'icon'    => 'fa fa-folder',
+                    'submenu' => [
+                        [
+                            'text' => 'Inbox',
+                            'route'  => 'Sms.sms.inbox',
+                           
+                        ], 
+                        [
+                            
+                                'text' => 'Sent',
+                                'route'  => 'Sms.sms.sent',
+                                
+                        ], 
+                        [
+                            
+                            'text' => 'Tutor SMS',
+                            'can' => ['view sms'],
+                            'icon'    => 'fa fa-envelope-o',                            
+                            'submenu' => [
+                                 [
+                                    'text' => 'Inbox',
+                                    'route'  => 'Sms.sms.tutorinbox',
+                                    'can' => ['view sms'],
+                                 ], 
+                                 [
+                                
+                                    'text' => 'Sent',
+                                    'route'  => 'Sms.sms.tutorsent',
+                                    'can' => ['view sms'],
+                                ], 
+                            ],
+                        ], 
+                        [
+                            
+                            'text' => 'Student SMS',
+                            'can' => ['view sms'],
+                            'icon'    => 'fa fa-envelope-o',
+                            'submenu' => [
+                                 [
+                                    'text' => 'Inbox',
+                                    'route'  => 'Sms.sms.studentinbox',
+                                    'can' => ['view sms'],
+                                 ], 
+                                 [
+                                
+                                    'text' => 'Sent',
+                                    'route'  => 'Sms.sms.studentsent',
+                                    'can' => ['view sms'],
+                                ], 
+                            ],
+                        ], 
+                    ],
+                ],
+        ], 
+    ],
               
     ],
 
-
+   
 
     /*
     |--------------------------------------------------------------------------

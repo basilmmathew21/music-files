@@ -201,6 +201,14 @@ Route::group([
        
 
     });
+    Route::group([  
+        'prefix' => 'tutorenquiries',
+    ], function () {
+        Route::get('/store', 'TutorEnquiryController@store')
+            ->name('tutorenquiries.tutorenquiry.store'); 
+        Route::get('/create', 'TutorEnquiryController@create')
+            ->name('tutorenquiries.tutorenquiry.create');      
+    });
 
 
     Route::group([
@@ -224,4 +232,32 @@ Route::group([
        
         Route::put('feepay/{fee}', 'FeepaymentController@update')
                 ->name('feepayment.fee.update');
+     });
+
+     Route::group([
+        'middleware' => ['permission:view users'], 
+        'prefix' => 'sms',
+    ], function () {
+        Route::get('/inbox', 'SmsController@inbox')
+            ->name('Sms.sms.inbox');  
+        Route::get('/sent', 'SmsController@sent')
+            ->name('Sms.sms.sent'); 
+        Route::get('/compose', 'SmsController@compose')
+            ->name('Sms.sms.compose');    
+        Route::post('/insertMessage', 'SmsController@addmessage')
+            ->name('Sms.sms.insert');    
+        Route::get('/tutor-inbox', 'SmsController@tutor_inbox')
+            ->name('Sms.sms.tutorinbox'); 
+        Route::get('/tutor-sent', 'SmsController@tutor_sent')
+            ->name('Sms.sms.tutorsent'); 
+        Route::get('/student-inbox', 'SmsController@student_inbox')
+            ->name('Sms.sms.studentinbox');
+        Route::get('/student-sent', 'SmsController@student_sent')
+            ->name('Sms.sms.studentsent');
+        Route::get('/read-message/{messageid}', 'SmsController@view_message')
+            ->name('Sms.sms.viewmessage');
+        Route::delete('/delete-message/{messageid}', 'SmsController@delete_message')
+            ->name('Sms.sms.deletemessage');
+     
+     
      });
