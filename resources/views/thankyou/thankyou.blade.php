@@ -19,8 +19,7 @@
 
 <h3>{{__('adminlte::adminlte.thankyou_title')}}</h3>
 
-<div>&nbsp;</div>
-<div>&nbsp;</div>
+
 <div>
     <p>
 
