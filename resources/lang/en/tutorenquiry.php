@@ -76,6 +76,6 @@ return [
     'listing' => 'Testimonial Listing',
     'keyword_filter' => 'Keyword Search',
     'submitted_by' => 'Submitted By',
-    'active' => 'Active'
-
+    'active' => 'Active',
+    'send_enquiry' => 'Send Enquiry'
 ];

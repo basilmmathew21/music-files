@@ -25,6 +25,20 @@ Route::get('/registration', 'StudentsRegistrationController@create')->name('regi
 Route::post('/registration', 'StudentsRegistrationController@store')->name('registration.store');
 Route::get('/thankyou', 'StudentsRegistrationController@thankyou')->name('thankyou');
 
+
+Route::group([
+    'prefix' => 'tutorenquiries',
+], function () {
+    Route::post('/create', 'TutorEnquiryController@store')
+        ->name('tutorenquiries.tutorenquiry.store');
+    Route::get('/create', 'TutorEnquiryController@create')
+        ->name('tutorenquiries.tutorenquiry.create');
+    Route::get('/thankyou-tutor', 'TutorEnquiryController@thankyou')
+        ->name('tutorenquiries.tutorenquiry.thankyou');
+});
+
+
+
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 //Route::get('/email', 'EmailsController@index')->name('email');
 /*
@@ -41,7 +55,7 @@ Route::group([
     'middleware' => ['permission:view users'],
     'prefix' => 'users',
 ], function () {
-    
+
     Route::get('/', 'UsersController@index')
         ->name('users.user.index');
     Route::get('/create', 'UsersController@create')
@@ -64,11 +78,11 @@ Route::group([
     'prefix' => 'settings',
 ], function () {
     Route::get('/', 'SettingsController@index')
-        ->name('settings.settings.index');   
+        ->name('settings.settings.index');
     Route::get('/{settings}/edit', 'SettingsController@edit')
-            ->name('settings.settings.edit'); 
+        ->name('settings.settings.edit');
     Route::put('settings/{settings}', 'SettingsController@update')
-            ->name('settings.settings.update');
+        ->name('settings.settings.update');
 });
 
 Route::group([
@@ -81,16 +95,16 @@ Route::group([
         ->name('courses.course.create');
     Route::get('/{course}/edit', 'CoursesController@edit')
         ->name('courses.course.edit');
-   Route::post('/', 'CoursesController@store')
+    Route::post('/', 'CoursesController@store')
         ->name('courses.course.store');
     Route::put('courses/{course}', 'CoursesController@update')
         ->name('courses.course.update');
     Route::delete('/course/{course}', 'CoursesController@destroy')
         ->name('courses.course.destroy');
-    });
+});
 
-        
-Route::group([ 
+
+Route::group([
     'middleware' => ['permission:view students'],
     'prefix' => 'students',
 ], function () {
@@ -111,7 +125,7 @@ Route::group([
 });
 
 
-Route::group([  
+Route::group([
     'middleware' => ['permission:view users'],
     'prefix' => 'tutors',
 ], function () {
@@ -133,7 +147,7 @@ Route::group([
         ->name('tutors.tutor.sendcredentials');
 });
 
-Route::group([ 
+Route::group([
     'middleware' => ['permission:view dashboard'],
     'prefix' => 'testimonial',
 ], function () {
@@ -145,119 +159,105 @@ Route::group([
     Route::put('/update/{id}', 'TestimonialsController@update')->name('testimonials.testimonial.update');
     Route::delete('/delete/{id}', 'TestimonialsController@destroy')->name('testimonials.testimonial.destroy');
     Route::get('/index', 'TestimonialsController@index')->name('testimonials.testimonial.index');
-    });
+});
 
 
-Route::group([ 
+Route::group([
     'middleware' => ['permission:view payments'],
     'prefix' => 'payments',
 ], function () {
 
-        Route::get('/show/{id}', 'PaymentController@show')->name('payments.payments.show');
-        Route::get('/{id}/edit', 'PaymentController@edit')->name('payments.payments.edit');
-        Route::get('/store', 'PaymentController@store')->name('payments.payments.store');
-        Route::get('/create', 'PaymentController@create')->name('payments.payments.create');
-        Route::put('/update/{id}', 'PaymentController@update')->name('payments.payments.update');
-        Route::delete('/delete/{id}', 'PaymentController@destroy')->name('payments.payments.destroy');
-        Route::get('/index', 'PaymentController@index')->name('payments.payments.index');
-    });
+    Route::get('/show/{id}', 'PaymentController@show')->name('payments.payments.show');
+    Route::get('/{id}/edit', 'PaymentController@edit')->name('payments.payments.edit');
+    Route::get('/store', 'PaymentController@store')->name('payments.payments.store');
+    Route::get('/create', 'PaymentController@create')->name('payments.payments.create');
+    Route::put('/update/{id}', 'PaymentController@update')->name('payments.payments.update');
+    Route::delete('/delete/{id}', 'PaymentController@destroy')->name('payments.payments.destroy');
+    Route::get('/index', 'PaymentController@index')->name('payments.payments.index');
+});
 
 
-    Route::group([
-        'middleware' => ['permission:view classess'],
-        'prefix' => 'tutor/classes',
-    ], function () {
-        Route::get('/', 'TutorClassController@index')
-            ->name('tutor.classes.index');
-        Route::get('/create', 'TutorClassController@create')
-            ->name('tutor.classes.create');
-        Route::get('/show/{user}', 'TutorClassController@show')
-            ->name('tutor.classes.show');
-        Route::get('/{id}/edit', 'TutorClassController@edit')
-            ->name('tutor.classes.edit');
-        Route::post('/', 'TutorClassController@store')
-            ->name('tutor.classes.store');
-        Route::put('update/{id}', 'TutorClassController@update')
-            ->name('tutor.classes.update');
-        Route::delete('/tutor/classes/{id}', 'TutorClassController@destroy')
-            ->name('tutor.classes.destroy');
-            Route::get('/remove_file', 'TutorClassController@removeFile')
-            ->name('tutor.classes.remove_file');
-    
-    });
-    Route::group([  
-        'middleware' => ['permission:view tutorenquiries'],
-        'prefix' => 'tutorenquiries',
-    ], function () {
-        Route::get('/', 'TutorEnquiryController@index')
-            ->name('tutorenquiries.tutorenquiry.index');      
-        Route::get('/show/{tutorenquiry}', 'TutorEnquiryController@show')
-            ->name('tutorenquiries.tutorenquiry.show');
-        Route::get('/accept/{tutorenquiry}', 'TutorEnquiryController@accept')
-            ->name('tutorenquiries.tutorenquiry.accept');
-        Route::get('/reject/{tutorenquiry}', 'TutorEnquiryController@reject')
-            ->name('tutorenquiries.tutorenquiry.reject');
-       
-       
-
-    });
-    Route::group([  
-        'prefix' => 'tutorenquiries',
-    ], function () {
-        Route::post('/store', 'TutorEnquiryController@store')
-            ->name('tutorenquiries.tutorenquiry.store'); 
-        Route::get('/create', 'TutorEnquiryController@create')
-            ->name('tutorenquiries.tutorenquiry.create');      
-    });
+Route::group([
+    'middleware' => ['permission:view classess'],
+    'prefix' => 'tutor/classes',
+], function () {
+    Route::get('/', 'TutorClassController@index')
+        ->name('tutor.classes.index');
+    Route::get('/create', 'TutorClassController@create')
+        ->name('tutor.classes.create');
+    Route::get('/show/{user}', 'TutorClassController@show')
+        ->name('tutor.classes.show');
+    Route::get('/{id}/edit', 'TutorClassController@edit')
+        ->name('tutor.classes.edit');
+    Route::post('/', 'TutorClassController@store')
+        ->name('tutor.classes.store');
+    Route::put('update/{id}', 'TutorClassController@update')
+        ->name('tutor.classes.update');
+    Route::delete('/tutor/classes/{id}', 'TutorClassController@destroy')
+        ->name('tutor.classes.destroy');
+    Route::get('/remove_file', 'TutorClassController@removeFile')
+        ->name('tutor.classes.remove_file');
+});
+Route::group([
+    'middleware' => ['permission:view tutorenquiries'],
+    'prefix' => 'tutorenquiries',
+], function () {
+    Route::get('/', 'TutorEnquiryController@index')
+        ->name('tutorenquiries.tutorenquiry.index');
+    Route::get('/show/{tutorenquiry}', 'TutorEnquiryController@show')
+        ->name('tutorenquiries.tutorenquiry.show');
+    Route::get('/accept/{tutorenquiry}', 'TutorEnquiryController@accept')
+        ->name('tutorenquiries.tutorenquiry.accept');
+    Route::get('/reject/{tutorenquiry}', 'TutorEnquiryController@reject')
+        ->name('tutorenquiries.tutorenquiry.reject');
+});
 
 
-    Route::group([
-        'middleware' => ['permission:view users'],
-        'prefix' => 'profile',
-    ], function () {
-        Route::get('/profile', 'ProfilesController@index')
-            ->name('profiles.profile.index');   
-        Route::get('/{profile}/edit', 'ProfilesController@edit')
-                ->name('profiles.profile.edit'); 
-        Route::put('profile/{profile}', 'ProfilesController@update')
-                ->name('profiles.profile.update');
-     });
+Route::group([
+    'middleware' => ['permission:view users'],
+    'prefix' => 'profile',
+], function () {
+    Route::get('/profile', 'ProfilesController@index')
+        ->name('profiles.profile.index');
+    Route::get('/{profile}/edit', 'ProfilesController@edit')
+        ->name('profiles.profile.edit');
+    Route::put('profile/{profile}', 'ProfilesController@update')
+        ->name('profiles.profile.update');
+});
 
-     Route::group([
-        'middleware' => ['permission:view fee payment'],
-        'prefix' => 'fee',
-    ], function () {
-        Route::get('/feepay', 'FeepaymentController@index')
-            ->name('feepayment.fee.index'); 
-       
-        Route::put('feepay/{fee}', 'FeepaymentController@update')
-                ->name('feepayment.fee.update');
-     });
+Route::group([
+    'middleware' => ['permission:view fee payment'],
+    'prefix' => 'fee',
+], function () {
+    Route::get('/feepay', 'FeepaymentController@index')
+        ->name('feepayment.fee.index');
 
-     Route::group([
-        'middleware' => ['permission:view users'], 
-        'prefix' => 'sms',
-    ], function () {
-        Route::get('/inbox', 'SmsController@inbox')
-            ->name('Sms.sms.inbox');  
-        Route::get('/sent', 'SmsController@sent')
-            ->name('Sms.sms.sent'); 
-        Route::get('/compose', 'SmsController@compose')
-            ->name('Sms.sms.compose');    
-        Route::post('/insertMessage', 'SmsController@addmessage')
-            ->name('Sms.sms.insert');    
-        Route::get('/tutor-inbox', 'SmsController@tutor_inbox')
-            ->name('Sms.sms.tutorinbox'); 
-        Route::get('/tutor-sent', 'SmsController@tutor_sent')
-            ->name('Sms.sms.tutorsent'); 
-        Route::get('/student-inbox', 'SmsController@student_inbox')
-            ->name('Sms.sms.studentinbox');
-        Route::get('/student-sent', 'SmsController@student_sent')
-            ->name('Sms.sms.studentsent');
-        Route::get('/read-message/{messageid}', 'SmsController@view_message')
-            ->name('Sms.sms.viewmessage');
-        Route::delete('/delete-message/{messageid}', 'SmsController@delete_message')
-            ->name('Sms.sms.deletemessage');
-     
-     
-     });
+    Route::put('feepay/{fee}', 'FeepaymentController@update')
+        ->name('feepayment.fee.update');
+});
+
+Route::group([
+    'middleware' => ['permission:view users'],
+    'prefix' => 'sms',
+], function () {
+    Route::get('/inbox', 'SmsController@inbox')
+        ->name('Sms.sms.inbox');
+    Route::get('/sent', 'SmsController@sent')
+        ->name('Sms.sms.sent');
+    Route::get('/compose', 'SmsController@compose')
+        ->name('Sms.sms.compose');
+    Route::post('/insertMessage', 'SmsController@addmessage')
+        ->name('Sms.sms.insert');
+    Route::get('/tutor-inbox', 'SmsController@tutor_inbox')
+        ->name('Sms.sms.tutorinbox');
+    Route::get('/tutor-sent', 'SmsController@tutor_sent')
+        ->name('Sms.sms.tutorsent');
+    Route::get('/student-inbox', 'SmsController@student_inbox')
+        ->name('Sms.sms.studentinbox');
+    Route::get('/student-sent', 'SmsController@student_sent')
+        ->name('Sms.sms.studentsent');
+    Route::get('/read-message/{messageid}', 'SmsController@view_message')
+        ->name('Sms.sms.viewmessage');
+    Route::delete('/delete-message/{messageid}', 'SmsController@delete_message')
+        ->name('Sms.sms.deletemessage');
+});
