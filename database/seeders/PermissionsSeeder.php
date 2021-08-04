@@ -3,8 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Doctrine\DBAL\Schema\Schema;
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema as FacadesSchema;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
@@ -48,6 +51,15 @@ class PermissionsSeeder extends Seeder
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
         ]); */
+
+        //Truncate current permissions
+        FacadesSchema::disableForeignKeyConstraints();
+        DB::table('model_has_permissions')->truncate();
+        DB::table('model_has_roles')->truncate();
+        DB::table('permissions')->truncate();
+        DB::table('roles')->truncate();
+        DB::table('role_has_permissions')->truncate();
+
 
         // create roles and assign existing permissions
         Role::create(['name' => 'super-admin']);

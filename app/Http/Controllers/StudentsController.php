@@ -39,15 +39,15 @@ class StudentsController extends Controller
         /**
          * Ajax call by datatable for listing of the students.
          */
-       
+
         if ($request->ajax()) {
-             $data = User::with('student')
-            ->join('countries', 'users.country_id', '=', 'countries.id')
-            ->join('students', 'students.user_id', '=', 'users.id')
-            ->leftJoin('courses', 'students.course_id', '=', 'courses.id')
-            ->select(['users.*','students.is_active as is_active','students.is_registered','courses.course','countries.name AS country_name',DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
-            ->where('user_type_id', 4)
-            ->get();
+            $data = User::with('student')
+                ->join('countries', 'users.country_id', '=', 'countries.id')
+                ->join('students', 'students.user_id', '=', 'users.id')
+                ->leftJoin('courses', 'students.course_id', '=', 'courses.id')
+                ->select(['users.*', 'students.is_active as is_active', 'students.is_registered', 'courses.course', 'countries.name AS country_name', DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
+                ->where('user_type_id', 4)
+                ->get();
 
             $datatable =  DataTables::of($data)
                 ->filter(function ($instance) use ($request) {
@@ -58,10 +58,9 @@ class StudentsController extends Controller
                     }
                     if ($request->has('keyword') && $request->get('keyword')) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains(Str::lower($row['phone'] . $row['email'] . $row['name'] ), Str::lower($request->get('keyword'))) ? true : false;
+                            return Str::contains(Str::lower($row['phone'] . $row['email'] . $row['name']), Str::lower($request->get('keyword'))) ? true : false;
                         });
                     }
-
                 })
                 ->addIndexColumn()
                 ->addColumn('action', function ($student) {
@@ -72,7 +71,7 @@ class StudentsController extends Controller
             return $datatable;
         }
 
-       $student = User::paginate(25);
+        $student = User::paginate(25);
         return view('students.index', compact('student'));
     }
 
@@ -85,8 +84,8 @@ class StudentsController extends Controller
     {
         $nationalities  = Country::pluck('name', 'id')->all();
         $courses        = Course::pluck('course', 'id')->all();
-        $currency       = Currency::select(['symbol','code', 'id'])->get();
-        return view('students.create', compact('nationalities','courses','currency'));
+        $currency       = Currency::select(['symbol', 'code', 'id'])->get();
+        return view('students.create', compact('nationalities', 'courses', 'currency'));
     }
 
     /**
@@ -103,16 +102,20 @@ class StudentsController extends Controller
         $data['country_id']     = $data['country']; //country
         $data['state']          = $request->state;
         $data['address']        = $request->address;
-        $data['dob']            = Carbon::createFromFormat('d-m-Y',$request->dob)->format('Y-m-d');
+        $data['dob']            = Carbon::createFromFormat('d-m-Y', $request->dob)->format('Y-m-d');
         $data['user_type_id']   = 4;
-        $data['is_active']      =  $request->status?$request->status:0; 
+        $data['is_active']      =  $request->status ? $request->status : 0;
         if ($request->hasFile('profile_image')) {
 
             $profile_image_path = $request->file('profile_image')->store('students/profile');
             $data['profile_image'] =  $profile_image_path;
         }
         User::create($data);
-        
+
+        //Assign Student role to the user
+        $user = User::where('email', $data['email'])->first();
+        $user->assignRole('student');
+
         $newuser = User::where('email', '=', $data['email'])->where('user_type_id', 4)->first()->toArray();
         $student['user_id']        =  $newuser['id'];
         $student['country_id']     =  $data['country'];
@@ -120,17 +123,15 @@ class StudentsController extends Controller
         $student['currency_id']    =  $request->currency;
         $student['class_fee']      =  $request->class_fee;
         $student['is_registered']  =  1;
-        $student['is_active']      =  $request->status?$request->status:0;
+        $student['is_active']      =  $request->status ? $request->status : 0;
         Student::create($student);
-        
+
         return redirect()->route('students.student.index')
             ->with('success_message', trans('students.model_was_added'));
-        
-
     }
-   
 
-     /**
+
+    /**
      * Display the specified student.
      *
      * @param int $id-','id')->all();
@@ -144,14 +145,13 @@ class StudentsController extends Controller
     {
 
         $user           = User::with('student')
-                                ->leftJoin('students', 'students.user_id', '=', 'users.id')
-                                ->select(['users.*','students.is_active as is_active','students.class_fee','students.is_registered','students.country_id','students.course_id','students.currency_id',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%Y") as dob')])
-                                ->findOrFail($id);
+            ->leftJoin('students', 'students.user_id', '=', 'users.id')
+            ->select(['users.*', 'students.is_active as is_active', 'students.class_fee', 'students.is_registered', 'students.country_id', 'students.course_id', 'students.currency_id', DB::raw('DATE_FORMAT(users.dob, "%d-%m-%Y") as dob')])
+            ->findOrFail($id);
         $nationalities  = Country::pluck('name', 'id')->all();
         $courses        = Course::pluck('course', 'id')->all();
-        $currency       = Currency::select(['symbol','code', 'id'])->get();
-        return view('students.edit', compact('nationalities','courses','currency','user'));
-
+        $currency       = Currency::select(['symbol', 'code', 'id'])->get();
+        return view('students.edit', compact('nationalities', 'courses', 'currency', 'user'));
     }
 
     /**
@@ -167,18 +167,20 @@ class StudentsController extends Controller
 
         $data                   = $this->getData($request, $id);
         $user                   = User::findOrFail($id);
-        $data['country_id']     = $request->country; 
+        $data['country_id']     = $request->country;
         $data['state']          = $request->state;
         $data['address']        = $request->address;
-        $data['dob']            = Carbon::createFromFormat('d-m-Y',$request->dob)->format('Y-m-d');
+        $data['dob']            = Carbon::createFromFormat('d-m-Y', $request->dob)->format('Y-m-d');
         $data['user_type_id']   = 4;
-        $data['is_active']      = $request->status?$request->status:$user->is_active;
-        if($data['is_active'] == "Active"){
+        $data['is_active']      = $request->status ? $request->status : $user->is_active;
+        if ($data['is_active'] == "Active") {
             $data['is_active']      = 1;
-        }else if($data['is_active'] == "Inactive"){
+            //Assign Student role to the user when they get activated
+            $user->assignRole('student');
+        } else if ($data['is_active'] == "Inactive") {
             $data['is_active']      = 0;
         }
-        
+
         if ($request->hasFile('profile_image')) {
             $profile_image_path = $request->file('profile_image')->store('students/profile');
             $data['profile_image'] =  $profile_image_path;
@@ -191,33 +193,33 @@ class StudentsController extends Controller
         else
             unset($data['password']);
         $user->update($data);
-        
+
         $studentDetais                  =  Student::where('user_id', $id)->first();
-        
-        if($studentDetais && $studentDetais != null){
+
+        if ($studentDetais && $studentDetais != null) {
             $student['country_id']     =  $request->country;
             $student['course_id']      =  $request->course;
             $student['currency_id']    =  $request->currency;
             $student['class_fee']      =  $request->class_fee;
             $student['is_registered']  =  $request->is_registered;
             $student['is_active']      =  $request->status;
-            if($student['is_active'] == "Active"){
+            if ($student['is_active'] == "Active") {
                 $student['is_active']      = 1;
-            }else if($student['is_active'] == "Inactive"){
+            } else if ($student['is_active'] == "Inactive") {
                 $student['is_active']      = 0;
             }
-           
-            if($student['is_active'] == NULL){
-                if($studentDetais->is_active == "Active"){
+
+            if ($student['is_active'] == NULL) {
+                if ($studentDetais->is_active == "Active") {
                     $student['is_active']      = 1;
-                }else{
+                } else {
                     $student['is_active']      = 0;
                 }
             }
-            if($student['is_registered'] == NULL){
+            if ($student['is_registered'] == NULL) {
                 $student['is_registered']    =  $studentDetais->is_registered;
             }
-            
+
             $studentDetais->update($student);
         }
         return redirect()->route('students.student.index')
@@ -237,13 +239,13 @@ class StudentsController extends Controller
     public function show($id)
     {
         $user = User::with('student')
-                    ->join('countries', 'users.country_id', '=', 'countries.id')
-                    ->leftJoin('students', 'students.user_id', '=', 'users.id')
-                    ->leftJoin('courses', 'students.course_id', '=', 'courses.id')
-                    ->leftJoin('currencies', 'students.currency_id', '=', 'currencies.id')
-                    ->leftJoin('user_types', 'users.user_type_id', '=', 'user_types.id')
-                    ->select(['users.*','students.is_active as is_active','students.class_fee','user_types.user_type','currencies.code','currencies.symbol','students.is_registered','courses.course','countries.name AS country_name',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%Y") as dob'),DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
-                    ->findOrFail($id);
+            ->join('countries', 'users.country_id', '=', 'countries.id')
+            ->leftJoin('students', 'students.user_id', '=', 'users.id')
+            ->leftJoin('courses', 'students.course_id', '=', 'courses.id')
+            ->leftJoin('currencies', 'students.currency_id', '=', 'currencies.id')
+            ->leftJoin('user_types', 'users.user_type_id', '=', 'user_types.id')
+            ->select(['users.*', 'students.is_active as is_active', 'students.class_fee', 'user_types.user_type', 'currencies.code', 'currencies.symbol', 'students.is_registered', 'courses.course', 'countries.name AS country_name', DB::raw('DATE_FORMAT(users.dob, "%d-%m-%Y") as dob'), DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
+            ->findOrFail($id);
         return view('students.show', compact('user'));
     }
 
@@ -302,12 +304,12 @@ class StudentsController extends Controller
             'country' => 'nullable',
             'class_fee' => "required|regex:/^\d+(\.\d{1,2})?$/",
             'profile_image' => 'nullable|mimes:jpg,jpeg,png|max:5120',
-        
+
         ];
 
         //Validating unique for update ignoring the same record
         if ($id) {
-            $rules = array_merge($rules,[
+            $rules = array_merge($rules, [
                 'email' => [
                     'regex:/(.+)@(.+)\.(.+)/i',
                     Rule::unique('users')->ignore($id)->where(function ($query) {
@@ -321,7 +323,7 @@ class StudentsController extends Controller
                 'password' => 'nullable|string|min:8g|max:255',
             ]);
         }
-        
+
         $data = $request->validate($rules);
 
         $data['is_active'] = $request->has('is_active');
