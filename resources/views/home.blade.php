@@ -13,6 +13,7 @@
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
         <div class="row">
+        @if($isAdmin)
           <div class="col-lg-3 col-6">
             <!-- small box -->
             <div class="small-box bg-info">
@@ -27,7 +28,8 @@
               <a href="#" class="small-box-footer"><i class="fas"></i></a>
             </div>
           </div>
-          
+          @endif
+          @if($isAdmin)
           <!-- ./col -->
           <div class="col-lg-3 col-6">
             <!-- small box -->
@@ -45,7 +47,9 @@
               
             </div>
           </div>
+          @endif
 
+          @if($isTutor  || $isAdmin)
           <!-- ./col -->
           <div class="col-lg-3 col-6">
             <!-- small box -->
@@ -61,7 +65,10 @@
               <a href="{{ route('tutors.tutor.index') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
+          @endif
           <!-- ./col -->
+          @if($isTutor || $isAdmin)
+          
           <div class="col-lg-3 col-6">
             <!-- small box -->
             <div class="small-box bg-danger">
@@ -77,12 +84,15 @@
                     
             </div>
           </div>
+          @endif
+
           <!-- ./col -->
         </div>
         <!-- /.row -->
         <!-- Main row -->
         <div class="row">
           <!-- Left col -->
+          @if($isTutor  || $isAdmin)
           <section class="col-lg-6 connectedSortable">
             <!-- Custom tabs (Charts with tabs)-->
             <div class="card">
@@ -129,10 +139,10 @@
 
             <!-- /.card -->
           </section>
-		  
+          @endif  
           <!-- /.Left col -->
           <!-- right col (We are only adding the ID to make the widgets sortable)-->
-		 
+          @if($isTutor  || $isAdmin)
           <section class="col-lg-6 connectedSortable">
 
             <div class="card">
@@ -178,6 +188,7 @@
             
             <!-- /.card -->
           </section>
+          @endif
           <!-- right col -->
         </div>
         <!-- /.row (main row) -->
