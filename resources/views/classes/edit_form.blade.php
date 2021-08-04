@@ -1,4 +1,21 @@
 
+
+@if (auth()->user()->roles[0]->id != 3)
+	
+<div class="form-group">
+    <label for="name" class="col-md-2 control-label">{{ trans('classes.tutor') }}<sup style="color:red">*</sup></label>
+	<div class="col-md-10">
+        <select name="tutor_user_id" class="form-control">
+			
+			@foreach ($tutors as $l => $tutor)
+				<option value="{{$l}}" @if($classes->tutor_user_id ==$l) selected @endif>{{$tutor}}</option>
+			@endforeach
+        </select>
+	</div>
+</div>
+	
+@endif
+
 <div class="form-group">
     <label for="name" class="col-md-2 control-label">{{ trans('classes.student') }}<sup style="color:red">*</sup></label>
 	<div class="col-md-10">
