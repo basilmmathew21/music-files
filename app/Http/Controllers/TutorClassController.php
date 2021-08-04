@@ -115,7 +115,7 @@ class TutorClassController extends Controller
         $tutors  = User::where('user_type_id',3)->pluck('name', 'id');
         if (auth()->user()->roles[0]->id != 3)
         {
-            //$students=array();  
+            $students=array();  
         }
         //echo '<pre>';print_r($students);exit;
         return view('classes.create',compact('students','tutors'));
@@ -192,8 +192,12 @@ class TutorClassController extends Controller
         //print_r($files);exit;
         }
 
-        $students  = User::where('user_type_id',4)->pluck('name', 'id')->all();
+      
         $tutors  = User::where('user_type_id',3)->pluck('name', 'id');
+
+        $students  = User::join('tutor_students as ts','ts.user_id','=','users.id')
+        ->where('users.user_type_id',4)->where('ts.tutor_id',$classes->tutor_user_id)
+        ->pluck('users.name', 'users.id')->all();
 
         return view('classes.edit', compact('classes','files','students','tutors'));
     }
@@ -285,6 +289,18 @@ class TutorClassController extends Controller
     {
         $file=$request->input('file');
         unlink($file);
+    }
+
+    public function ajaxTutorStudents(Request $request){
+
+        $tutor_id=$request->input('tutor_id');
+
+        $students  = User::join('tutor_students as ts','ts.user_id','=','users.id')
+        ->where('users.user_type_id',4)->where('ts.tutor_id',$tutor_id)
+        ->select(['users.name', 'users.id'])->get();
+
+        echo json_encode($students);exit;
+
     }
 
 }

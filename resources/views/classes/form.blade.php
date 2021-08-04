@@ -14,8 +14,8 @@
 <div class="form-group">
     <label for="name" class="col-md-2 control-label">{{ trans('classes.tutor') }}<sup style="color:red">*</sup></label>
 	<div class="col-md-10">
-        <select name="tutor_user_id" class="form-control">
-			
+        <select name="tutor_user_id" id="tutor_id" onchange="getStudents()" class="form-control">
+			<option value="" >Select</option>
 			@foreach ($tutors as $l => $tutor)
 				<option value="{{$l}}" >{{$tutor}}</option>
 			@endforeach
@@ -29,7 +29,7 @@
 <div class="form-group">
     <label for="name" class="col-md-2 control-label">{{ trans('classes.student') }}<sup style="color:red">*</sup></label>
 	<div class="col-md-10">
-        <select name="student_user_id" class="form-control">
+        <select name="student_user_id" id="student_user_id" class="form-control">
 			<option value="" >Select</option>
 			@foreach ($students as $k => $student)
 				<option value="{{$k}}" >{{$student}}</option>

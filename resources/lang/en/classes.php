@@ -57,6 +57,7 @@ return [
     'filters' => 'Filters',
     'search' => 'Search',
     'listing' => 'Classes',
+    'tutor' => 'Tutor',
     'student' => 'Student',
     'date' => 'Date',
     'create' => 'Add Class Details',
