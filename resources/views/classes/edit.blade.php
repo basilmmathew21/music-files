@@ -60,4 +60,37 @@
                         orientation: "auto"
                     });
                 });
+				
+				
+				
+				function getStudents() {
+		jQuery(function ($) {
+			//jQuery('#loader').show();
+			var tutor_id = jQuery('#tutor_id').val();
+			
+			jQuery.ajax({
+				beforeSend: function (xhr) { // Add this line
+								xhr.setRequestHeader('X-CSRF-Token', $('[name="_csrfToken"]').val());
+				 },
+				url: '{{ URL::to("/ajaxTutorStudents")}}',
+				type: "POST",
+				//data: '&country_id='+country_id,
+				 data: {'tutor_id': tutor_id,"_token": "{{ csrf_token() }}"},
+
+				success: function (res) {
+					res=JSON.parse(res);
+					//console.log(res);
+					var i;
+					var showData = [];
+					for (i = 0; i < res.length; ++i) {
+						var j = i + 1;
+						showData[i] = "<option value='"+res[i].id+"'>"+res[i].name+"</option>";
+					}
+					
+					jQuery("#student_user_id").html(showData);
+					//jQuery('#loader').hide();
+				},
+			});
+		});
+};
 </script>
