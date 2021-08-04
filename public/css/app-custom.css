@@ -137,6 +137,9 @@
             color: #fff;
             letter-spacing: 1px;
         }
+        .register-forms p{ text-align: center;
+    font-size: 22px;
+    color: #606263;}
         
         .footer {
             background: #764830;
@@ -254,4 +257,10 @@
 [class*="sidebar-dark-"] .nav-treeview > .nav-item > .nav-link.active, [class*="sidebar-dark-"] .nav-treeview > .nav-item > .nav-link.active:hover, [class*="sidebar-dark-"] .nav-treeview > .nav-item > .nav-link.active:focus {
     background-color: rgb(105 105 105 / 90%) !important;
     color: #343a40;
+}
+
+	/*03-08*/
+.logo a{ color:#fff !important ;
+        font-weight: 400;
+    font-size: 22px;
 }

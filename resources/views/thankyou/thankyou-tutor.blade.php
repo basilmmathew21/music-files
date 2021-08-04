@@ -23,7 +23,7 @@
 <div>
     <p>
 
-        {{ __('adminlte::adminlte.thankyou_registration') }}
+        {{ __('adminlte::adminlte.thankyou_tutor_enquiry') }}
 
     </p>
 </div>
