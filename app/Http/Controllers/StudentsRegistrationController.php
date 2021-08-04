@@ -80,8 +80,8 @@ class StudentsRegistrationController extends Controller
         Student::create($student);
 
         $details = [
-            'subject' => 'Mail from music-shiksha',
-            'content' => 'Registration Successful. Please login with the details given,',
+            'subject' => 'Registration - Mail from ' . config('adminlte.title'),
+            'content' =>  __('adminlte::adminlte.thankyou_registration'),
             'login'   => 'email address : '.$data['email'].', Password : '.$request->password
         ];
 
