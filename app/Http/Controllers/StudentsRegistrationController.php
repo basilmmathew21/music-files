@@ -79,6 +79,14 @@ class StudentsRegistrationController extends Controller
         $student['is_active']      =  0;
         Student::create($student);
 
+        $details = [
+            'subject' => 'Mail from music-shiksha',
+            'content' => 'Registration Successful. Please login with the details given,',
+            'login'   => 'email address : '.$data['email'].', Password : '.$request->password
+        ];
+
+        \Mail::to($data['email'])->send(new \App\Mail\RegistrationMail($details));
+
         return Redirect::to('thankyou')->with('success_message',"Registration Successful");;
 
     }
@@ -94,6 +102,8 @@ class StudentsRegistrationController extends Controller
         $nationalities  = Country::pluck('name', 'id')->all();
         $courses        = Course::pluck('course', 'id')->all();
         $currency       = Currency::select(['symbol','code', 'id'])->get();
+        
+
         return view('thankyou.thankyou', compact('nationalities','courses','currency'));
     }
  
