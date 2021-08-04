@@ -39,7 +39,10 @@ Route::group([
 
 
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
+
+
+
 //Route::get('/email', 'EmailsController@index')->name('email');
 /*
 Route::get('send-mail', function () {
