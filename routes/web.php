@@ -26,6 +26,9 @@ Route::post('/registration', 'StudentsRegistrationController@store')->name('regi
 Route::get('/thankyou', 'StudentsRegistrationController@thankyou')->name('thankyou');
 
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
+
+
+
 //Route::get('/email', 'EmailsController@index')->name('email');
 /*
 Route::get('send-mail', function () {
