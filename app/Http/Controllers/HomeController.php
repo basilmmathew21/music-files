@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\App;
 use App\Models\User;
+use Auth;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use DB;
 
 class HomeController extends Controller
@@ -35,6 +38,13 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $id     = Auth::user()->id;
+        $user   = Auth::user();
+        $user->name;
+        $isStudent  =   $user->hasRole('student');
+        $isTutor    =   $user->hasRole('tutor');
+        $isAdmin    =   $user->hasRole('admin');
+        
         $users      = User::count();
         $students   = User::with('student')
                     ->Join('students', 'students.user_id', '=', 'users.id')
@@ -68,6 +78,6 @@ class HomeController extends Controller
                     ->limit(10)
                     ->get();
 
-        return view('home', compact('users','students','tutors','credits','studentInfo','tutorInfo'));
+        return view('home', compact('users','students','tutors','credits','studentInfo','tutorInfo','isStudent','isTutor','isAdmin'));
     }
 }
