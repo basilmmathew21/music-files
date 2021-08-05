@@ -40,6 +40,9 @@ Route::group([
 
 
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
+
+
+
 //Route::get('/email', 'EmailsController@index')->name('email');
 /*
 Route::get('send-mail', function () {
@@ -58,17 +61,17 @@ Route::group([
 
     Route::get('/', 'UsersController@index')
         ->name('users.user.index');
-    Route::get('/create', 'UsersController@create')
+    Route::get('/create', 'UsersController@create')->middleware(['permission:add users'])
         ->name('users.user.create');
     Route::get('/show/{user}', 'UsersController@show')
         ->name('users.user.show');
-    Route::get('/{user}/edit', 'UsersController@edit')
+    Route::get('/{user}/edit', 'UsersController@edit')->middleware(['permission:edit users'])
         ->name('users.user.edit');
-    Route::post('/', 'UsersController@store')
+    Route::post('/', 'UsersController@store')->middleware(['permission:add users'])
         ->name('users.user.store');
-    Route::put('user/{user}', 'UsersController@update')
+    Route::put('user/{user}', 'UsersController@update')->middleware(['permission:update users'])
         ->name('users.user.update');
-    Route::delete('/user/{user}', 'UsersController@destroy')
+    Route::delete('/user/{user}', 'UsersController@destroy')->middleware(['permission:delete users'])
         ->name('users.user.destroy');
 });
 
@@ -91,15 +94,15 @@ Route::group([
 ], function () {
     Route::get('/', 'CoursesController@index')
         ->name('courses.course.index');
-    Route::get('/create', 'CoursesController@create')
+    Route::get('/create', 'CoursesController@create')->middleware(['permission:add courses'])
         ->name('courses.course.create');
-    Route::get('/{course}/edit', 'CoursesController@edit')
+    Route::get('/{course}/edit', 'CoursesController@edit')->middleware(['permission:edit courses'])
         ->name('courses.course.edit');
-    Route::post('/', 'CoursesController@store')
+    Route::post('/', 'CoursesController@store')->middleware(['permission:add courses'])
         ->name('courses.course.store');
-    Route::put('courses/{course}', 'CoursesController@update')
+    Route::put('courses/{course}', 'CoursesController@update')->middleware(['permission:edit courses'])
         ->name('courses.course.update');
-    Route::delete('/course/{course}', 'CoursesController@destroy')
+    Route::delete('/course/{course}', 'CoursesController@destroy')->middleware(['permission:delete courses'])
         ->name('courses.course.destroy');
 });
 
@@ -110,17 +113,17 @@ Route::group([
 ], function () {
     Route::get('/students', 'StudentsController@index')
         ->name('students.student.index');
-    Route::get('/create', 'StudentsController@create')
+    Route::get('/create', 'StudentsController@create')->middleware(['permission:add students'])
         ->name('students.student.create');
     Route::get('/show/{student}', 'StudentsController@show')
         ->name('students.student.show');
-    Route::get('/{student}/edit', 'StudentsController@edit')
+    Route::get('/{student}/edit', 'StudentsController@edit')->middleware(['permission:edit students'])
         ->name('students.student.edit');
-    Route::post('/store', 'StudentsController@store')
+    Route::post('/store', 'StudentsController@store')->middleware(['permission:add students'])
         ->name('students.student.store');
-    Route::put('student/{student}', 'StudentsController@update')
+    Route::put('student/{student}', 'StudentsController@update')->middleware(['permission:edit students'])
         ->name('students.student.update');
-    Route::delete('/student/{student}', 'StudentsController@destroy')
+    Route::delete('/student/{student}', 'StudentsController@destroy')->middleware(['permission:delete students'])
         ->name('students.student.destroy');
 });
 
@@ -131,33 +134,33 @@ Route::group([
 ], function () {
     Route::get('/', 'TutorController@index')
         ->name('tutors.tutor.index');
-    Route::get('/create', 'TutorController@create')
+    Route::get('/create', 'TutorController@create')->middleware(['permission:add tutors'])
         ->name('tutors.tutor.create');
     Route::get('/show/{tutor}', 'TutorController@show')
         ->name('tutors.tutor.show');
-    Route::get('/{tutor}/edit', 'TutorController@edit')
+    Route::get('/{tutor}/edit', 'TutorController@edit')->middleware(['permission:edit tutors'])
         ->name('tutors.tutor.edit');
-    Route::post('/', 'TutorController@store')
+    Route::post('/', 'TutorController@store')->middleware(['permission:add tutors'])
         ->name('tutors.tutor.store');
-    Route::put('tutor/{tutor}', 'TutorController@update')
+    Route::put('tutor/{tutor}', 'TutorController@update')->middleware(['permission:edit tutors'])
         ->name('tutors.tutor.update');
-    Route::delete('/tutor/{tutor}', 'TutorController@destroy')
+    Route::delete('/tutor/{tutor}', 'TutorController@destroy')->middleware(['permission:delete tutors'])
         ->name('tutors.tutor.destroy');
-    Route::get('/sendcredentials/{tutor}', 'TutorController@sendcredentials')
+    Route::get('/sendcredentials/{tutor}', 'TutorController@sendcredentials')->middleware(['permission:add tutors'])
         ->name('tutors.tutor.sendcredentials');
 });
 
 Route::group([
-    'middleware' => ['permission:view dashboard'],
+    'middleware' => ['permission:view testimonials'],
     'prefix' => 'testimonial',
 ], function () {
 
     Route::get('/show/{id}', 'TestimonialsController@show')->name('testimonials.testimonial.show');
-    Route::get('/{id}/edit', 'TestimonialsController@edit')->name('testimonials.testimonial.edit');
-    Route::get('/create', 'TestimonialsController@create')->name('testimonials.testimonial.create');
-    Route::post('/store', 'TestimonialsController@store')->name('testimonials.testimonial.store');
-    Route::put('/update/{id}', 'TestimonialsController@update')->name('testimonials.testimonial.update');
-    Route::delete('/delete/{id}', 'TestimonialsController@destroy')->name('testimonials.testimonial.destroy');
+    Route::get('/{id}/edit', 'TestimonialsController@edit')->name('testimonials.testimonial.edit')->middleware(['permission:edit testimonials']);
+    Route::get('/create', 'TestimonialsController@create')->name('testimonials.testimonial.create')->middleware(['permission:add testimonials']);
+    Route::post('/store', 'TestimonialsController@store')->name('testimonials.testimonial.store')->middleware(['permission:add testimonials']);
+    Route::put('/update/{id}', 'TestimonialsController@update')->name('testimonials.testimonial.update')->middleware(['permission:edit testimonials']);
+    Route::delete('/delete/{id}', 'TestimonialsController@destroy')->name('testimonials.testimonial.destroy')->middleware(['permission:delete testimonials']);
     Route::get('/index', 'TestimonialsController@index')->name('testimonials.testimonial.index');
 });
 
@@ -168,34 +171,34 @@ Route::group([
 ], function () {
 
     Route::get('/show/{id}', 'PaymentController@show')->name('payments.payments.show');
-    Route::get('/{id}/edit', 'PaymentController@edit')->name('payments.payments.edit');
-    Route::get('/store', 'PaymentController@store')->name('payments.payments.store');
-    Route::get('/create', 'PaymentController@create')->name('payments.payments.create');
-    Route::put('/update/{id}', 'PaymentController@update')->name('payments.payments.update');
-    Route::delete('/delete/{id}', 'PaymentController@destroy')->name('payments.payments.destroy');
+    Route::get('/{id}/edit', 'PaymentController@edit')->name('payments.payments.edit')->middleware(['permission:edit payments']);
+    Route::get('/store', 'PaymentController@store')->name('payments.payments.store')->middleware(['permission:add payments']);
+    Route::get('/create', 'PaymentController@create')->name('payments.payments.create')->middleware(['permission:add payments']);
+    Route::put('/update/{id}', 'PaymentController@update')->name('payments.payments.update')->middleware(['permission:edit payments']);
+    Route::delete('/delete/{id}', 'PaymentController@destroy')->name('payments.payments.destroy')->middleware(['permission:delete payments']);
     Route::get('/index', 'PaymentController@index')->name('payments.payments.index');
 });
 
 
 Route::group([
-    'middleware' => ['permission:view classess'],
+    'middleware' => ['permission:view classes'],
     'prefix' => 'tutor/classes',
 ], function () {
     Route::get('/', 'TutorClassController@index')
         ->name('tutor.classes.index');
-    Route::get('/create', 'TutorClassController@create')
+    Route::get('/create', 'TutorClassController@create')->middleware(['permission:add classes'])
         ->name('tutor.classes.create');
     Route::get('/show/{user}', 'TutorClassController@show')
         ->name('tutor.classes.show');
-    Route::get('/{id}/edit', 'TutorClassController@edit')
+    Route::get('/{id}/edit', 'TutorClassController@edit')->middleware(['permission:edit classes'])
         ->name('tutor.classes.edit');
-    Route::post('/', 'TutorClassController@store')
+    Route::post('/', 'TutorClassController@store')->middleware(['permission:add classes'])
         ->name('tutor.classes.store');
-    Route::put('update/{id}', 'TutorClassController@update')
+    Route::put('update/{id}', 'TutorClassController@update')->middleware(['permission:edit classes'])
         ->name('tutor.classes.update');
-    Route::delete('/tutor/classes/{id}', 'TutorClassController@destroy')
+    Route::delete('/tutor/classes/{id}', 'TutorClassController@destroy')->middleware(['permission:delete classes'])
         ->name('tutor.classes.destroy');
-    Route::get('/remove_file', 'TutorClassController@removeFile')
+    Route::get('/remove_file', 'TutorClassController@removeFile')->middleware(['permission:edit classes'])
         ->name('tutor.classes.remove_file');
 });
 Route::group([
@@ -206,15 +209,15 @@ Route::group([
         ->name('tutorenquiries.tutorenquiry.index');
     Route::get('/show/{tutorenquiry}', 'TutorEnquiryController@show')
         ->name('tutorenquiries.tutorenquiry.show');
-    Route::get('/accept/{tutorenquiry}', 'TutorEnquiryController@accept')
+    Route::get('/accept/{tutorenquiry}', 'TutorEnquiryController@accept')->middleware(['permission:edit tutorenquiries'])
         ->name('tutorenquiries.tutorenquiry.accept');
-    Route::get('/reject/{tutorenquiry}', 'TutorEnquiryController@reject')
+    Route::get('/reject/{tutorenquiry}', 'TutorEnquiryController@reject')->middleware(['permission:edit tutorenquiries'])
         ->name('tutorenquiries.tutorenquiry.reject');
 });
 
 
 Route::group([
-    'middleware' => ['permission:view users'],
+    'middleware' => ['permission:view dashboard'],
     'prefix' => 'profile',
 ], function () {
     Route::get('/profile', 'ProfilesController@index')
@@ -229,15 +232,15 @@ Route::group([
     'middleware' => ['permission:view fee payment'],
     'prefix' => 'fee',
 ], function () {
-    Route::get('/feepay', 'FeepaymentController@index')
+    Route::get('/feepay', 'FeepaymentController@index')->middleware(['permission:add fee payment'])
         ->name('feepayment.fee.index');
 
-    Route::put('feepay/{fee}', 'FeepaymentController@update')
+    Route::put('feepay/{fee}', 'FeepaymentController@update')->middleware(['permission:add fee payment'])
         ->name('feepayment.fee.update');
 });
 
 Route::group([
-    'middleware' => ['permission:view users'],
+    'middleware' => ['permission:view sms'],
     'prefix' => 'sms',
 ], function () {
     Route::get('/inbox', 'SmsController@inbox')
@@ -248,16 +251,16 @@ Route::group([
         ->name('Sms.sms.compose');
     Route::post('/insertMessage', 'SmsController@addmessage')
         ->name('Sms.sms.insert');
-    Route::get('/tutor-inbox', 'SmsController@tutor_inbox')
+    Route::get('/tutor-inbox', 'SmsController@tutor_inbox')->middleware(['permission:view admin sms'])
         ->name('Sms.sms.tutorinbox');
-    Route::get('/tutor-sent', 'SmsController@tutor_sent')
+    Route::get('/tutor-sent', 'SmsController@tutor_sent')->middleware(['permission:view admin sms'])
         ->name('Sms.sms.tutorsent');
-    Route::get('/student-inbox', 'SmsController@student_inbox')
+    Route::get('/student-inbox', 'SmsController@student_inbox')->middleware(['permission:view admin sms'])
         ->name('Sms.sms.studentinbox');
-    Route::get('/student-sent', 'SmsController@student_sent')
+    Route::get('/student-sent', 'SmsController@student_sent')->middleware(['permission:view admin sms'])
         ->name('Sms.sms.studentsent');
-    Route::get('/read-message/{messageid}', 'SmsController@view_message')
+    Route::get('/read-message/{messageid}', 'SmsController@view_message')->middleware(['permission:view sms'])
         ->name('Sms.sms.viewmessage');
-    Route::delete('/delete-message/{messageid}', 'SmsController@delete_message')
+    Route::delete('/delete-message/{messageid}', 'SmsController@delete_message')->middleware(['permission:view admin sms'])
         ->name('Sms.sms.deletemessage');
 });

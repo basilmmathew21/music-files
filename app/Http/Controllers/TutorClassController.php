@@ -39,9 +39,13 @@ class TutorClassController extends Controller
          $logged_in_id = auth()->user()->id;
 
         if ($request->ajax()) {
-            $data = TutorClass::leftJoin('users', 'classes.student_user_id', '=', 'users.id')
-            ->where('tutor_user_id',$logged_in_id)
-                    ->select(['classes.*','users.name',DB::raw('DATE_FORMAT(classes.date, "%d-%b-%Y") as date')])->get();
+            $data = TutorClass::leftJoin('users', 'classes.student_user_id', '=', 'users.id');
+
+            if (auth()->user()->roles[0]->id == 3)
+        {
+            $data = $data->where('tutor_user_id',$logged_in_id);
+        }
+        $data = $data->select(['classes.*','users.name',DB::raw('DATE_FORMAT(classes.date, "%d-%b-%Y") as date')])->get();
 
             $datatable = DataTables::of($data)
                 ->filter(function ($instance) use ($request) {
@@ -108,8 +112,13 @@ class TutorClassController extends Controller
     {
        
         $students  = User::where('user_type_id',4)->pluck('name', 'id');
+        $tutors  = User::where('user_type_id',3)->pluck('name', 'id');
+        if (auth()->user()->roles[0]->id != 3)
+        {
+            //$students=array();  
+        }
         //echo '<pre>';print_r($students);exit;
-        return view('classes.create',compact('students'));
+        return view('classes.create',compact('students','tutors'));
     }
 
     /**
@@ -123,6 +132,12 @@ class TutorClassController extends Controller
     {
         $data = $this->getData($request);
         $data['tutor_user_id'] = auth()->user()->id;
+
+        if (auth()->user()->roles[0]->id != 3)
+        {
+            $data['tutor_user_id'] = $request->input('tutor_user_id');
+        }
+
         $student = Student::where('user_id',$data['student_user_id'])->first();
        /*  if ($student->credits>=$student->class_fee){ //Automatically pay with the credits
             $data['is_paid'] = 1;
@@ -178,8 +193,9 @@ class TutorClassController extends Controller
         }
 
         $students  = User::where('user_type_id',4)->pluck('name', 'id')->all();
+        $tutors  = User::where('user_type_id',3)->pluck('name', 'id');
 
-        return view('classes.edit', compact('classes','files','students'));
+        return view('classes.edit', compact('classes','files','students','tutors'));
     }
 
     /**
@@ -194,6 +210,10 @@ class TutorClassController extends Controller
     {
         
         $data = $this->getData($request, $id);
+        if (auth()->user()->roles[0]->id != 3)
+        {
+            $data['tutor_user_id'] = $request->input('tutor_user_id');
+        }
         
         $user = TutorClass::findOrFail($id);
 
