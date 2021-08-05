@@ -43,7 +43,7 @@ class HomeController extends Controller
         $user->name;
         $isStudent  =   $user->hasRole('student');
         $isTutor    =   $user->hasRole('tutor');
-        $isAdmin    =   $user->hasRole('admin');
+        $isAdmin    =   $user->hasRole('super-admin');
         
         $users      = User::count();
         $students   = User::with('student')

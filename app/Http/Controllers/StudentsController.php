@@ -48,6 +48,7 @@ class StudentsController extends Controller
                 ->select(['users.*', 'students.is_active as is_active', 'students.is_registered', 'courses.course', 'countries.name AS country_name', DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
                 ->where('user_type_id', 4)
                 ->get();
+                
 
             $datatable =  DataTables::of($data)
                 ->filter(function ($instance) use ($request) {

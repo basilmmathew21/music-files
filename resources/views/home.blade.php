@@ -49,7 +49,7 @@
           </div>
           @endif
 
-          @if($isTutor  || $isAdmin)
+          @if($isAdmin)
           <!-- ./col -->
           <div class="col-lg-3 col-6">
             <!-- small box -->
