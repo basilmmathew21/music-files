@@ -47,10 +47,18 @@ class HomeController extends Controller
         
         $users      = User::count();
         $students   = User::with('student')
-                    ->Join('students', 'students.user_id', '=', 'users.id')
-                    ->where('user_type_id', 4)
-                    //->where('users.is_active','1')
-                    ->count();
+                    ->Join('students', 'students.user_id', '=', 'users.id');
+
+        if($isTutor){
+            $students   =  $students->where('tutors.user_id',$id)
+                                    ->Join('tutors', 'tutors.user_id', '=', 'users.id')
+                                    ->Join('tutor_students', 'tutor_students.user_id', '=', 'users.id');
+                                    
+        }
+
+        $students   =  $students->count();
+     
+
         $tutors     = User::where('user_type_id', 3)
                     ->Join('tutors', 'tutors.user_id', '=', 'users.id')
                     //->where('users.is_active','1')
