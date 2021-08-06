@@ -73,7 +73,7 @@ class HomeController extends Controller
                     ->join('countries', 'users.country_id', '=', 'countries.id')
                     ->join('students', 'students.user_id', '=', 'users.id')
                     ->leftJoin('courses', 'students.course_id', '=', 'courses.id')
-                    ->select(['users.*','students.is_active as is_active','students.is_registered','courses.course','countries.name AS country_name',DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
+                    ->select(['users.*','users.is_active as is_active','students.is_registered','courses.course','countries.name AS country_name',DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
                     ->where('user_type_id', 4)
                     ->limit(10)
                     ->orderBy('students.created_at','desc')

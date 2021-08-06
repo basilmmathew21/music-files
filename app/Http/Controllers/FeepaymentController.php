@@ -42,7 +42,7 @@ class FeepaymentController extends Controller
         $user   = User::with('student')
         ->leftJoin('students', 'students.user_id', '=', 'users.id')
         ->leftJoin('currencies', 'students.currency_id', '=', 'currencies.id')
-        ->select(['users.*','students.class_fee','students.credits','students.is_active as is_active','currencies.code','currencies.symbol'])
+        ->select(['users.*','students.class_fee','students.credits','users.is_active as is_active','currencies.code','currencies.symbol'])
         ->findOrFail($id);
 
         $payment   = User
