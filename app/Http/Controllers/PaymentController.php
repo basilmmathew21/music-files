@@ -61,8 +61,16 @@ class PaymentController extends Controller
                 ->make(true);
                 return $datatable;
             }
-        $payments = PaymentHistory::paginate(25);
-        return view('paymenthistory.index',compact('payments'));
+        $user = \Auth::user()->id;
+        $user_data = DB::table('users')->select('*')->where('id','=',$user)->first();
+        if($user_data->user_type_id == '4'){
+            $payments = PaymentHistory::paginate(25);
+            return view('paymenthistory.index-student',compact('payments'));
+        }else{
+            $payments = PaymentHistory::paginate(25);
+            return view('paymenthistory.index',compact('payments'));
+        }
+        
     }
 
     /**
