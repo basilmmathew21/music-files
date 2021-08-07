@@ -114,8 +114,8 @@ class StudentsController extends Controller
         User::create($data);
 
         //Assign Student role to the user
-        $user = User::where('email', $data['email'])->first();
-        $user->assignRole('student');
+        //$user = User::where('email', $data['email'])->first();
+        //$user->assignRole('student');
 
         $newuser = User::where('email', '=', $data['email'])->where('user_type_id', 4)->first()->toArray();
         $student['user_id']        =  $newuser['id'];
@@ -177,7 +177,7 @@ class StudentsController extends Controller
         if ($data['is_active'] == "Active") {
             $data['is_active']      = 1;
             //Assign Student role to the user when they get activated
-            $user->assignRole('student');
+            //$user->assignRole('student');
         } else if ($data['is_active'] == "Inactive") {
             $data['is_active']      = 0;
         }

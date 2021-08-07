@@ -56,10 +56,10 @@ class LoginController extends Controller
         }
 
         if ($this->attemptLogin($request)) {
-            if(isset($request->device_token)){
+            /* if(isset($request->device_token)){
 
                 $push_notify = DB::table('user_devices')->updateOrInsert(['user_id'=>auth()->user()->id,'device_os'=>3],['device_token' => $request->device_token]);
-            }            
+            }  */           
             return $this->sendLoginResponse($request);
         }
 

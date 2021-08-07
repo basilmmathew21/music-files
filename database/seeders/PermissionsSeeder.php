@@ -137,7 +137,6 @@ class PermissionsSeeder extends Seeder
         //Tutor Permissions
         $tutorRole = Role::where('name', 'tutor')->first();
         $tutorRole->givePermissionTo('view dashboard');
-        $tutorRole->givePermissionTo('view students');
         $tutorRole->givePermissionTo('view sms');
 
         $tutorRole->givePermissionTo('view classes');

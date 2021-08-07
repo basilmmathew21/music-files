@@ -72,7 +72,7 @@
 <div class="row">
     <div class="col-md-6 mb-3">
         <label class="form-label">DOB</label>
-        <input class="form-control datepicker {{ $errors->has('dob') ? 'has-error' : '' }}" name="dob" type="text" id="dob" value="{{ old('dob', optional($user)->dob) }}" minlength="1" maxlength="255" required="true" placeholder="{{ trans('students.dob__placeholder') }}">
+        <input readonly class="form-control datepicker {{ $errors->has('dob') ? 'has-error' : '' }}" name="dob" type="text" id="dob" value="{{ old('dob', optional($user)->dob) }}" minlength="1" maxlength="255" required="true" placeholder="{{ trans('students.dob__placeholder') }}">
 
         @if($errors->has('dob'))
         <div class="invalid-feedback">
@@ -117,7 +117,7 @@
         @endif
     </div>
     <div class="col-md-6 mb-3">
-        <label class="form-label">Retype Password</label>
+        <label class="form-label">Password</label>
         <input class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}" name="password" type="password" id="password" value="{{ old('password', optional($user)->password) }}" minlength="1" maxlength="255" required="true" placeholder="{{ trans('students.password__placeholder') }}">
 
         @if($errors->has('password'))

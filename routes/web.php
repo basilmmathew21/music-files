@@ -26,6 +26,8 @@ Route::post('/registration', 'StudentsRegistrationController@store')->name('regi
 Route::get('/thankyou', 'StudentsRegistrationController@thankyou')->name('thankyou');
 
 
+
+
 Route::group([
     'prefix' => 'tutorenquiries',
 ], function () {
@@ -40,6 +42,7 @@ Route::group([
 
 
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
+Route::post('/regfee', 'RegfeeController@paynow')->name('regfee.paynow'); //Regostration fee
 
 
 
