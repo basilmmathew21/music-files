@@ -80,8 +80,9 @@
               <div class="icon">
                 <i class="ion ion-pie-graph"></i>
               </div>
+              <!--
               <a href="{{ URL::to('students/students')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                    
+              -->      
             </div>
           </div>
           @endif
@@ -112,7 +113,6 @@
                       <th>Email</th>
 					            <th>Gender</th>
                       <th>Course</th>
-                      <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -123,7 +123,6 @@
                       <td>{{ $student->email }}</td>
                       <td>{{ $student->gender }}</td>
                       <td>{{ $student->course }}</td>
-                      <td>{{ $student->is_active }}</td>
                     </tr>
 				  <?php } ?> 
                   </tbody>
@@ -148,7 +147,7 @@
             <div class="card">
 				<div class="card-header">
 					<h3 class="card-title">
-						<a href="{{ route('tutors.tutor.index') }}">Tutors Information
+						<a href="{{ route('tutors.tutor.index') }}">Tutors Class
 						</a>
 					</h3>
 				</div>
@@ -160,21 +159,15 @@
                     <tr>
                       <th style="width: 10px">#</th>
                       <th>Name</th>
-                      <th>Email</th>
-          					  <th>Gender</th>
-                      <th>Status</th>
-                     
-                    </tr>
+                      <th>Date</th>
+          					 </tr>
                   </thead>
                   <tbody>
-				  <?php foreach($tutorInfo as $key => $tutor){ ?>
+				  <?php foreach($tutorClass as $key => $tutor){ ?>
                     <tr>
 					  <td>{{ $key + 1 }}</td>
                       <td>{{ $tutor->name }}</td>
-                      <td>{{ $tutor->email }}</td>
-                      <td>{{ $tutor->gender }}</td>
-                      <td>{{ ($tutor->is_active) ? 'Active' : 'Inactive' }}</td>
-                      
+                      <td>{{ $tutor->date }}</td>
                     </tr>
 				  <?php } ?> 
                   </tbody>
@@ -191,6 +184,61 @@
           @endif
           <!-- right col -->
         </div>
+		
+		
+		
+		<div class="row">
+          <!-- Left col -->
+          @if($isTutor  || $isAdmin)
+          <section class="col-lg-6 connectedSortable">
+            <!-- Custom tabs (Charts with tabs)-->
+            <div class="card">
+             <div class="card-header">
+                <h3 class="card-title">
+				 <a href="{{ route('students.student.index') }}">SMS
+				</a>
+				</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body p-0 table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th style="width: 10px">#</th>
+                      <th>Name</th>
+                      <th>Message</th>
+					            <th>Sent On</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+				  <?php foreach($sms as $key => $sm){  ?>
+                    <tr>
+					  <td>{{ $key + 1 }}</td>
+                      <td>{{ $sm->name }}</td>
+                      <td>{{ $sm->message }}</td>
+                      <td>{{ $sm->sent_on }}</td>
+                    </tr>
+				  <?php } ?> 
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <!-- /.card -->
+
+            <!-- DIRECT CHAT -->
+            
+
+            <!-- TO DO List -->
+
+            <!-- /.card -->
+          </section>
+          @endif  
+          <!-- /.Left col -->
+          
+        </div>
+		
+		
         <!-- /.row (main row) -->
       </div><!-- /.container-fluid -->
     </section>
