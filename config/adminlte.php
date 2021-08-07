@@ -250,8 +250,8 @@ return [
             'route'  => 'home',
             'icon'    => 'icon-01-dashboard-icon',
             'can' => ['view dashboard'],
-            'can'         => 'manage-logout',
-            'role'        => 'User',
+            //'can'         => 'manage-logout',
+            //'role'        => 'User',
         ],
         [
             'text' => 'Profile',
