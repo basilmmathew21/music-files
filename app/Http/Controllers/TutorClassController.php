@@ -146,11 +146,12 @@ class TutorClassController extends Controller
         }
 
         $student = Student::where('user_id',$data['student_user_id'])->first();
-       /*  if ($student->credits>=$student->class_fee){ //Automatically pay with the credits
+       // echo '<pre>';print_r($student);exit;
+         if ($student->credits>=$student->class_fee){ //Automatically pay with the credits
             $data['is_paid'] = 1;
             $student->credits = $student->credits - $student->class_fee;
             $student->save();
-        } */
+        } 
         
         $data['currency_id'] = $student->currency_id;
         $data['class_fee'] = $student->class_fee;
@@ -279,6 +280,16 @@ class TutorClassController extends Controller
     {
         try {
             $user = TutorClass::findOrFail($id);
+            
+
+            if($user->is_paid == 1){
+
+            $stud_id = $user->student_user_id;
+            $student = Student::where('user_id',$stud_id)->first();
+       // echo '<pre>';print_r($student);exit;
+            $student->credits = $student->credits + $student->class_fee;
+            $student->save();
+    }
         
                 $user->delete();
             
