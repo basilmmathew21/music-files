@@ -88,7 +88,7 @@
 					var showData = [];
 					for (i = 0; i < res.length; ++i) {
 						var j = i + 1;
-						showData[i] = "<option value='"+res[i].id+"'>"+res[i].name+"</option>";
+						showData[i] = "<option value=''>Select</option><option value='"+res[i].id+"'>"+res[i].name+"</option>";
 					}
 					
 					jQuery("#student_user_id").html(showData);
