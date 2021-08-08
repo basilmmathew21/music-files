@@ -99,32 +99,5 @@ class DatabaseSeeder extends Seeder
             'symbol' => 'â‚¬'            
         ]);
         
-        // create permissions
-        Permission::create(['name' => 'view dashboard']);
-
-        Permission::create(['name' => 'edit users']);
-        Permission::create(['name' => 'delete users']);
-        Permission::create(['name' => 'add users']);
-        Permission::create(['name' => 'view users']);
-
-        // create roles and assign existing permissions
-        $role1 = Role::create(['name' => 'super-admin']);
-        // gets all permissions via Gate::before rule; see AuthServiceProvider
-
-        $role2 = Role::create(['name' => 'admin']);
-        $role2->givePermissionTo('view dashboard');
-        $role2->givePermissionTo('view users');
-        $role2->givePermissionTo('add users');
-
-        $role3 = Role::create(['name' => 'tutor']);
-        $role3->givePermissionTo('view dashboard');
-
-        $role4 = Role::create(['name' => 'student']);
-        $role4->givePermissionTo('view dashboard');
-
-        User::findOrFail(1)->assignRole(['super-admin']);
-        User::findOrFail(2)->assignRole(['admin']);
-        User::findOrFail(3)->assignRole(['tutor']);
-        User::findOrFail(4)->assignRole(['student']);
     }
 }
