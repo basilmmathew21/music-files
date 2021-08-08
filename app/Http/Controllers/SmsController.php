@@ -138,6 +138,7 @@ class SmsController extends Controller
             ->select('users.*')
             ->leftjoin('tutor_students','tutor_students.user_id','=','users.id')
             ->where('tutor_students.tutor_id',$log_user['id'])
+            ->orWhere('users.user_type_id',1)
             ->where('users.is_active', 1)->get();
 
         } 
@@ -147,6 +148,7 @@ class SmsController extends Controller
             ->select('users.*')
             ->leftjoin('tutor_students','tutor_students.tutor_id','=','users.id')
             ->where('tutor_students.user_id',$log_user['id'])
+            ->orWhere('users.user_type_id',1)
             ->where('users.is_active', 1)->get();
 
         }
