@@ -129,17 +129,66 @@ class HomeController extends Controller
             return view('dashboard.student', compact('classes','feesDue','credits','paymentHistory','tutorClass','sms'));
         }
 
-        $users      = User::count();
-        $tutors     = User::where('user_type_id', 3)
-                    ->Join('tutors', 'tutors.user_id', '=', 'users.id')
-                    //->where('users.is_active','1')
-                    ->count();
-        $credits   = User::with('student')
-                    ->Join('students', 'students.user_id', '=', 'users.id')
-                    ->where('user_type_id', 4)
-                    //->where('users.is_active','1')
-                    ->sum('credits');
+        /* Student ends
+         *
+         *
+         */
 
-        
+
+
+         /*
+          * Admin begins   
+          *
+          */
+
+        $isAdmin         =   $user->hasRole('admin');
+        $isSuperAdmin    =   $user->hasRole('super-admin');
+         
+
+        if($isAdmin || $isSuperAdmin){
+
+            $feesDue        =   DB::table('classes');
+            $feesDue        =   $feesDue->sum('class_fee');
+
+            $credits        =    User::with('student')
+                                ->Join('students', 'students.user_id', '=', 'users.id')
+                                ->sum('credits');
+
+            $students       =   User::with('student')
+                                ->Join('students', 'students.user_id', '=', 'users.id');
+            $students       =   $students->Join('tutors', 'tutors.user_id', '=', 'users.id')
+                                         ->Join('tutor_students', 'tutor_students.tutor_id', '=', 'users.id');
+            $students       =   $students->count();
+
+            $classes        =   DB::table('classes');
+            $classes        =   $classes->count();
+
+            $studentInfo    =   DB::table('users')
+                                        ->join('countries', 'users.country_id', '=', 'countries.id')
+                                        ->LeftJoin('students', 'students.user_id', '=', 'users.id')
+                                        //->Join('tutors', 'tutors.user_id', '=', 'users.id')
+                                        ->Join('tutor_students', 'tutor_students.user_id', '=', 'users.id')
+                                        ->leftJoin('courses', 'students.course_id', '=', 'courses.id')
+                                        ->select(['users.*','courses.course','countries.name AS country_name',DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
+                                        ->limit(10)
+                                        ->orderBy('users.created_at','desc')
+                                        ->get();
+
+
+            $sms            =   DB::table('sms')
+                                ->select('sms.*','users.name',DB::raw('DATE_FORMAT(sms.sent_on, "%d-%b-%Y %h:%i:%s") as sent_on'))
+                                ->leftjoin('users','users.id','=','sms.from_user_id');
+            $sms            =   $sms->where('to_user_id',$id);
+            $sms            =   $sms->limit(10)->orderby('sent_on','desc')->get();
+
+            
+            return view('dashboard.admin', compact('classes','feesDue','credits','students','studentInfo','sms'));
+        }
+
+         /*
+          * Admin begins   
+          *
+          */
+
     }
 }
