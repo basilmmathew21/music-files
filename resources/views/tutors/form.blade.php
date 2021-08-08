@@ -60,7 +60,7 @@
     <div class="col-md-10">
         <input class="form-control datepicker" name="dob" type="text" id="dob"
             value="{{ old('dob', optional($user)->dob) }}" minlength="1" maxlength="255" required="true"
-            placeholder="{{ trans('users.date_info')}}">
+            placeholder="{{ trans('users.date_info')}}" autocomplete="off" >
         <p class="text-danger" id="dob_err"></p>
     </div>
 </div>
