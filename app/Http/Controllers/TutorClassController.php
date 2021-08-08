@@ -110,8 +110,15 @@ class TutorClassController extends Controller
      */
     public function create()
     {
-       
-        $students  = User::where('user_type_id',4)->pluck('name', 'id');
+        $login_user_id = auth()->user()->id;
+        
+
+        $students  = User::join('tutor_students as ts','ts.user_id','=','users.id')
+        ->where('users.user_type_id',4)->where('ts.tutor_id',$login_user_id)
+        ->where('users.is_active',1)
+        ->pluck('users.name', 'users.id')->all();
+
+
         $tutors  = User::where('user_type_id',3)->pluck('name', 'id');
         if (auth()->user()->roles[0]->id != 3)
         {
@@ -197,6 +204,7 @@ class TutorClassController extends Controller
 
         $students  = User::join('tutor_students as ts','ts.user_id','=','users.id')
         ->where('users.user_type_id',4)->where('ts.tutor_id',$classes->tutor_user_id)
+        ->where('users.is_active',1)
         ->pluck('users.name', 'users.id')->all();
 
         return view('classes.edit', compact('classes','files','students','tutors'));
