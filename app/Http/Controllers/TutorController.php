@@ -7,6 +7,7 @@ use DataTables;
 use DB;
 
 use App\Models\Tutor;
+use App\Models\TutorStudents;
 use App\Models\User;
 use App\Models\Country;
 use App\Models\Currency;
@@ -80,7 +81,11 @@ class TutorController extends Controller
     {
         $nationalities = Country::pluck('name', 'id')->all();
         $currency = Currency::pluck('symbol', 'id')->all();
-       $students=User::where('user_type_id',4)->pluck('name','id');
+        $tutor_students=TutorStudents::pluck('user_id');
+        $students  = User::where('user_type_id',4)
+              ->where('is_active',1)
+              ->whereNotIN('id',$tutor_students)
+              ->pluck('name','id')->all();
         return view('tutors.create', compact('nationalities','currency','students'));
     }
 
@@ -209,7 +214,19 @@ class TutorController extends Controller
             $tutor="";
 
         $nationalities = Country::pluck('name', 'id')->all();
-        $students=User::where('user_type_id',4)->pluck('name','id');
+
+        ///////////////////////////////////////////////////////////
+       
+        $tutor_students=TutorStudents::where('tutor_id','!=',$id)->pluck('user_id')->all();
+
+        $students  = User::where('user_type_id',4)
+              ->where('is_active',1)
+              ->whereNotIN('id',$tutor_students)
+              ->pluck('name','id')->all();
+
+        ////////////////////////////////////////////////////////////
+
+
         $Selectedstudents= DB::table('tutor_students')
         ->select('user_id') ->where('tutor_id', $id)->get();
         
