@@ -18,7 +18,7 @@
             <div class="small-box bg-info">
               <div class="inner">
                 <h3>{{$classes}}</h3>
-                  <p>Total classes completed</p>
+                  <p>Total Classes Completed</p>
               </div>
               <div class="icon">
                 <i class="ion ion-bag"></i>
