@@ -186,9 +186,15 @@ class HomeController extends Controller
         }
 
          /*
-          * Admin begins   
+          * Admin ends   
           *
           */
+
+          /*
+           *
+           * Default
+           */ 
+          return view('home');
 
     }
 }
