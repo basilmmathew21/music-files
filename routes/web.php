@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,6 +13,21 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/clear-cache', function () {
+    $exitCode = Artisan::call('optimize');
+    echo $exitCode . ' - Cache cleared';
+});
+
+Route::get('/migration', function () {
+    $exitCode = Artisan::call('migrate');
+    echo $exitCode . ' - Migrated';
+});
+
+Route::get('/seed', function () {
+    $exitCode = Artisan::call('db:seed --class=PermissionsSeeder');
+    echo $exitCode . ' - Seeded Permissions for 1,2,3,4';
+});
 
 Route::get('lang/{locale}', 'HomeController@lang');
 
