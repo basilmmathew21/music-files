@@ -52,8 +52,13 @@ class FeepaymentController extends Controller
         ->where('classes.is_paid','0')
         ->where('users.id',$id)
         ->count();
-        
-        return view('feepayment.index', compact('user','payment'));
+
+        $students  = User::join('students','students.user_id','=','users.id')
+        ->where('users.user_type_id',4)
+        ->where('users.is_active',1)
+        ->pluck('users.name', 'users.id')->all();
+        $isSuperAdmin       =   $user->hasRole('super-admin');
+        return view('feepayment.index', compact('user','payment','students','isSuperAdmin'));
     }
 
 
@@ -67,6 +72,10 @@ class FeepaymentController extends Controller
      */
     public function update($id, Request $request)
     {
+        if($request->student_user_id != null){
+            $id     =   $request->student_user_id;
+        }
+       
         $data             = $this->getData($request, $id);
         $studentDetais    = Student::where('user_id', $id)->first();
         $paymentDetails   = User
@@ -93,6 +102,9 @@ class FeepaymentController extends Controller
                     $data['student_user_id']    = $id;
                     $data['tutor_user_id']      = $classInfo->tutor_user_id;
                     $data['fee_type']           = 'class_fee';
+                    if($request->student_user_id != null){
+                        $data['fee_type']       = 'admin';
+                    }
                     $data['payment_date']       = date("Y-m-d H:i:s");
                     $data['currency_id']        = $studentDetais->currency_id;
                     $data['amount']             = $studentDetais['class_fee'];
@@ -110,6 +122,9 @@ class FeepaymentController extends Controller
                 $data['student_user_id']    = $id;
                 $data['tutor_user_id']      = 0;
                 $data['fee_type']           = 'class_fee';
+                if($request->student_user_id != null){
+                    $data['fee_type']       = 'admin';
+                }
                 $data['payment_date']       = date("Y-m-d H:i:s");
                 $data['currency_id']        = $studentDetais->currency_id;
                 $data['amount']             = $amountPay;
@@ -127,6 +142,9 @@ class FeepaymentController extends Controller
                $data['student_user_id']    = $id;
                $data['tutor_user_id']      = 0;
                $data['fee_type']           = 'class_fee';
+               if($request->student_user_id != null){
+                $data['fee_type']       = 'admin';
+               }
                $data['payment_date']       = date("Y-m-d H:i:s");
                $data['currency_id']        = $studentDetais->currency_id;
                $data['amount']             = $request->class_fee;
