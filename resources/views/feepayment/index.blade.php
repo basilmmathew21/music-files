@@ -131,6 +131,30 @@ body {
                     <div><span class="cross">&#10005&#10005&#10005&#10005</span><span class="pin ml-2">8880</span></div>
                 </div>
             </div>
+
+            @if($isSuperAdmin)
+            <div class="py-2 px-3">
+                <div class="second pl-2 d-flex py-2">
+                <div class="form-check"><span style="display:none;" id="one_class_fee">@if($user->class_fee) {{$user->class_fee}} @else 0 @endif</span></div>
+                    <div class="border-left pl-2"><span class="head">Student</span>
+                        <div class="d-flex">
+                            <select name="student_user_id" id="student_user_id" class="form-control">
+                                <option value="" >Select</option>
+                                @foreach ($students as $k => $student)
+				                    <option value="{{$k}}" >{{$student}}</option>
+			                    @endforeach
+                            </select>
+                        </div>
+                    </div>
+				 </div>
+				<div>
+					{!! $errors->first('student_user_id', '<p class="text-danger">:message</p>') !!}
+				</div>
+            </div>
+            @endif
+
+
+
             <div class="py-2 px-3">
                 <div class="first pl-2 d-flex py-2">
                     <div class="form-check"> </div>
