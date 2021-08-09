@@ -164,6 +164,7 @@ body {
                     </div>
 				 </div>
 				<div>
+                    @if($user->class_fee == 0) <p class="text-danger">Please enter class fee for the user</p>  @endif    
 					{!! $errors->first('no_of_classes', '<p class="text-danger">:message</p>') !!}
 				</div>
             </div>
