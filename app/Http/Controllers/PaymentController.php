@@ -43,6 +43,7 @@ class PaymentController extends Controller
             ->join('users as us','t.user_id', '=', 'us.id')
             //->join('currencies as c','p.currency_id','=','c.id')
             ->select('p.*','us.name as tutor_name','u.name as student_name')
+            ->orderBy('payment_histories.created_at', 'desc')
             ->get();
         $datatable =  DataTables::of($data)
                 ->filter(function ($instance) use ($request) {

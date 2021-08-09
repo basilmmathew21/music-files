@@ -32,8 +32,9 @@ class TutorEnquiryController extends Controller
             $data  = DB::table('tutor_enquiries')
                 ->join('countries', 'tutor_enquiries.country_id', '=', 'countries.id')
                 ->select(['tutor_enquiries.*', 'countries.name AS country_name', DB::raw('CONCAT(countries.code," ",tutor_enquiries.phone) as phone')])
+                ->orderBy('tutor_enquiries.created_at', 'desc')
                 ->get();
-
+                
 
             $datatable =  DataTables::of($data)
                 ->filter(function ($instance) use ($request) {
