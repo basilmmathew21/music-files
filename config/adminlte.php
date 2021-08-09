@@ -299,9 +299,19 @@ return [
         ],
         [
             'text' => 'Payments',
-            'route'  => 'payments.payments.index',
             'icon'    => 'fa fa-credit-card',
             'can' => ['view payments'],
+            'submenu' => [
+                [
+                    'text' => 'Payment History',
+                    'route'  => 'payments.payments.index',
+                    'can' => ['view payments'],
+                ], [
+                    'text' => 'Payment Dues',
+                    'route'  => 'paymentdue.paymentdue.index',
+                    'can' => ['view payments'],
+                ],
+            ],
         ],
         [
             'text' => 'settings',

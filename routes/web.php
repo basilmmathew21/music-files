@@ -179,6 +179,20 @@ Route::group([
     Route::get('/index', 'PaymentController@index')->name('payments.payments.index');
 });
 
+Route::group([
+    'middleware' => ['permission:view payments'],
+    'prefix' => 'paymentdue',
+], function () {
+
+    Route::get('/show/{id}', 'PaymentdueController@show')->name('paymentdue.paymentdue.show');
+    Route::get('/{id}/edit', 'PaymentdueController@edit')->name('paymentdue.paymentdue.edit')->middleware(['permission:edit payments']);
+    Route::get('/store', 'PaymentdueController@store')->name('paymentdue.paymentdue.store')->middleware(['permission:add paymentdue']);
+    Route::get('/create', 'PaymentdueController@create')->name('paymentdue.paymentdue.create')->middleware(['permission:add paymentdue']);
+    Route::put('/update/{id}', 'PaymentdueController@update')->name('paymentdue.paymentdue.update')->middleware(['permission:edit paymentdue']);
+    Route::delete('/delete/{id}', 'PaymentdueController@destroy')->name('paymentdue.paymentdue.destroy')->middleware(['permission:delete paymentdue']);
+    Route::get('/index', 'PaymentdueController@index')->name('paymentdue.paymentdue.index');
+});
+
 
 Route::group([
     'middleware' => ['permission:view classes'],

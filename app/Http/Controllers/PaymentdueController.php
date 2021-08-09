@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Classes;
 use App\Models\PaymentHistory;
 use DataTables;
 use Illuminate\Support\Str;
 use DB;
 
 
-class TestimonialController extends Controller
+class PaymentdueController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -36,13 +37,20 @@ class TestimonialController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) { 
-        $data = DB::table('payment_histories as p')
-            ->join('students as s', 's.user_id', '=', 'p.student_user_id')
-            ->join('users as u', 's.user_id', '=', 'u.id')
-            ->join('tutors as t', 't.user_id', '=', 'p.tutor_user_id')
-            ->join('users as us','t.user_id', '=', 'us.id')
-            //->join('currencies as c','p.currency_id','=','c.id')
-            ->select('p.*','us.name as tutor_name','u.name as student_name')
+        // $data = DB::table('payment_histories as p')
+        //     ->join('students as s', 's.user_id', '=', 'p.student_user_id')
+        //     ->join('users as u', 's.user_id', '=', 'u.id')
+        //     ->join('tutors as t', 't.user_id', '=', 'p.tutor_user_id')
+        //     ->join('users as us','t.user_id', '=', 'us.id')
+        //     //->join('currencies as c','p.currency_id','=','c.id')
+        //     ->select('p.*','us.name as tutor_name','u.name as student_name')
+        //     ->get();
+        $data = DB::table('classes as c')
+            //->join('students as s', 's.user_id', '=', 'p.student_user_id')
+            ->join('users as u', 'c.user_id', '=', 'u.id')
+            //->join('tutors as t', 't.user_id', '=', 'p.tutor_user_id')
+            ->join('users as us','c.user_id', '=', 'us.id')
+            ->select('c.*','us.name as tutor_name','u.name as student_name')
             ->get();
         $datatable =  DataTables::of($data)
                 ->filter(function ($instance) use ($request) {
@@ -55,14 +63,26 @@ class TestimonialController extends Controller
                 })
                 ->addIndexColumn()
                 ->addColumn('action', function ($payments) {
-                    return view('paymenthistory.datatable', compact('payments'));
+                    return view('paymentdue.datatable', compact('payments'));
                 })
                 ->rawColumns(['action'])
                 ->make(true);
                 return $datatable;
             }
-        $payments = PaymentHistory::paginate(25);
-        return view('paymenthistory.index',compact('payments'));
+        // $payments = DB::table('classes as c')
+        //     ->join('students as s', 's.user_id', '=', 'c.student_user_id')
+        //     ->join('users as u', 'c.student_user_id', '=', 'u.id')
+        //     ->join('tutors as t', 't.user_id', '=', 'c.tutor_user_id')
+        //     ->join('users as us','c.tutor_user_id', '=', 'us.id')
+        //     ->select('c.*','us.name as tutor_name','u.name as student_name','s.credits as credits')
+        //     ->where('c.is_paid','=','0')
+        //     ->get()
+        //     ->groupBy('c.student_user_id')->sum('c.class_fee');
+        $payments = Classes::query()->with(array('student' => function($query) {
+        $query->select('id');
+    }))->get();
+        dd($payments);
+        return view('paymentdue.index',compact('payments'));
     }
 
     /**
