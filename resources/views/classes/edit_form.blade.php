@@ -47,7 +47,7 @@
 <div class="form-group {{ $errors->has('dob') ? 'has-error' : '' }}">
     <label for="dob" class="col-md-2 control-label">{{ trans('classes.summary') }}<sup style="color:red">*</sup></label>
     <div class="col-md-10">
-        <textarea class="form-control datepicker" name="summary" id="summary">{{ old('summary', optional($classes)->summary) }}</textarea> 
+        <textarea class="form-control text-editor" name="summary" id="summary">{{ old('summary', optional($classes)->summary) }}</textarea> 
 		{!! $errors->first('dob', '<p class="text-danger">:message</p>') !!}
     </div>
 </div>
