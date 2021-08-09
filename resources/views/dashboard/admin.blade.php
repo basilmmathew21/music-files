@@ -101,6 +101,8 @@
                       <th style="width: 10px">#</th>
                       <th>Name</th>
                       <th>Gender</th>
+                      <th>Email</th>
+                      <th>Phone</th>
                       <th>Course</th>
                     </tr>
                   </thead>
@@ -110,6 +112,8 @@
 					  <td>{{ $key + 1 }}</td>
                       <td>{{ $student->name }}</td>
                       <td>{{ $student->gender }}</td>
+                      <td>{{ $student->email }}</td>
+                      <td>{{ $student->phone }}</td>
                       <td>{{ $student->course }}</td>
                     </tr>
 				  <?php } ?> 
