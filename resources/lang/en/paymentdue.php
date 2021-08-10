@@ -6,7 +6,7 @@ return [
     'id__placeholder' => 'Enter id here...',
     'title' => 'Title',
     'name' => 'Student Name',
-    'tutor' => 'Tutor Name',
+    'tutor' => 'Tutur Name',
     'title__placeholder' => 'Enter title here...',
     'payment_date' => 'Payment Date',
     'no_of_classes' => 'No of classes',

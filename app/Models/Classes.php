@@ -41,4 +41,9 @@ class Classes extends Model
         return $this->hasOne(Tutor::class,'tutor_user_id');
     }
 
+    public function student()
+    {
+        return $this->hasOne(Student::class,'id','name');
+    }
+
 }
