@@ -221,6 +221,7 @@ Route::group([
         ->name('tutor.classes.remove_file');
 });
 Route::post('/ajaxTutorStudents', 'TutorClassController@ajaxTutorStudents');
+Route::post('/ajaxFeePayment', 'FeepaymentController@ajaxFeePayment');
 Route::group([
     'middleware' => ['permission:view tutorenquiries'],
     'prefix' => 'tutorenquiries',
