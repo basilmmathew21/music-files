@@ -159,7 +159,7 @@ body {
                 <div class="first pl-2 d-flex py-2">
                     <div class="form-check"> </div>
                     <div class="border-left pl-2"><span class="head">Total credits</span>
-                        <div><span class="dollar">{{$user->symbol}}</span><span class="amount">{{ $user->credits}}</span></div>
+                        <div><span class="dollar">{{$user->symbol}}</span><span class="amount" id="amount">{{ $user->credits}}</span></div>
                     </div>
                 </div>
             </div>
@@ -167,12 +167,11 @@ body {
                 <div class="first pl-2 d-flex py-2">
                     <div class="form-check"> </div>
                     <div class="border-left pl-2"><span class="head">Total amount due</span>
-                        <div><span class="dollar">{{$user->symbol}}</span><span class="amount">{{$payment * $user->class_fee}}</span></div>
+                        <div><span class="dollar">{{$user->symbol}}</span><span class="amount" id="payment">{{$payment * $user->class_fee}}</span></div>
                     </div>
                 </div>
             </div>
-
-
+ 
             <div class="py-2 px-3">
                 <div class="second pl-2 d-flex py-2">
                 <div class="form-check"><span style="display:none;" id="one_class_fee">@if($user->class_fee) {{$user->class_fee}} @else 0 @endif</span></div>
@@ -219,7 +218,7 @@ body {
 
 @endsection
 @section('js')
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
             $("#no_of_classes").change(function(){
@@ -229,5 +228,35 @@ body {
                 $("#class_fee").val(class_fee);
             });
     });
+</script>
+
+<script type="text/javascript">
+            $(document).ready(function() {
+            
+            $('#student_user_id').change(function(){
+                
+                var student_user_id = $(this).val();
+			    $.ajax({
+				beforeSend: function (xhr) { // Add this line
+				    xhr.setRequestHeader('X-CSRF-Token', $('[name="_csrfToken"]').val());
+				 },
+				url: '{{ URL::to("/ajaxFeePayment")}}',
+				type: "POST",
+				data: {'student_user_id': student_user_id,"_token": "{{ csrf_token() }}"},
+                success: function (response) {
+					response =   JSON.parse(response);
+					$("#amount").html(response.user.credits);
+                    $(".dollar").html(response.user.symbol);
+                    $("#one_class_fee").html(response.user.class_fee);
+                    var one_class_fee = response.user.class_fee;
+                    var payment       = response.payment;
+                    $("#payment").html(payment*one_class_fee);
+                    $("#class_fee").val(0);
+                    $("#no_of_classes").val('');
+				},
+			    });
+            });
+            
+        });
 </script>
 @stop

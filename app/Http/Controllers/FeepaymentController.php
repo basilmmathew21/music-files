@@ -14,6 +14,7 @@ use Exception;
 use DataTables;
 use DB;
 use Auth;
+use Session;
 use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
@@ -39,6 +40,10 @@ class FeepaymentController extends Controller
     public function index(Request $request)
     {
         $id     = Auth::user()->id;
+        if(Session::get('user_id')){
+            $id = Session::get('user_id');
+            Session::forget('user_id');
+        }
         $user   = User::with('student')
         ->leftJoin('students', 'students.user_id', '=', 'users.id')
         ->leftJoin('currencies', 'students.currency_id', '=', 'currencies.id')
@@ -59,6 +64,30 @@ class FeepaymentController extends Controller
         ->pluck('users.name', 'users.id')->all();
         $isSuperAdmin       =   $user->hasRole('super-admin');
         return view('feepayment.index', compact('user','payment','students','isSuperAdmin'));
+    }
+
+
+
+    public function ajaxFeePayment(Request $request){
+
+        $id     =   $request->input('student_user_id');
+        $user   =   User::with('student')
+        ->leftJoin('students', 'students.user_id', '=', 'users.id')
+        ->leftJoin('currencies', 'students.currency_id', '=', 'currencies.id')
+        ->select(['users.*','students.class_fee','students.credits','users.is_active as is_active','currencies.code','currencies.symbol'])
+        ->findOrFail($id);
+        
+        $payment   = User::Join('students', 'students.user_id', '=', 'users.id')
+        ->leftJoin('classes', 'students.user_id', '=', 'classes.student_user_id')
+        ->select(['classes.id as totalClass'])
+        ->where('classes.is_paid','0')
+        ->where('users.id',$id)
+        ->count();
+
+        $arrayResponse  =   array('user' => $user,'payment' => $payment);
+        echo json_encode($arrayResponse);
+        die;
+
     }
 
 
@@ -157,7 +186,7 @@ class FeepaymentController extends Controller
        
  
         return redirect()->route('feepayment.fee.index')
-            ->with('success_message', trans('users.model_fee_updated'));
+            ->with(['success_message' => trans('users.model_fee_updated'),'user_id' => $id]);
     }
 
     /**
