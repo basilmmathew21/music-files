@@ -47,6 +47,27 @@
     </div>
 
 @endsection
+
+@section('js')
+<script type="text/javascript">
+   $(function () {
+    $('.text-editor').summernote({
+        height: 100,
+        toolbar: [
+            [ 'style', [ 'style' ] ],
+            [ 'font', [ 'bold', 'italic', 'underline', 'clear'] ],
+            [ 'fontname', [ 'fontname' ] ],
+            [ 'fontsize', [ 'fontsize' ] ],
+            [ 'color', [ 'color' ] ],
+            [ 'para', [ 'ol', 'ul', 'paragraph' ] ],
+            [ 'insert', [ 'link'] ],
+            [ 'view', [ 'undo', 'redo', 'fullscreen', 'codeview', 'help' ] ]
+        ]
+    });
+  })
+</script>
+@endsection
+
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
 <link id="bsdp-css" href="https://unpkg.com/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker3.min.css" rel="stylesheet">
 <script src="https://unpkg.com/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>

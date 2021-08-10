@@ -298,7 +298,7 @@ return [
             'can' => ['view testimonials'],
         ],
         [
-            'text' => 'Payments',
+            'text' => 'Payments History',
             'route'  => 'payments.payments.index',
             'icon'    => 'fa fa-credit-card',
             'can' => ['view payments'],
