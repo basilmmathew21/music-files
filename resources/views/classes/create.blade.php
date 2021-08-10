@@ -86,7 +86,7 @@
             calendarWeeks: true,
             autoclose: true,
             todayHighlight: true,
-            orientation: "auto"
+            orientation: "bottom"
         });
     });
 

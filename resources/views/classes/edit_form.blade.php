@@ -39,7 +39,7 @@
     <div class="col-md-10">
         <input class="form-control datepicker" name="date" type="text" id="dob"
             value="{{ old('dob', optional($classes)->date) }}" minlength="1" maxlength="255" required="true"
-            placeholder="{{ trans('students.dob__placeholder') }}" readonly>
+            placeholder="{{ trans('classes.date__placeholder') }}" readonly>
         {!! $errors->first('dob', '<p class="text-danger">:message</p>') !!}
     </div>
 </div>
