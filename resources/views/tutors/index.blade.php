@@ -95,7 +95,7 @@
                 },
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                    {data: 'name', name: 'name'},
+                    {data: 'display_name', name: 'display_name'},
                     {data: 'email', name: 'email'},
                     {data:  'gender', name: "gender"},
                     {data:  'phone', name: "phone"},

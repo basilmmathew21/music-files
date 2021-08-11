@@ -50,6 +50,7 @@ class Tutor extends Model
         //Tutor Table
         $tutor = DB::table('tutors')->insert([
             'user_id'           =>   $id_for_tutor['id'],
+            'display_name'      =>$request->display_name,
             'teaching_stream'              =>   $request->teaching_stream,
             'educational_qualification'             =>      $request->educational_qualification,
             'teaching_experience'              =>    $request->teaching_experience,
@@ -114,6 +115,7 @@ class Tutor extends Model
         //Tutor Table
         $tutor = DB::table('tutors')->where('user_id', $id)->update([
 
+            'display_name'=>                 $request->display_name,
             'teaching_stream'              =>   $request->teaching_stream,
             'educational_qualification'             =>      $request->educational_qualification,
             'teaching_experience'              =>    $request->teaching_experience,

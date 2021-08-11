@@ -5,7 +5,13 @@
         {!! $errors->first('name', '<p class="text-danger">:message</p>') !!}
     </div>
 </div>
-
+<div class="form-group {{ $errors->has('display_name') ? 'has-error' : '' }}">
+    <label for="name" class="col-md-2 control-label">{{ trans('users.display_name') }}</label>
+    <div class="col-md-10">
+        <input class="form-control" name="display_name" type="text" id="display_name" value="@if(isset($tutor) && !empty($tutor)){{ optional($tutor[0])->display_name}}@endif" minlength="1" maxlength="255" required="true" placeholder="{{ trans('users.displayname__placeholder') }}">
+        {!! $errors->first('display_name', '<p class="text-danger">:message</p>') !!}
+    </div>
+</div>
 <div class="form-group {{ $errors->has('email') ? 'has-error' : '' }}">
     <label for="email" class="col-md-2 control-label">{{ trans('users.email') }}</label>
     <div class="col-md-10">
@@ -168,8 +174,8 @@
     <div class="col-md-10">
         <select class="form-control" multiple="true" id="studentpicker" name="students[]">
             <option value="">--Select--</option>
-            @foreach ($students as $id => $stud)
-            <option value="{{ $id }}">{{ $stud }}</option>
+            @foreach ($students as  $stud)
+            <option value="{{ $stud->id }}">{{ $stud->display_name }}</option>
             @endforeach
 
         </select>
@@ -183,13 +189,13 @@
         <select class="form-control" multiple="true" id="studentpicker" name="students[]">
             <option value="">--Select--</option>
             @if($selected)
-            @foreach($students as $id => $stud)
-            <option value="{{ $id }}" @if(in_array( $id ,$selected)) selected @endif>{{ $stud }}</option>
+            @foreach($students as $stud)
+            <option value="{{ $stud->id }}" @if(in_array( $stud->id ,$selected)) selected @endif>{{ $stud->display_name }}</option>
             @endforeach
             @endif
             @if(!$selected)
-            @foreach($students as $id => $stud)
-            <option value="{{ $id }}">{{ $stud }}</option>
+            @foreach($students as  $stud)
+            <option value="{{ $id }}">{{ $stud->display_name }}</option>
             @endforeach
 
             @endif

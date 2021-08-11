@@ -118,5 +118,7 @@ return [
     'field_name_title' => 'Field Name',
     'field_type_title' => 'Field Type',
     'back'=>'Back',
+    'display_name'=>'Display Name',
+    'displayname__placeholder'=>'Enter display name here ...',
 
 ];
