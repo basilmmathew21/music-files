@@ -57,7 +57,7 @@
 <h3>{{ trans('classes.files') }}</h3>
                     @foreach ($files as $file)
                             <a target="_blank" href="{{asset('uploads/files_'.$classes->id.'/'.$file)}}">{{ $file }}</a>
-							<a href="#" style="float:right;margin-right:20%" onclick="return deleteImage('<?php echo 'uploads/files_16/'.$file; ?>')"><i class="fas fa-trash-alt"></i> </a>
+							<a href="#" style="float:right;margin-right:20%" onclick="return deleteImage('<?php echo 'uploads/files_'.$classes->id.'/'.$file; ?>')"><i class="fas fa-trash-alt"></i> </a>
 							</br>
                         @endforeach
 
