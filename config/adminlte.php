@@ -298,6 +298,12 @@ return [
             'can' => ['view testimonials'],
         ],
         [
+            'text' => 'Testimonial',
+            'route'  => 'student.testimonial.show',
+            'icon'    => 'fa fa-globe',
+            'can' => ['student testimonial'],
+        ],
+        [
             'text' => 'Payments',
             'icon'    => 'fa fa-credit-card',
             'can' => ['view payments'],

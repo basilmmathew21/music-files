@@ -112,6 +112,8 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'add testimonials']);
         Permission::create(['name' => 'view testimonials']);
 
+        Permission::create(['name' => 'student testimonial']);
+
         Permission::create(['name' => 'edit payments']);
         Permission::create(['name' => 'delete payments']);
         Permission::create(['name' => 'add payments']);
@@ -154,6 +156,7 @@ class PermissionsSeeder extends Seeder
 
         $studentRole->givePermissionTo('view classes');
         $studentRole->givePermissionTo('view payments');
-        $studentRole->givePermissionTo('add testimonials');
+        $studentRole->givePermissionTo('student testimonial');
+        
     }
 }

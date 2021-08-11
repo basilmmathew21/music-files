@@ -26,7 +26,6 @@ class TestimonialsController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware(['role_or_permission:student']);
     }
 
     /**
@@ -44,7 +43,6 @@ class TestimonialsController extends Controller
         if ($request->ajax()) {
             $data = Testimonial::select('testimonials.*', 'users.name')
                 ->join('users', 'users.id', '=', 'testimonials.user_id')
-                ->where('testimonials.user_id', '=', \Auth::user()->id)
                 ->orderBy('testimonials.created_at', 'desc')
                 ->get();
 

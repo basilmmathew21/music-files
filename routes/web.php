@@ -183,6 +183,16 @@ Route::group([
     Route::get('/index', 'TestimonialsController@index')->name('testimonials.testimonial.index');
 });
 
+Route::group([
+    'middleware' => ['permission:student testimonial'],
+    'prefix' => 'student',
+], function () {
+    Route::get('/testimonial', 'StudentTestimonialController@show')->name('student.testimonial.show');
+    Route::get('/create-testimonial', 'StudentTestimonialController@create')->name('student.testimonial.create');
+    Route::post('/store-testimonial', 'StudentTestimonialController@store')->name('student.testimonial.store');
+    Route::delete('/delete-testimonial/{id}', 'StudentTestimonialController@destroy')->name('student.testimonial.destroy');
+});
+
 
 Route::group([
     'middleware' => ['permission:view payments'],
