@@ -187,7 +187,9 @@ body {
                     </div>
 				 </div>
 				<div>
-                    @if($user->class_fee == 0) <p class="text-danger">Please enter class fee for the user</p>  @endif    
+                    <span id="no_class_fee_msg">
+                    @if($user->class_fee == 0) <p class="text-danger">The course fee for the student has not updated</p>  @endif
+                    </span>
 					{!! $errors->first('no_of_classes', '<p class="text-danger">:message</p>') !!}
 				</div>
             </div>
@@ -245,6 +247,8 @@ body {
 				data: {'student_user_id': student_user_id,"_token": "{{ csrf_token() }}"},
                 success: function (response) {
 					response =   JSON.parse(response);
+					$("#no_class_fee_msg").html('');
+                    
 					$("#amount").html(response.user.credits);
                     $(".dollar").html(response.user.symbol);
                     $("#one_class_fee").html(response.user.class_fee);
@@ -253,6 +257,9 @@ body {
                     $("#payment").html(payment*one_class_fee);
                     $("#class_fee").val(0);
                     $("#no_of_classes").val('');
+					if(response.user.class_fee == 0){
+                        $("#no_class_fee_msg").html('<p class="text-danger">The course fee for the student has not updated</p>');
+                    }
 				},
 			    });
             });
@@ -260,3 +267,7 @@ body {
         });
 </script>
 @stop
+
+
+
+        
