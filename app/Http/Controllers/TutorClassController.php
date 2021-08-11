@@ -45,6 +45,13 @@ class TutorClassController extends Controller
         {
             $data = $data->where('tutor_user_id',$logged_in_id);
         }
+
+        
+        if (auth()->user()->roles[0]->id == 4)
+        {
+            $data = $data->where('student_user_id',$logged_in_id);
+        }
+
         $data = $data->select(['classes.*','users.name',DB::raw('DATE_FORMAT(classes.date, "%d-%b-%Y") as date')])->get();
 
             $datatable = DataTables::of($data)
@@ -63,6 +70,11 @@ class TutorClassController extends Controller
                 })
                 ->addIndexColumn()
                 ->addColumn('action', function ($student) {
+
+                    if (auth()->user()->roles[0]->id == 4)
+                    {
+                        return view('classes.datatable_for_students', compact('student'));
+                    }
                     return view('classes.datatable', compact('student'));
                 })
                 ->rawColumns(['action'])
@@ -72,6 +84,10 @@ class TutorClassController extends Controller
 
         $classes = TutorClass::leftJoin('users', 'classes.student_user_id', '=', 'users.id')->paginate(25);
         //var_dump($classes);exit;
+        if (auth()->user()->roles[0]->id == 4)
+        {
+            return view('classes.index_for_studnts', compact('classes'));
+        }
         return view('classes.index', compact('classes'));
     }
 
