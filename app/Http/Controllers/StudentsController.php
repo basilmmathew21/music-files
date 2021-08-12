@@ -297,7 +297,7 @@ class StudentsController extends Controller
                 }),
             ],
             'phone' => [
-                'digits:10',
+                //'digits:10',
                 Rule::unique('users')->where(function ($query) {
                 }),
             ],
