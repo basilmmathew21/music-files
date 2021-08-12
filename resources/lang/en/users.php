@@ -196,5 +196,8 @@ return [
 'accept_enquiry_msg'=>'Are you sure that you want to accept the enquiry and register as tutor',
 'reject_enquiry_msg'=>'Are you sure that you want to reject the enquiry',
 
+'display_name'=>'Display Name',
+'displayname__placeholder'=>'Enter display name here ...',
+
 
 ];

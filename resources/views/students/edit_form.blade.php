@@ -16,6 +16,14 @@
         {!! $errors->first('name', '<p class="text-danger">:message</p>') !!}
     </div>
 </div>
+<div class="form-group {{ $errors->has('display_name') ? 'has-error' : '' }}">
+    <label for="name" class="col-md-2 control-label"><span style="color:red">*</span>{{ trans('students.display_name') }}</label>
+    <div class="col-md-10">
+        <input class="form-control" name="display_name" type="text" id="display_name" value="{{ old('display_name', optional($user)->display_name) }}"
+            minlength="1" maxlength="255" required="true" placeholder="{{ trans('students.displayname__placeholder') }}">
+        {!! $errors->first('display_name', '<p class="text-danger">:message</p>') !!}
+    </div>
+</div>
 
 <div class="form-group {{ $errors->has('email') ? 'has-error' : '' }}">
     <label for="email" class="col-md-2 control-label"><span style="color:red">*</span>{{ trans('students.email') }}</label>

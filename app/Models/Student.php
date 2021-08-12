@@ -22,7 +22,7 @@ class Student extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id','country_id','course_id','currency_id','class_fee','is_active','is_registered','credits'
+        'user_id','display_name','country_id','course_id','currency_id','class_fee','is_active','is_registered','credits'
     ];
 
     public function getIsActiveAttribute($value)

@@ -38,7 +38,8 @@ class TutorController extends Controller
         if ($request->ajax()) {
             $data  = DB::table('users')
             ->join('countries', 'users.country_id', '=', 'countries.id')
-            ->select(['users.*','countries.name AS country_name',DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
+            ->join('tutors', 'tutors.user_id', '=', 'users.id')
+            ->select(['users.*','tutors.display_name','countries.name AS country_name',DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
             ->where('user_type_id', 3)
             ->get();
             foreach($data as $d)
@@ -83,9 +84,10 @@ class TutorController extends Controller
         $currency = Currency::pluck('symbol', 'id')->all();
         $tutor_students=TutorStudents::pluck('user_id');
         $students  = User::where('user_type_id',4)
+              ->join('students', 'students.user_id', '=', 'users.id')
               ->where('is_active',1)
-              ->whereNotIN('id',$tutor_students)
-              ->pluck('name','id')->all();
+              ->whereNotIN('users.id',$tutor_students)
+              ->select('students.display_name','users.id')->get();
         return view('tutors.create', compact('nationalities','currency','students'));
     }
 
@@ -220,9 +222,12 @@ class TutorController extends Controller
         $tutor_students=TutorStudents::where('tutor_id','!=',$id)->pluck('user_id')->all();
 
         $students  = User::where('user_type_id',4)
+            ->join('students', 'students.user_id', '=', 'users.id')
               ->where('is_active',1)
-              ->whereNotIN('id',$tutor_students)
-              ->pluck('name','id')->all();
+              ->whereNotIN('users.id',$tutor_students)
+              ->select('students.display_name','users.id')->get();
+
+            
 
         ////////////////////////////////////////////////////////////
 

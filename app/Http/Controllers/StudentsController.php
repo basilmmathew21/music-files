@@ -45,7 +45,7 @@ class StudentsController extends Controller
                 ->join('countries', 'users.country_id', '=', 'countries.id')
                 ->join('students', 'students.user_id', '=', 'users.id')
                 ->leftJoin('courses', 'students.course_id', '=', 'courses.id')
-                ->select(['users.*', 'users.is_active as is_active', 'students.is_registered', 'courses.course', 'countries.name AS country_name', DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
+                ->select(['users.*', 'users.is_active as is_active','students.display_name', 'students.is_registered', 'courses.course', 'countries.name AS country_name', DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
                 ->where('user_type_id', 4)
                 ->get();
                 
@@ -54,12 +54,12 @@ class StudentsController extends Controller
                 ->filter(function ($instance) use ($request) {
                     if ($request->has('keyword') && $request->get('keyword')) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains(Str::lower($row['name']), Str::lower($request->get('keyword'))) ? true : false;
+                            return Str::contains(Str::lower($row['display_name']), Str::lower($request->get('keyword'))) ? true : false;
                         });
                     }
                     if ($request->has('keyword') && $request->get('keyword')) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains(Str::lower($row['phone'] . $row['email'] . $row['name']), Str::lower($request->get('keyword'))) ? true : false;
+                            return Str::contains(Str::lower($row['phone'] . $row['email'] . $row['display_name']), Str::lower($request->get('keyword'))) ? true : false;
                         });
                     }
                 })
@@ -119,9 +119,10 @@ class StudentsController extends Controller
 
         $newuser = User::where('email', '=', $data['email'])->where('user_type_id', 4)->first()->toArray();
         $student['user_id']        =  $newuser['id'];
+        $student['display_name']   =  $request->display_name;
         $student['country_id']     =  $data['country'];
         $student['course_id']      =  $request->course;
-        $student['currency_id']    =  $request->currency;
+       // $student['currency_id']    =  $request->currency;
         $student['class_fee']      =  $request->class_fee;
         $student['is_registered']  =  1;
         //$student['is_active']      =  $request->status ? $request->status : 0;
@@ -147,7 +148,7 @@ class StudentsController extends Controller
 
         $user           = User::with('student')
             ->leftJoin('students', 'students.user_id', '=', 'users.id')
-            ->select(['users.*', 'users.is_active as is_active', 'students.class_fee', 'students.is_registered', 'students.country_id', 'students.course_id', 'students.currency_id', DB::raw('DATE_FORMAT(users.dob, "%d-%m-%Y") as dob')])
+            ->select(['users.*', 'users.is_active as is_active','students.display_name', 'students.class_fee', 'students.is_registered', 'students.country_id', 'students.course_id', 'students.currency_id', DB::raw('DATE_FORMAT(users.dob, "%d-%m-%Y") as dob')])
             ->findOrFail($id);
         $nationalities  = Country::pluck('name', 'id')->all();
         $courses        = Course::pluck('course', 'id')->all();
@@ -198,6 +199,7 @@ class StudentsController extends Controller
         $studentDetais                  =  Student::where('user_id', $id)->first();
 
         if ($studentDetais && $studentDetais != null) {
+            $student['display_name']   =  $request->display_name;
             $student['country_id']     =  $request->country;
             $student['course_id']      =  $request->course;
             $student['currency_id']    =  $request->currency;
