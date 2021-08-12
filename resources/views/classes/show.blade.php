@@ -10,16 +10,14 @@
             <a href="{{ route('tutor.classes.index') }}" class="btn btn-primary" title="{{ trans('classes.show_all') }}">
                 <i class="fas fa-list-alt"></i>
             </a>
-            
-            <a href="{{ route('tutor.classes.edit', $classes->id ) }}" class="btn btn-primary"
-                title="{{ trans('classes.edit') }}">
+
+            <a href="{{ route('tutor.classes.edit', $classes->id ) }}" class="btn btn-primary" title="{{ trans('classes.edit') }}">
                 <i class="fas fa-edit"></i>
             </a>
-            <button type="submit" class="btn btn-danger" title="{{ trans('classes.delete') }}"
-                onclick="return confirm('{{ trans('classes.confirm_delete') }}')">
+            <button type="submit" class="btn btn-danger" title="{{ trans('classes.delete') }}" onclick="return confirm('{{ trans('classes.confirm_delete') }}')">
                 <i class="fas fa-trash-alt"></i>
             </button>
-            
+
         </div>
     </form>
 </div>
@@ -33,22 +31,22 @@
             <div class="panel-body">
                 <dl class="dl-horizontal">
                     <dt>{{ trans('classes.student') }}</dt>
-                    <dd>{{ $classes->name }}</dd>                   
-                    
+                    <dd>{{ $classes->name }}</dd>
+
                     <dt>{{ trans('classes.date') }}</dt>
                     <dd>{{ $classes->date }}</dd>
-					
-                   
+
+
                     <dt>{{ trans('classes.summary') }}</dt>
-                    <dd>{{ $classes->summary }}</dd>
-                    
-					<dt>{{ trans('classes.files') }}</dt>
+                    <dd><strong>{!! $classes->summary !!}</strong></dd>
+
+                    <dt>{{ trans('classes.files') }}</dt>
                     @foreach ($files as $file)
-                            <dd><a href="{{asset('uploads/files_'.$classes->id.'/'.$file)}}" download>{{ $file }}</a></dd>
-                        @endforeach
+                    <dd><a href="{{asset('uploads/files_'.$classes->id.'/'.$file)}}" download>{{ $file }}</a></dd>
+                    @endforeach
 
                 </dl>
-                
+
             </div>
         </div>
     </div>
