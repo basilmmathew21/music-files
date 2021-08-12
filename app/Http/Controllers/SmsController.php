@@ -28,17 +28,55 @@ class SmsController extends Controller
  
     public function inbox(Request $request)
     {
-        $log_user=auth()->user();
-       
-              
-
+              $log_user=auth()->user();       
+              $user_type=User::where('id',$log_user->id)->pluck('user_type_id')->first();
+             
               //////////////////////////////////////////////////////
-              if ($request->ajax()) {           
-                $data=DB::table('sms')
-                ->select('sms.*','users.name')
-                ->leftjoin('users','users.id','=','sms.from_user_id')
-                ->where('to_user_id',  $log_user->id)
-                ->orderby('sent_on','desc')->get();
+              if ($request->ajax()) {    
+                  if($user_type==3) 
+                  {
+                    $data=SMS::select("sms.*",
+                                 \DB::raw('(CASE 
+                                WHEN users.user_type_id = "4" THEN students.display_name 
+                                ELSE users.name  END) AS name'))
+                                ->leftjoin('users','users.id','=','sms.from_user_id') 
+                                ->leftjoin('students','students.user_id','=','sms.from_user_id')                
+                                ->where('to_user_id',  $log_user->id)
+                                ->orderby('sent_on','desc')->get();
+
+                  }  
+                  else  if($user_type==4)   
+                  {
+                    $data=SMS::select('sms.*', \DB::raw('(CASE 
+                                WHEN users.user_type_id = "3" THEN tutors.display_name 
+                                ELSE users.name  END) AS name'))
+                                ->leftjoin('users','users.id','=','sms.from_user_id')  
+                                ->leftjoin('tutors','tutors.user_id','=','sms.from_user_id')               
+                                ->where('to_user_id',  $log_user->id)
+                                ->orderby('sent_on','desc')->get();
+
+                  } 
+                  else
+                  {
+                    $data=SMS::select('sms.*','users.name',\DB::raw('(CASE 
+                                WHEN users.user_type_id = "3" THEN tutors.display_name
+                                WHEN users.user_type_id = "4" THEN students.display_name 
+                                ELSE users.name  END) AS display_name'))
+                                ->leftjoin('users','users.id','=','sms.from_user_id') 
+                                ->leftjoin('students','students.user_id','=','sms.from_user_id') 
+                                ->leftjoin('tutors','tutors.user_id','=','sms.from_user_id')                
+                                ->where('to_user_id',  $log_user->id)
+                                ->orderby('sent_on','desc')->get();
+                    
+                    foreach($data as $d)
+                    {
+                        $d['name']=$d['display_name']."(".$d['name'].")";
+      
+                    }
+                    
+
+                  }
+              
                 foreach($data as $d)
                 {
                     if(strlen($d->message)>20)                    
@@ -73,14 +111,57 @@ class SmsController extends Controller
     public function sent(Request $request)
     {
         $log_user=auth()->user();
+        $user_type=User::where('id',$log_user->id)->pluck('user_type_id')->first();
        
               //////////////////////////////////////////////////////
               if ($request->ajax()) {           
-                $data=DB::table('sms')
+               /* $data=DB::table('sms')
                 ->select('sms.*','users.name')
                 ->leftjoin('users','users.id','=','sms.to_user_id')
                 ->where('from_user_id',  $log_user->id)
-                ->orderby('sent_on','desc')->get();
+                ->orderby('sent_on','desc')->get();*/
+
+                if($user_type==3) 
+                {
+                  $data=SMS::select("sms.*",
+                               \DB::raw('(CASE 
+                              WHEN users.user_type_id = "4" THEN students.display_name 
+                              ELSE users.name  END) AS name'))
+                              ->leftjoin('users','users.id','=','sms.to_user_id') 
+                              ->leftjoin('students','students.user_id','=','sms.to_user_id')                
+                              ->where('from_user_id',  $log_user->id)
+                              ->orderby('sent_on','desc')->get();
+
+                }  
+                else  if($user_type==4)   
+                {
+                  $data=SMS::select('sms.*', \DB::raw('(CASE 
+                              WHEN users.user_type_id = "3" THEN tutors.display_name 
+                              ELSE users.name  END) AS name'))
+                              ->leftjoin('users','users.id','=','sms.to_user_id')  
+                              ->leftjoin('tutors','tutors.user_id','=','sms.to_user_id')               
+                              ->where('from_user_id',  $log_user->id)
+                              ->orderby('sent_on','desc')->get();
+
+                } 
+                else
+                {
+                  $data=SMS::select('sms.*','users.name',\DB::raw('(CASE 
+                              WHEN users.user_type_id = "3" THEN tutors.display_name
+                              WHEN users.user_type_id = "4" THEN students.display_name 
+                              ELSE users.name  END) AS display_name'))
+                              ->leftjoin('users','users.id','=','sms.to_user_id') 
+                              ->leftjoin('students','students.user_id','=','sms.to_user_id') 
+                              ->leftjoin('tutors','tutors.user_id','=','sms.to_user_id')                
+                              ->where('from_user_id',  $log_user->id)
+                              ->orderby('sent_on','desc')->get();
+                  
+                  foreach($data as $d)
+                  {
+                      $d['name']=$d['display_name']."(".$d['name'].")";
+    
+                  }
+                }
                
                 foreach($data as $d)
                  {
@@ -123,11 +204,27 @@ class SmsController extends Controller
         $log_user=auth()->user();
         if($log_user['user_type_id']==1 || $log_user['user_type_id']==2)
         {
-            $whereIn=array('2','3','4');
+            
             $users=DB::table('users')
             ->select('users.*')
-            ->whereIn('user_type_id',$whereIn)
+            ->where('user_type_id','!=',1)
             ->where('is_active', 1)->get();
+
+            $users=User::select('users.*',\DB::raw('(CASE 
+                                WHEN users.user_type_id = "3" THEN tutors.display_name
+                                WHEN users.user_type_id = "4" THEN students.display_name 
+                                ELSE users.name  END) AS display_name'))
+                                ->leftjoin('students','students.user_id','=','users.id') 
+                                ->leftjoin('tutors','tutors.user_id','=','users.id')                
+                                ->where('user_type_id','!=',1)
+                                ->where('is_active', 1)
+                                ->orderBy('users.created_at')->get();
+                foreach($users as $user)
+                {
+                    if($user->display_name!='Admin')
+                        $user->display_name=$user->display_name."(".$user->name.")";
+
+                }
 
 
         }
@@ -135,8 +232,9 @@ class SmsController extends Controller
         {
          
             $users=DB::table('users')
-            ->select('users.*')
+            ->select('users.*','students.display_name')
             ->leftjoin('tutor_students','tutor_students.user_id','=','users.id')
+            ->leftjoin('students','students.user_id','=','tutor_students.user_id')
             ->where('tutor_students.tutor_id',$log_user['id'])
             ->orWhere('users.user_type_id',1)
             ->where('users.is_active', 1)->get();
@@ -145,8 +243,9 @@ class SmsController extends Controller
         else
         {
             $users=DB::table('users')
-            ->select('users.*')
+            ->select('users.*','tutors.display_name')
             ->leftjoin('tutor_students','tutor_students.tutor_id','=','users.id')
+            ->leftjoin('tutors','tutors.user_id','=','tutor_students.tutor_id')
             ->where('tutor_students.user_id',$log_user['id'])
             ->orWhere('users.user_type_id',1)
             ->where('users.is_active', 1)->get();
@@ -190,17 +289,22 @@ class SmsController extends Controller
     {
         $log_user=auth()->user();
        
+            
               //////////////////////////////////////////////////////
               if ($request->ajax()) {           
                 $data=DB::table('sms')
-                ->select('sms.*','touser.name as toname','fromuser.name as fromname')
-                ->leftjoin('users as touser','touser.id','=','sms.to_user_id')
-                ->leftjoin('users as fromuser','fromuser.id','=','sms.from_user_id')
-                ->where('to_user_type_id',  3)
-                ->orderby('sent_on','desc')->get();
-
+                        ->select('sms.*','touser.name as toname','fromuser.name as fromname','students.display_name as student_displayname','tutors.display_name as tutor_displayname','touser.user_type_id as to_user_type_id','fromuser.user_type_id as from_user_type_id')
+                        ->leftjoin('users as touser','touser.id','=','sms.to_user_id')
+                        ->leftjoin('users as fromuser','fromuser.id','=','sms.from_user_id')
+                        ->leftjoin('students','students.user_id','=','sms.from_user_id') 
+                        ->leftjoin('tutors','tutors.user_id','=','sms.to_user_id')   
+                        ->where('to_user_type_id',  3)
+                        ->orderby('sent_on','desc')->get();
                 foreach($data as $d)
                 {
+                    if($d->fromname!='Super Admin')
+                        $d->fromname=$d->student_displayname."(".$d->fromname.")";
+                    $d->toname=$d->tutor_displayname."(".$d->toname.")";
                     if(strlen($d->message)>20)                    
                        $d->message=substr($d->message, 0, 20)."...";                    
 
@@ -238,18 +342,24 @@ class SmsController extends Controller
               //////////////////////////////////////////////////////
               if ($request->ajax()) {           
                 $data=DB::table('sms')
-                ->select('sms.*','touser.name as toname','fromuser.name as fromname')
+                ->select('sms.*','touser.name as toname','fromuser.name as fromname','students.display_name as student_displayname','tutors.display_name as tutor_displayname','touser.user_type_id as to_user_type_id','fromuser.user_type_id as from_user_type_id')
                 ->leftjoin('users as touser','touser.id','=','sms.to_user_id')
                 ->leftjoin('users as fromuser','fromuser.id','=','sms.from_user_id')
+                ->leftjoin('students','students.user_id','=','sms.to_user_id') 
+                ->leftjoin('tutors','tutors.user_id','=','sms.from_user_id')   
                 ->where('from_user_type_id',  3)
                 ->orderby('sent_on','desc')->get();
-
                 foreach($data as $d)
                 {
+                    if($d->toname!='Super Admin')
+                        $d->toname=$d->student_displayname."(".$d->toname.")";
+                    $d->fromname=$d->tutor_displayname."(".$d->fromname.")";
                     if(strlen($d->message)>20)                    
-                       $d->message=substr($d->message, 0, 20)."...";                    
+                    $d->message=substr($d->message, 0, 20)."...";                    
 
-                 }
+                }
+
+              
                
                 $datatable =  Datatables::of($data)
                 ->filter(function ($instance) use ($request) {
@@ -279,20 +389,25 @@ class SmsController extends Controller
         $log_user=auth()->user();
        
               //////////////////////////////////////////////////////
-              if ($request->ajax()) {           
+              if ($request->ajax()) {  
                 $data=DB::table('sms')
-                ->select('sms.*','touser.name as toname','fromuser.name as fromname')
+                ->select('sms.*','touser.name as toname','fromuser.name as fromname','students.display_name as student_displayname','tutors.display_name as tutor_displayname','touser.user_type_id as to_user_type_id','fromuser.user_type_id as from_user_type_id')
                 ->leftjoin('users as touser','touser.id','=','sms.to_user_id')
                 ->leftjoin('users as fromuser','fromuser.id','=','sms.from_user_id')
+                ->leftjoin('students','students.user_id','=','sms.to_user_id') 
+                ->leftjoin('tutors','tutors.user_id','=','sms.from_user_id')   
                 ->where('to_user_type_id',  4)
                 ->orderby('sent_on','desc')->get();
-
                 foreach($data as $d)
                 {
+                    if($d->fromname!='Super Admin')
+                        $d->fromname=$d->tutor_displayname."(".$d->fromname.")";
+                    $d->toname=$d->student_displayname."(".$d->toname.")";
                     if(strlen($d->message)>20)                    
-                       $d->message=substr($d->message, 0, 20)."...";                    
+                    $d->message=substr($d->message, 0, 20)."...";                    
 
-                 }
+                }         
+              
                
                 $datatable =  Datatables::of($data)
                 ->filter(function ($instance) use ($request) {
@@ -324,21 +439,27 @@ class SmsController extends Controller
         $log_user=auth()->user();
        
               //////////////////////////////////////////////////////
-              if ($request->ajax()) {           
+              if ($request->ajax()) {  
                 $data=DB::table('sms')
-                ->select('sms.*','touser.name as toname','fromuser.name as fromname')
+                ->select('sms.*','touser.name as toname','fromuser.name as fromname','students.display_name as student_displayname','tutors.display_name as tutor_displayname','touser.user_type_id as to_user_type_id','fromuser.user_type_id as from_user_type_id')
                 ->leftjoin('users as touser','touser.id','=','sms.to_user_id')
                 ->leftjoin('users as fromuser','fromuser.id','=','sms.from_user_id')
+                ->leftjoin('students','students.user_id','=','sms.from_user_id') 
+                ->leftjoin('tutors','tutors.user_id','=','sms.to_user_id')   
                 ->where('from_user_type_id',  4)
                 ->orderby('sent_on','desc')->get();
-
                 foreach($data as $d)
                 {
+                    if($d->toname!='Super Admin')
+                        $d->toname=$d->tutor_displayname."(".$d->toname.")";
+                    $d->fromname=$d->student_displayname."(".$d->fromname.")";
                     if(strlen($d->message)>20)                    
-                       $d->message=substr($d->message, 0, 20)."...";                    
+                    $d->message=substr($d->message, 0, 20)."...";                    
 
-                 }
-               
+                }      
+                
+
+                
                 $datatable =  Datatables::of($data)
                 ->filter(function ($instance) use ($request) {
                     if ($request->has('keyword') && $request->get('keyword')) {

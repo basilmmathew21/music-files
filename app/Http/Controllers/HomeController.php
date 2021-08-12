@@ -70,19 +70,21 @@ class HomeController extends Controller
                 ->Join('tutor_students', 'tutor_students.user_id', '=', 'users.id')
                 ->where('tutor_students.tutor_id', $id)
                 ->leftJoin('courses', 'students.course_id', '=', 'courses.id')
-                ->select(['users.*', 'courses.course', 'countries.name AS country_name', DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
+                ->select(['users.*','students.display_name', 'courses.course', 'countries.name AS country_name', DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
                 ->limit(10)
                 ->orderBy('users.created_at', 'desc')
                 ->get();
 
-            $tutorClass =   TutorClass::leftJoin('users', 'classes.student_user_id', '=', 'users.id');
-            $tutorClass =   $tutorClass->select(['classes.*', 'users.name', DB::raw('DATE_FORMAT(classes.date, "%d-%b-%Y") as date')]);
+            $tutorClass =   TutorClass::leftJoin('users', 'classes.student_user_id', '=', 'users.id')
+                                        ->LeftJoin('students', 'students.user_id', '=', 'classes.student_user_id') ;
+            $tutorClass =   $tutorClass->select(['classes.*','students.display_name','users.name', DB::raw('DATE_FORMAT(classes.date, "%d-%b-%Y") as date')]);
             $tutorClass =   $tutorClass->where('tutor_user_id', $id);
             $tutorClass =   $tutorClass->limit(10)->orderBy('users.created_at', 'desc')->get();
 
             $sms        =   DB::table('sms')
-                ->select('sms.*', 'users.name', DB::raw('DATE_FORMAT(sms.sent_on, "%d-%b-%Y %h:%i:%s") as sent_on'))
-                ->leftjoin('users', 'users.id', '=', 'sms.from_user_id');
+                ->select('sms.*','students.display_name', 'users.name', DB::raw('DATE_FORMAT(sms.sent_on, "%d-%b-%Y %h:%i:%s") as sent_on'))
+                ->leftjoin('users', 'users.id', '=', 'sms.from_user_id')
+                ->LeftJoin('students', 'students.user_id', '=', 'sms.from_user_id');
             $sms        =   $sms->where('to_user_id', $id);
             $sms        =   $sms->limit(10)->orderby('sent_on', 'desc')->get();
 
@@ -125,8 +127,9 @@ class HomeController extends Controller
                 ->limit(10)->orderby('payment_histories.created_at', 'desc')->get();
 
             $sms            =   DB::table('sms')
-                ->select('sms.*', 'users.name', DB::raw('DATE_FORMAT(sms.sent_on, "%d-%b-%Y %h:%i:%s") as sent_on'))
-                ->leftjoin('users', 'users.id', '=', 'sms.from_user_id');
+                ->select('sms.*', 'users.name','tutors.display_name', DB::raw('DATE_FORMAT(sms.sent_on, "%d-%b-%Y %h:%i:%s") as sent_on'))
+                ->leftjoin('users', 'users.id', '=', 'sms.from_user_id')
+                ->LeftJoin('tutors', 'tutors.user_id', '=', 'sms.from_user_id');;
             $sms            =   $sms->where('to_user_id', $id);
             $sms            =   $sms->limit(10)->orderby('sent_on', 'desc')->get();
 
@@ -173,18 +176,19 @@ class HomeController extends Controller
                 //->Join('tutors', 'tutors.user_id', '=', 'users.id')
                 ->Join('tutor_students', 'tutor_students.user_id', '=', 'users.id')
                 ->leftJoin('courses', 'students.course_id', '=', 'courses.id')
-                ->select(['users.*', 'courses.course', 'countries.name AS country_name', DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
+                ->select(['users.*','students.display_name','courses.course', 'countries.name AS country_name', DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
                 ->limit(10)
                 ->orderBy('users.created_at', 'desc')
                 ->get();
 
 
             $sms            =   DB::table('sms')
-                ->select('sms.*', 'users.name', DB::raw('DATE_FORMAT(sms.sent_on, "%d-%b-%Y %h:%i:%s") as sent_on'))
-                ->leftjoin('users', 'users.id', '=', 'sms.from_user_id');
+                ->select('sms.*', 'users.name','students.display_name as student_displayname','tutors.display_name as tutor_displayname', DB::raw('DATE_FORMAT(sms.sent_on, "%d-%b-%Y %h:%i:%s") as sent_on'))
+                ->leftjoin('users', 'users.id', '=', 'sms.from_user_id')
+                ->LeftJoin('students', 'students.user_id', '=', 'sms.from_user_id')
+                ->LeftJoin('tutors', 'tutors.user_id', '=', 'sms.from_user_id');
             $sms            =   $sms->where('to_user_id', $id);
             $sms            =   $sms->limit(10)->orderby('sent_on', 'desc')->get();
-
 
             return view('dashboard.admin', compact('classes', 'feesDue', 'credits', 'students', 'studentInfo', 'sms'));
         }

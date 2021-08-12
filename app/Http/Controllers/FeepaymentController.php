@@ -61,7 +61,13 @@ class FeepaymentController extends Controller
         $students  = User::join('students','students.user_id','=','users.id')
         ->where('users.user_type_id',4)
         ->where('users.is_active',1)
-        ->pluck('users.name', 'users.id')->all();
+        ->select('users.name','students.display_name','users.id')->get();
+        
+        foreach($students as $student)
+        {
+            $student['name']= $student['display_name']."(".$student['name'].")";
+        }
+
         $isSuperAdmin       =   $user->hasRole('super-admin');
         return view('feepayment.index', compact('user','payment','students','isSuperAdmin'));
     }

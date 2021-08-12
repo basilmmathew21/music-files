@@ -110,7 +110,7 @@
 				  <?php foreach($studentInfo as $key => $student){  ?>
                     <tr>
 					  <td>{{ $key + 1 }}</td>
-                      <td>{{ $student->name }}</td>
+                      <td>{{$student->display_name}}({{ $student->name }})</td>
                       <td>{{ $student->gender }}</td>
                       <td>{{ $student->email }}</td>
                       <td>{{ $student->phone }}</td>
@@ -156,7 +156,7 @@
 				  <?php foreach($sms as $key => $sm){  ?>
                     <tr>
 					  <td>{{ $key + 1 }}</td>
-                      <td>{{ $sm->name }}</td>
+                      <td>{{$sm->tutor_displayname}}{{$sm->student_displayname}}({{ $sm->name }})</td>
                       <td>{{ $sm->message }}</td>
                       <td>{{ $sm->sent_on }}</td>
                     </tr>

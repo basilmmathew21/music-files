@@ -43,7 +43,9 @@ class TutorClassController extends Controller
 
             if (auth()->user()->roles[0]->id == 3)
         {
-            $data = $data->where('tutor_user_id',$logged_in_id);
+            $data = $data->leftjoin('students','students.user_id','=','classes.student_user_id')
+                  ->where('tutor_user_id',$logged_in_id)
+                  ->select(['classes.*','students.display_name as name',DB::raw('DATE_FORMAT(classes.date, "%d-%b-%Y") as date')]);
         }
 
         
@@ -51,8 +53,14 @@ class TutorClassController extends Controller
         {
             $data = $data->where('student_user_id',$logged_in_id);
         }
+        if (auth()->user()->roles[0]->id == 1)
+        {
+            $data = $data->leftjoin('students','students.user_id','=','classes.student_user_id')
+                         ->select(['classes.*','students.display_name as name',DB::raw('DATE_FORMAT(classes.date, "%d-%b-%Y") as date')]);
+        }
+        
 
-        $data = $data->select(['classes.*','users.name',DB::raw('DATE_FORMAT(classes.date, "%d-%b-%Y") as date')])->get();
+        $data = $data->get();
 
             $datatable = DataTables::of($data)
                 ->filter(function ($instance) use ($request) {

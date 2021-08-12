@@ -129,16 +129,14 @@
                 <table class="table table-striped">
                   <thead>
                     <tr>
-                      <th style="width: 10px">#</th>
-                      <th>Name</th>
+                      <th style="width: 10px">#</th>                      
                       <th>Date</th>
           					 </tr>
                   </thead>
                   <tbody>
 				  <?php foreach($tutorClass as $key => $tutor){ ?>
                     <tr>
-					  <td>{{ $key + 1 }}</td>
-                      <td>{{ $tutor->name }}</td>
+					  <td>{{ $key + 1 }}</td>                      
                       <td>{{ $tutor->date }}</td>
                     </tr>
 				  <?php } ?> 
@@ -180,7 +178,7 @@
 				  <?php foreach($sms as $key => $sm){  ?>
                     <tr>
 					  <td>{{ $key + 1 }}</td>
-                      <td>{{ $sm->name }}</td>
+                      <td>@if($sm->display_name){{ $sm->display_name }}({{ $sm->name }}) @else {{ $sm->name }} @endif</td>
                       <td>{{ $sm->message }}</td>
                       <td>{{ $sm->sent_on }}</td>
                     </tr>

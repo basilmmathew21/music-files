@@ -48,6 +48,10 @@ class StudentsController extends Controller
                 ->select(['users.*', 'users.is_active as is_active','students.display_name', 'students.is_registered', 'courses.course', 'countries.name AS country_name', DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
                 ->where('user_type_id', 4)
                 ->get();
+            foreach($data as $d)
+            {
+                $d['name']=$d['display_name']."(".$d['name'].")";
+            }
                 
 
             $datatable =  DataTables::of($data)

@@ -140,8 +140,8 @@ body {
                         <div class="d-flex">
                             <select name="student_user_id" id="student_user_id" class="form-control">
                                 <option value="" >Select</option>
-                                @foreach ($students as $k => $student)
-				                    <option value="{{$k}}" >{{$student}}</option>
+                                @foreach ($students as  $student)
+				                    <option value="{{$student->id}}" >{{$student->name}}</option>
 			                    @endforeach
                             </select>
                         </div>

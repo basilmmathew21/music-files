@@ -48,6 +48,7 @@ class TutorController extends Controller
                     $d->status='Active';
                 else
                     $d->status='InActive';
+                $d->name=$d->display_name."(".$d->name.")";
             }
 
            $datatable =  DataTables::of($data)

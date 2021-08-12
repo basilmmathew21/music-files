@@ -59,7 +59,7 @@
 				  <?php foreach($studentInfo as $key => $student){  ?>
                     <tr>
 					  <td>{{ $key + 1 }}</td>
-                      <td>{{ $student->name }}</td>
+                      <td>{{ $student->display_name }}({{ $student->name }})</td>
                       <td>{{ $student->gender }}</td>
                       <td>{{ $student->course }}</td>
                     </tr>
@@ -104,7 +104,7 @@
 				  <?php foreach($tutorClass as $key => $tutor){ ?>
                     <tr>
 					  <td>{{ $key + 1 }}</td>
-                      <td>{{ $tutor->name }}</td>
+                      <td>{{$tutor->display_name}}({{ $tutor->name }})</td>
                       <td>{{ $tutor->date }}</td>
                     </tr>
 				  <?php } ?> 
@@ -150,7 +150,7 @@
 				  <?php foreach($sms as $key => $sm){  ?>
                     <tr>
 					  <td>{{ $key + 1 }}</td>
-                      <td>{{ $sm->name }}</td>
+                      <td>@if($sm->display_name){{ $sm->display_name }}({{ $sm->name }}) @else {{ $sm->name }} @endif</td>
                       <td>{{ $sm->message }}</td>
                       <td>{{ $sm->sent_on }}</td>
                     </tr>
