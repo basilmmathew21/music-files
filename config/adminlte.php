@@ -297,6 +297,7 @@ return [
             'icon'    => 'fa fa-globe',
             'can' => ['view testimonials'],
         ],
+
         [
             'text' => 'Testimonial',
             'route'  => 'student.testimonial.show',
@@ -349,8 +350,8 @@ return [
                 [
                     'text' => 'Compose',
                     'route'  => 'Sms.sms.compose',
-                   
-                ], 
+
+                ],
                 [
                     'text' => 'Folders',
                     'icon'    => 'fa fa-folder',
@@ -360,61 +361,61 @@ return [
                             'text' => 'Inbox',
                             'route'  => 'Sms.sms.inbox',
                             'can' => ['view sms'],
-                           
-                        ], 
+
+                        ],
                         [
-                            
+
                             'text' => 'Sent',
                             'route'  => 'Sms.sms.sent',
                             'can' => ['view sms'],
-                                
-                        ], 
+
+                        ],
                         [
-                            
+
                             'text' => 'Tutor SMS',
                             'can' => ['view admin sms'],
-                            'icon'    => 'fa fa-envelope-o',                            
+                            'icon'    => 'fa fa-envelope-o',
                             'submenu' => [
-                                 [
+                                [
                                     'text' => 'Inbox',
                                     'route'  => 'Sms.sms.tutorinbox',
                                     'can' => ['view admin sms'],
-                                 ], 
-                                 [
-                                
+                                ],
+                                [
+
                                     'text' => 'Sent',
                                     'route'  => 'Sms.sms.tutorsent',
                                     'can' => ['view admin sms'],
-                                ], 
+                                ],
                             ],
-                        ], 
+                        ],
                         [
-                            
+
                             'text' => 'Student SMS',
                             'can' => ['view admin sms'],
                             'icon'    => 'fa fa-envelope-o',
                             'submenu' => [
-                                 [
+                                [
                                     'text' => 'Inbox',
                                     'route'  => 'Sms.sms.studentinbox',
                                     'can' => ['view admin sms'],
-                                 ], 
-                                 [
-                                
+                                ],
+                                [
+
                                     'text' => 'Sent',
                                     'route'  => 'Sms.sms.studentsent',
                                     'can' => ['view admin sms'],
-                                ], 
+                                ],
                             ],
-                        ], 
+                        ],
                     ],
                 ],
-        ], 
-    ],
-              
+            ],
+        ],
+
     ],
 
-   
+
 
     /*
     |--------------------------------------------------------------------------
