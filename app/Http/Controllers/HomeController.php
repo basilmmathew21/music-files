@@ -186,7 +186,22 @@ class HomeController extends Controller
             $sms            =   $sms->limit(10)->orderby('sent_on', 'desc')->get();
 
 
-            return view('dashboard.admin', compact('classes', 'feesDue', 'credits', 'students', 'studentInfo', 'sms'));
+            $tutorClass     =   TutorClass::leftJoin('users as student_user', 'student_user.id', '=', 'classes.student_user_id')
+                                            ->leftjoin('users as tutor_user', 'tutor_user.id', '=', 'classes.tutor_user_id')
+                                            ->leftjoin('students','students.user_id','=','classes.student_user_id') 
+                                            ->leftjoin('tutors','tutors.user_id','=','classes.tutor_user_id')
+                                            ->leftjoin('courses','courses.id','=','students.course_id')   
+                                            ->select(['classes.*', 'student_user.name as student_name','tutor_user.name as tutor_name','students.display_name as student_displayname','tutors.display_name as tutor_displayname','courses.course',DB::raw('DATE_FORMAT(classes.date, "%d-%b-%Y") as date')])
+                                             ->limit(10)->orderBy('classes.created_at', 'desc')->get();
+             foreach($tutorClass as $class)
+                {
+                   
+                    $class->tutor_displayname=$class->tutor_displayname."(".$class->tutor_name.")";
+                    $class->student_displayname=$class->student_displayname."(".$class->student_name.")";                                
+                             
+                 }
+//echo $tutorClass;exit;
+            return view('dashboard.admin', compact('classes', 'feesDue', 'credits', 'students', 'studentInfo', 'sms','tutorClass'));
         }
 
         /*

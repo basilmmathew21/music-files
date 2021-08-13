@@ -133,6 +133,49 @@
             
           <!-- /.Left col -->
           <!-- right col (We are only adding the ID to make the widgets sortable)-->
+            
+          <section class="col-lg-6 connectedSortable">
+
+            <div class="card">
+				<div class="card-header">
+					<h3 class="card-title">
+						Tutors Class
+					</h3>
+				</div>
+			  
+              <!-- /.card-header -->
+              <div class="card-body p-0 table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th style="width: 10px">No</th>
+                      <th>Tutor Name</th>
+                      <th>Student Name</th>
+                      <th>Course</th>
+                      <th>Date</th>
+          					 </tr>
+                  </thead>
+                  <tbody>
+				  <?php foreach($tutorClass as $key => $tutor){ ?>
+                    <tr>
+					  <td>{{ $key + 1 }}</td>
+                      <td>{{ $tutor->tutor_displayname }}</td>
+                      <td>{{ $tutor->student_displayname }}</td>
+                      <td>{{ $tutor->course }}</td>
+                      <td>{{ $tutor->date }}</td>
+                    </tr>
+				  <?php } ?> 
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- solid sales graph -->
+            
+            <!-- Calendar -->
+            
+            <!-- /.card -->
+          </section>
           
           <section class="col-lg-6 connectedSortable">
             <!-- Custom tabs (Charts with tabs)-->
