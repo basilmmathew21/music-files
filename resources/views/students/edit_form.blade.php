@@ -144,7 +144,14 @@
     </div>
 </div>
 
-
+<div class="form-group">
+    <label for="online_class_link" class="col-md-2 control-label">{{ trans('students.onlineclasslink') }}</label>
+    <div class="col-md-10">
+        <textarea class="form-control" name="online_class_link" type="text" id="online_class_link" value="{{ old('online_class_link', optional($user)->online_class_link) }}" minlength="1" maxlength="255"  placeholder="Enter Online Class Link here...">{{ old('online_class_link', optional($user)->online_class_link) }}
+            {!! $errors->first('online_class_link', '<p class="text-danger">:message</p>') !!}</textarea>
+        
+    </div>
+</div>
 
 <div class="form-group {{ $errors->has('state') ? 'has-error' : '' }}">
     <label for="state" class="col-md-2 control-label">{{ trans('students.state') }}</label>
