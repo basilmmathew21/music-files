@@ -129,9 +129,22 @@ class UsersController extends Controller
         $user = DB::table('users')->where('users.id',$id)
                     ->leftJoin('countries', 'users.country_id', '=', 'countries.id')
                     ->leftJoin('user_types', 'users.user_type_id', '=', 'user_types.id')
-                    ->select(['users.*','user_types.user_type','countries.name AS country_name','users.dob',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%y") as dob'),DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
+                    ->leftJoin('students', 'students.user_id', '=', 'users.id')
+                    ->leftJoin('tutors', 'tutors.user_id', '=', 'users.id')
+                    ->select(['users.*', \DB::raw('(CASE 
+                    WHEN users.user_type_id = "3" THEN tutors.display_name
+                    WHEN users.user_type_id = "4" THEN students.display_name 
+                    ELSE users.name  END) AS display_name'),'user_types.user_type','countries.name AS country_name','users.dob',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%y") as dob'),DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
                     ->first();
-        
+          
+                   
+                        if($user->user_type_id==3 ||$user->user_type_id==4 )
+                        {
+                            $user->name=$user->display_name."(".$user->name.")";
+                        }
+                        
+            
+                   
         return view('users.show', compact('user'));
     }
 
