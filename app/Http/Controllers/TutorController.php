@@ -166,9 +166,11 @@ class TutorController extends Controller
     {
         $user = DB::table('users')->where('users.id',$id)
                     ->leftJoin('countries', 'users.country_id', '=', 'countries.id')
-                    ->select(['users.*','countries.name AS country_name','users.dob',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%y") as dob'),DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
+                    ->leftJoin('tutors', 'tutors.user_id', '=', 'users.id')
+                    ->select(['users.*','tutors.display_name','countries.name AS country_name','users.dob',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%y") as dob'),DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
                     ->first();
                    // 
+                $user->name=$user->display_name."(".$user->name.")";
         $tutor = Tutor::where('user_id',$id)->get();
         if(count($tutor)>0)
         {

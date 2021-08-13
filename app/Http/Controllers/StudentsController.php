@@ -251,8 +251,10 @@ class StudentsController extends Controller
             ->leftJoin('courses', 'students.course_id', '=', 'courses.id')
             ->leftJoin('currencies', 'students.currency_id', '=', 'currencies.id')
             ->leftJoin('user_types', 'users.user_type_id', '=', 'user_types.id')
-            ->select(['users.*', 'users.is_active as is_active', 'students.class_fee', 'user_types.user_type', 'currencies.code', 'currencies.symbol', 'students.is_registered', 'courses.course', 'countries.name AS country_name', DB::raw('DATE_FORMAT(users.dob, "%d-%m-%Y") as dob'), DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
+            ->select(['users.*', 'users.is_active as is_active', 'students.class_fee', 'students.display_name','user_types.user_type', 'currencies.code', 'currencies.symbol', 'students.is_registered', 'courses.course', 'countries.name AS country_name', DB::raw('DATE_FORMAT(users.dob, "%d-%m-%Y") as dob'), DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
             ->findOrFail($id);
+
+        $user->name=$user->display_name."(".$user->name.")";
         return view('students.show', compact('user'));
     }
 
