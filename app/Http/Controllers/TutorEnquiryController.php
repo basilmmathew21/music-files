@@ -74,13 +74,26 @@ class TutorEnquiryController extends Controller
         $data = $request->all();
         $validatedData = Validator::make($request->all(), [
             'email' => 'required|regex:/(.+)@(.+)\.(.+)/i|unique:users',
-            'phone' => 'required|digits:10',
+            'phone' => 'required|unique:users',
         ]);
         //dd($validatedData);
         if ($validatedData->fails()) {
             $error['errors'] = $validatedData->errors();
             return redirect()->route('tutorenquiries.tutorenquiry.create')
                 ->with($error);
+        }
+         //Check Whatsapp number Duplication
+         $user_whatsapp = User::where('phone', '=', $request->whatsapp_number)
+         ->orWhere('whatsapp_number', '=', $request->whatsapp_number)->first();
+
+        if($user_whatsapp)
+            $check_whatsapp=1;
+        else
+            $check_whatsapp=0;
+
+        if($check_whatsapp==1)
+        {
+            return redirect()->back()->withInput()->withErrors("Whatsapp Number Already Exist");
         }
 
         /* if($request->has('image')){ 
@@ -156,7 +169,7 @@ class TutorEnquiryController extends Controller
     {
         $tutor = DB::table('tutor_enquiries')->where('tutor_enquiries.id', $id)
             ->leftJoin('countries', 'tutor_enquiries.country_id', '=', 'countries.id')
-            ->select(['tutor_enquiries.*', 'countries.name AS country_name', 'tutor_enquiries.dob', DB::raw('DATE_FORMAT(tutor_enquiries.dob, "%d-%m-%y") as dob'), DB::raw('CONCAT(countries.code," ",tutor_enquiries.phone) as phone')])
+            ->select(['tutor_enquiries.*', 'countries.name AS country_name', 'tutor_enquiries.dob', DB::raw('DATE_FORMAT(tutor_enquiries.dob, "%d-%m-%y") as dob'), DB::raw('CONCAT(countries.code," ",tutor_enquiries.phone) as phone'), DB::raw('CONCAT(countries.code," ",tutor_enquiries.whatsapp_number) as whatsapp_number')])
             ->first();
         // 
         if ($tutor->status == 'new')

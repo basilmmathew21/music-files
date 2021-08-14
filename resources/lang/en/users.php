@@ -198,6 +198,7 @@ return [
 
 'display_name'=>'Display Name',
 'displayname__placeholder'=>'Enter display name here ...',
+'whatsappnumber'=>'Whatsapp Number',
 
 
 ];

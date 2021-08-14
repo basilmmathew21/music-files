@@ -90,6 +90,17 @@
         {!! $errors->first('phone', '<p class="text-danger">:message</p>') !!}
     </div>
 </div>
+<div class="form-group {{ $errors->has('whatsapp_number') ? 'has-error' : '' }}">
+    <label for="phone" class="col-md-2 control-label"><span style="color:red">*</span>{{ trans('users.whatsappnumber') }}</label>
+    <div class="col-md-10">
+        Same as Phone: <input type="checkbox" id="checkbox" >
+
+        <input class="form-control" name="whatsapp_number" type="text" id="whatsapp_number"
+            value="{{ old('whatsapp_number', optional($user)->whatsapp_number) }}" minlength="1" maxlength="255" required="true"
+            placeholder="Enter Whatsapp Number">
+        {!! $errors->first('whatsapp_number', '<p class="text-danger">:message</p>') !!}
+    </div>
+</div>
 <div class="form-group">
     <label for="name" class="col-md-2 control-label"><span style="color:red">*</span>{{ trans('students.course') }}</label>
 	<div class="col-md-10">
@@ -187,3 +198,20 @@
         </select>
 	</div>
 </div>
+<script>
+$(document).ready(function() {
+$("#checkbox").on("change",function(){
+
+if (this.checked ) {
+        $("#whatsapp_number").val($("#phone").val());
+
+    } else {
+
+        $('#whatsapp_number').val("");
+        $("#whatsapp_number").attr("placeholder", "Enter Whatsapp Number")  ;
+      }    
+
+   });
+
+});
+</script>

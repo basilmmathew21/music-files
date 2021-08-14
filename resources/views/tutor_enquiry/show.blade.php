@@ -26,6 +26,8 @@
                     <dd>{{ $tutor->email }}</dd>
                     <dt>{{ trans('users.phone') }}</dt>
                     <dd>{{ $tutor->phone }}</dd>
+                    <dt>{{ trans('users.whatsappnumber') }}</dt>
+                    <dd>{{ $tutor->whatsapp_number }}</dd>
                     <dt>{{ trans('users.gender') }}</dt>
                     <dd>{{ $tutor->gender }}</dd>
                     <dt>{{ trans('users.dob') }}</dt>

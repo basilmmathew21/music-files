@@ -42,7 +42,7 @@ class ProfilesController extends Controller
         ->leftJoin('students', 'students.user_id', '=', 'users.id')
         ->leftJoin('currencies', 'students.currency_id', '=', 'currencies.id')
         ->leftJoin('user_types', 'users.user_type_id', '=', 'user_types.id')
-        ->select(['users.*','users.is_active as is_active','user_types.user_type','currencies.code','currencies.symbol','students.is_registered','countries.name AS country_name',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%Y") as dob'),DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
+        ->select(['users.*','users.is_active as is_active','user_types.user_type','currencies.code','currencies.symbol','students.is_registered','countries.name AS country_name',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%Y") as dob'),DB::raw('CONCAT(countries.code," ",users.phone) as phone'),DB::raw('CONCAT(countries.code," ",users.whatsapp_number) as whatsapp_number')])
         ->findOrFail($id);
         
         return view('profiles.index', compact('user'));
@@ -87,6 +87,26 @@ class ProfilesController extends Controller
     {
         $data                   = $this->getData($request, $id);
         $user                   = User::findOrFail($id);
+
+         //Check Whatsapp number Duplication
+         $user_whatsapp = User::where('id','!=',$id) 
+         ->where(function ($query)  use ($request){
+             $query->where('phone', '=', $request->whatsapp_number)
+             ->orWhere('whatsapp_number', '=', $request->whatsapp_number);
+         })->first();
+
+
+
+        if($user_whatsapp)
+            $check_whatsapp=1;
+        else
+            $check_whatsapp=0;
+        if($check_whatsapp==1)
+        {
+            return redirect()->back()->withInput()->withErrors("Whatsapp Number Already Exist");
+        }
+
+        $data['whatsapp_number']     = $request->whatsapp_number; 
         $data['country_id']     = $request->country; 
         $data['state']          = $request->state;
         $data['address']        = $request->address;
@@ -137,10 +157,11 @@ class ProfilesController extends Controller
                 }),
             ],
             'phone' => [
-                'digits:10',
+                //'digits:10',
                 Rule::unique('users')->where(function ($query) {
                 }),
             ],
+            
             'password' => 'required|string|min:8|max:255',
             'gender' => 'nullable',
             'dob' => 'date_format:d-m-Y',
@@ -157,10 +178,11 @@ class ProfilesController extends Controller
                     }),
                 ],
                 'phone' => [
-                    'digits:10',
+                   // 'digits:10',
                     Rule::unique('users')->ignore($id)->where(function ($query) {
                     }),
                 ],
+                
                 'password' => 'nullable|string|min:8|max:255',
             ]);
         }
