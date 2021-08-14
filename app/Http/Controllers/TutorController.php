@@ -88,7 +88,7 @@ class TutorController extends Controller
               ->join('students', 'students.user_id', '=', 'users.id')
               ->where('is_active',1)
               ->whereNotIN('users.id',$tutor_students)
-              ->select('students.display_name','users.id')->get();
+              ->select('students.display_name','users.name','users.id')->get();
         return view('tutors.create', compact('nationalities','currency','students'));
     }
 
@@ -228,7 +228,7 @@ class TutorController extends Controller
             ->join('students', 'students.user_id', '=', 'users.id')
               ->where('is_active',1)
               ->whereNotIN('users.id',$tutor_students)
-              ->select('students.display_name','users.id')->get();
+              ->select('students.display_name','users.name','users.id')->get();
 
             
 
