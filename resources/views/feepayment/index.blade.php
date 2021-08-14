@@ -13,15 +13,17 @@ body {
 .container {
     width: 600px;
    /* background-color: #fff;*/
-    padding-top: 10px;
-    padding-bottom: 100px,
-    height:2500px;
+    padding-top: 3px;
+    padding-bottom: 10px;
+    height:510px;
 }
 
 .card {
     background-color: #fff;
     width: 400px;
     border-radius: 15px;
+	height:590px;
+	padding-bottom: 10px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)
 }
 
@@ -118,8 +120,10 @@ body {
         </div>
     @endif
 
+             
 <div class="container d-flex justify-content-center mt-5">
     <div class="main-body">
+
     <div class="card">
         <div>
 		<form method="POST" action="{{ route('feepayment.fee.update',$user->id) }}" accept-charset="UTF-8" id="update_fee_form" name="update_fee_form" class="form-horizontal">
@@ -128,7 +132,6 @@ body {
             <div class="d-flex pt-3 pl-3">
                 <div><img src="https://img.icons8.com/ios-filled/50/000000/visa.png" width="60" height="80" /></div>
                 <div class="mt-3 pl-2"><span class="name">{{$user->name}}</span>
-                    <div><span class="cross">&#10005&#10005&#10005&#10005</span><span class="pin ml-2">8880</span></div>
                 </div>
             </div>
 
@@ -259,7 +262,13 @@ body {
                     $("#no_of_classes").val('');
 					if(response.user.class_fee == 0){
                         $("#no_class_fee_msg").html('<p class="text-danger">The course fee for the student has not updated</p>');
+						$(".content-wrapper").height(935);
+						$(".card").height(630);
                     }
+					else{
+						$(".content-wrapper").height(915);
+					}
+					
 				},
 			    });
             });
