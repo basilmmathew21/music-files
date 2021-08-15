@@ -162,9 +162,10 @@ class HomeController extends Controller
                 ->sum('credits');
 
             $students       =   User::with('student')
-                ->Join('students', 'students.user_id', '=', 'users.id');
-            $students       =   $students->Join('tutors', 'tutors.user_id', '=', 'users.id')
-                ->Join('tutor_students', 'tutor_students.tutor_id', '=', 'users.id');
+                ->Join('students', 'students.user_id', '=', 'users.id')
+                ->where("is_active",'1');
+            //$students       =   $students->Join('tutors', 'tutors.user_id', '=', 'users.id')
+            //->Join('tutor_students', 'tutor_students.tutor_id', '=', 'users.id');
             $students       =   $students->count();
 
             $classes        =   DB::table('classes');
@@ -174,10 +175,11 @@ class HomeController extends Controller
                 ->join('countries', 'users.country_id', '=', 'countries.id')
                 ->LeftJoin('students', 'students.user_id', '=', 'users.id')
                 //->Join('tutors', 'tutors.user_id', '=', 'users.id')
-                ->Join('tutor_students', 'tutor_students.user_id', '=', 'users.id')
+                //->Join('tutor_students', 'tutor_students.user_id', '=', 'users.id')
                 ->leftJoin('courses', 'students.course_id', '=', 'courses.id')
                 ->select(['users.*', 'students.display_name', 'courses.course', 'countries.name AS country_name', DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
                 ->limit(10)
+                ->where("users.is_active",'1')
                 ->orderBy('users.created_at', 'desc')
                 ->get();
 
