@@ -100,9 +100,7 @@
                     <tr>
                       <th style="width: 10px">#</th>
                       <th>Name</th>
-                      <th>Gender</th>
-                      <th>Email</th>
-                      <th>Phone</th>
+                      <th>Tutor</th>
                       <th>Course</th>
                     </tr>
                   </thead>
@@ -111,9 +109,7 @@
                     <tr>
 					  <td>{{ $key + 1 }}</td>
                       <td>{{$student->display_name}}({{ $student->name }})</td>
-                      <td>{{ $student->gender }}</td>
-                      <td>{{ $student->email }}</td>
-                      <td>{{ $student->phone }}</td>
+                      <td>@if($student->user_type_id == 3){{ $student->tutor_name }} @else NA @endif</td>
                       <td>{{ $student->course }}</td>
                     </tr>
 				  <?php } ?> 
@@ -136,10 +132,10 @@
             
           <section class="col-lg-6 connectedSortable">
 
-        <div class="card">
+            <div class="card">
 				<div class="card-header">
 					<h3 class="card-title">
-						Classes
+						Tutors Class
 					</h3>
 				</div>
 			  

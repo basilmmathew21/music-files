@@ -51,7 +51,7 @@
                     <tr>
                       <th style="width: 10px">#</th>
                       <th>Name</th>
-                      <th>Gender</th>
+                      <th>Tutor</th>
                       <th>Course</th>
                     </tr>
                   </thead>
@@ -60,7 +60,7 @@
                     <tr>
 					  <td>{{ $key + 1 }}</td>
                       <td>{{ $student->display_name }}({{ $student->name }})</td>
-                      <td>{{ $student->gender }}</td>
+                      <td>{{ $student->tutor_name }}</td>
                       <td>{{ $student->course }}</td>
                     </tr>
 				  <?php } ?> 
