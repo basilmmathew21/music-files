@@ -136,10 +136,10 @@
             
           <section class="col-lg-6 connectedSortable">
 
-            <div class="card">
+        <div class="card">
 				<div class="card-header">
 					<h3 class="card-title">
-						Tutors Class
+						Classes
 					</h3>
 				</div>
 			  

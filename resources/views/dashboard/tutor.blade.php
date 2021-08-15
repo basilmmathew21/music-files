@@ -86,7 +86,7 @@
             <div class="card">
 				<div class="card-header">
 					<h3 class="card-title">
-						Tutors Class
+						Classes
 					</h3>
 				</div>
 			  
