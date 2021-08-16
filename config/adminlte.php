@@ -314,11 +314,11 @@ return [
                     'route'  => 'payments.payments.index',
                     'can' => ['view payments'],
                 ], [
-                    'text' => 'Payment Dues',
+                    'text' => 'Paymeny Dues',
                     'route'  => 'paymentdue.paymentdue.index',
                     'can' => ['view payments'],
                 ],
-            ],
+            ]
         ],
         [
             'text' => 'settings',

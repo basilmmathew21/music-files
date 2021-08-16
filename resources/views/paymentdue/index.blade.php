@@ -49,7 +49,7 @@
                             <input type="textbox" class="form-control mb-2 mr-sm-2" name="keyword" id="keyword"
                                 value="">
                         </div>
-                        <button type="submit" class="btn btn-primary mb-2 mr-sm-2">{{ trans('paymentdue.search') }}</button>
+                        <button type="submit" class="btn btn-primary mb-2 mr-sm-2">{{ trans('paymenthistory.search') }}</button>
                     </form>
                 </div>
             </div>
@@ -59,11 +59,13 @@
                 <table id="dataList" class="display table table-striped">
                     <thead>
                         <tr>
-                            <th>{{ trans('paymentdue.slno') }}</th>
-                            <th>{{ trans('paymentdue.name') }}</th>
-                            <th>{{ trans('paymentdue.tutor') }}</th>
-                            <th>{{ trans('paymentdue.status') }}</th>
-                            <th></th>
+                            <th>{{ trans('paymenthistory.slno') }}</th>
+                            <th>{{ trans('paymenthistory.name') }}</th>
+                            <th>{{ trans('paymenthistory.tutor') }}</th>
+                            <!-- <th>{{ trans('paymenthistory.payment_date') }}</th>
+                            <th>{{ trans('paymenthistory.amount') }}</th>
+                            <th>{{ trans('paymenthistory.status') }}</th>
+                            <th></th> -->
                         </tr>
                     </thead>
                 </table>
@@ -93,11 +95,13 @@
                 },
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                    {data: 'credits', name: 'credits'},
+                    {data: 'student_name', name: 'student_name'},
                     {data: 'tutor_name', name: 'tutor_name'},
-                    {data: 'status', name: 'status'},
+                    //{data: 'payment_date', name: 'payment_date'},
+                    //{data: 'amount', name: 'amount'},
+                   // {data: 'status', name: 'status'},
                     //{data:  'is_active', name: "is_active"},
-                    {data: 'action', name: 'action', orderable: false, searchable: false},
+                    //{data: 'action', name: 'action', orderable: false, searchable: false},
                 ]
             });
         $('#search-form').on('submit', function(e) {
