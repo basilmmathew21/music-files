@@ -1,7 +1,7 @@
 @extends('adminlte::page')
 
 @section('content_header')
-    <h1 class="m-0 text-dark">{{ !empty($testimonial->first_name) ? $testimonial->first_name : 'User' }}</h1>
+    <h1 class="m-0 text-dark">{{ !empty($testimonial->user->name) ? 'Testimonial By '.$testimonial->user->name : 'Testimonial' }}</h1>
     <div class="btn-group btn-group-sm pull-right" role="group">
 
         <a href="{{ route('testimonials.testimonial.index') }}" class="btn btn-primary" title="{{ trans('testimonial.show_all') }}">
@@ -34,7 +34,7 @@
 
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input class="btn btn-primary" type="submit" value="{{ trans('students.update') }}">
+                        <input class="btn btn-primary" type="submit" value="{{ trans('testimonial.update') }}">
                     </div>
                 </div>
             </form>

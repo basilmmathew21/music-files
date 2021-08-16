@@ -1,7 +1,7 @@
 @extends('adminlte::page')
 
 @section('content_header')
-<h1 class="m-0 text-dark">{{ isset($testimonial->user->name) ? $testimonial->user->name : 'User' }}</h1>
+<h1 class="m-0 text-dark">{{ isset($testimonial->user->name) ? 'Testimonial By '.$testimonial->user->name : 'Testimonial' }}</h1>
 <div class="btn-group btn-group-sm pull-right" role="group">
     <form method="POST" action="{!! route('testimonials.testimonial.destroy', $testimonial->id) !!}" accept-charset="UTF-8">
         <input name="_method" value="DELETE" type="hidden">

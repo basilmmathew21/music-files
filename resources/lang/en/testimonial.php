@@ -62,7 +62,7 @@ return [
     'model_definition_title' => 'Model Definition',
     'model_id_camel_case' => 'userId',
     'the_error_message' => 'The error message.',
-    'name_title' => 'Name',
+    'name_title' => 'Student Name',
     'parameter_type_title' => 'Parameter Type',
     'validation_title' => 'Validation',
     'primary_key_type_title' => 'Primary Key',

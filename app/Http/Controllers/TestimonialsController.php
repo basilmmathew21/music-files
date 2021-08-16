@@ -41,8 +41,9 @@ class TestimonialsController extends Controller
 
        
         if ($request->ajax()) {
-            $data = Testimonial::select('testimonials.*', 'users.name')
-                ->join('users', 'users.id', '=', 'testimonials.user_id')
+            $data = Testimonial::select('testimonials.*', 'users.name as name')
+                ->join('students', 'testimonials.user_id', '=', 'students.user_id')
+                ->join('users', 'students.user_id', '=', 'users.id')
                 ->orderBy('testimonials.created_at', 'desc')
                 ->get();
 
@@ -50,7 +51,7 @@ class TestimonialsController extends Controller
                 ->filter(function ($instance) use ($request) {
                     if ($request->has('keyword') && $request->get('keyword')) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains(Str::lower($row['name'] . $row['title'] . $row['description']), Str::lower($request->get('keyword'))) ? true : false;
+                            return Str::contains(Str::lower($row['name'] . $row['title'] . $row['status']), Str::lower($request->get('keyword'))) ? true : false;
                         });
                     }
                 })
@@ -64,6 +65,7 @@ class TestimonialsController extends Controller
         }
 
         $testimonial = Testimonial::with('user')->paginate(25);
+        //dd($testimonial);
         return view('testimonial.index', compact('testimonial'));
     }
 
