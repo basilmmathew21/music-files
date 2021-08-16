@@ -54,7 +54,24 @@ class StudentsRegistrationController extends Controller
      */
     public function store(Request $request)
     {
+       
         $data = $this->getData($request);
+
+         //Check Whatsapp number Duplication
+         $user_whatsapp = User::where('phone', '=', $request->whatsapp_number)
+         ->orWhere('whatsapp_number', '=', $request->whatsapp_number)->first();
+
+        if($user_whatsapp)
+        $check_whatsapp=1;
+        else
+        $check_whatsapp=0;
+
+        if($check_whatsapp==1)
+        {
+            return redirect()->back()->withInput()->withErrors("Whatsapp Number Already Exist");
+        }
+        
+        $data['whatsapp_number']          = $request->whatsapp_number;
         $data['password']       = Hash::make($data['password']); //Encrypting password
         $data['country_id']     = $data['country']; //country
         $data['state']          = $request->state;
@@ -71,6 +88,7 @@ class StudentsRegistrationController extends Controller
         
         $newuser = User::where('email', '=', $data['email'])->where('user_type_id', 4)->first()->toArray();
         $student['user_id']        =  $newuser['id'];
+        $student['display_name']        =$request->name;
         $student['country_id']     =  $data['country'];
         $student['course_id']      =  $request->course;
         $student['currency_id']    =  $request->currency;
@@ -124,7 +142,7 @@ class StudentsRegistrationController extends Controller
                 }),
             ],
             'phone' => [
-                'digits:10',
+                
                 Rule::unique('users')->where(function ($query) {
                 }),
             ],
@@ -145,7 +163,7 @@ class StudentsRegistrationController extends Controller
                     }),
                 ],
                 'phone' => [
-                    'digits:10',
+                  //  'digits:10',
                     Rule::unique('users')->ignore($id)->where(function ($query) {
                     }),
                 ],

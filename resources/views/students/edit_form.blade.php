@@ -90,6 +90,17 @@
         {!! $errors->first('phone', '<p class="text-danger">:message</p>') !!}
     </div>
 </div>
+<div class="form-group {{ $errors->has('phone') ? 'has-error' : '' }}">
+    <label for="phone" class="col-md-2 control-label"><span style="color:red">*</span>{{ trans('users.whatsappnumber') }}</label>
+    <div class="col-md-10">
+        Same as Phone: <input type="checkbox" id="checkbox" >
+
+        <input class="form-control" name="whatsapp_number" type="text" id="whatsapp_number"
+            value="{{ old('whatsapp_number', optional($user)->whatsapp_number) }}" minlength="1" maxlength="255" required="true"
+            placeholder="Enter Whatsapp Number">
+        {!! $errors->first('whatsapp_number', '<p class="text-danger">:message</p>') !!}
+    </div>
+</div>
 <div class="form-group">
     <label for="name" class="col-md-2 control-label"><span style="color:red">*</span>{{ trans('students.course') }}</label>
 	<div class="col-md-10">
@@ -144,7 +155,14 @@
     </div>
 </div>
 
-
+<div class="form-group">
+    <label for="online_class_link" class="col-md-2 control-label">{{ trans('students.onlineclasslink') }}</label>
+    <div class="col-md-10">
+        <textarea class="form-control" name="online_class_link" type="text" id="online_class_link" value="{{ old('online_class_link', optional($user)->online_class_link) }}" minlength="1" maxlength="255"  placeholder="Enter Online Class Link here...">{{ old('online_class_link', optional($user)->online_class_link) }}
+            {!! $errors->first('online_class_link', '<p class="text-danger">:message</p>') !!}</textarea>
+        
+    </div>
+</div>
 
 <div class="form-group {{ $errors->has('state') ? 'has-error' : '' }}">
     <label for="state" class="col-md-2 control-label">{{ trans('students.state') }}</label>
@@ -187,3 +205,20 @@
         </select>
 	</div>
 </div>
+<script>
+$(document).ready(function() {
+$("#checkbox").on("change",function(){
+
+if (this.checked ) {
+        $("#whatsapp_number").val($("#phone").val());
+
+    } else {
+
+        $('#whatsapp_number').val("");
+        $("#whatsapp_number").attr("placeholder", "Enter Whatsapp Number")  ;
+      }    
+
+   });
+
+});
+</script>
