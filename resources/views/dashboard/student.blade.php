@@ -71,9 +71,11 @@
             <div class="card">
              <div class="card-header">
                 <h3 class="card-title">
-				 <a href="{{ route('students.student.index') }}">Payment History
-				</a>
-				</h3>
+				           Payment History
+				        </h3>
+                <div class="container text-right">
+                  <a href="{{ URL::to('payments/index')}}" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
               </div>
               <!-- /.card-header -->
               <div class="card-body p-0 table-responsive">
@@ -119,9 +121,11 @@
             <div class="card">
 				<div class="card-header">
 					<h3 class="card-title">
-						<a href="{{ route('tutors.tutor.index') }}">Student Class
-						</a>
+						Student Class
 					</h3>
+          <div class="container text-right">
+                  <a href="{{ URL::to('tutor/classes')}}" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
 				</div>
 			  
               <!-- /.card-header -->
@@ -158,9 +162,11 @@
             <div class="card">
              <div class="card-header">
                 <h3 class="card-title">
-				 <a href="{{ route('students.student.index') }}">SMS
-				</a>
-				</h3>
+				          SMS
+                </h3>
+        <div class="container text-right">
+                  <a href="{{ URL::to('sms/inbox')}}" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
               </div>
               <!-- /.card-header -->
               <div class="card-body p-0 table-responsive">

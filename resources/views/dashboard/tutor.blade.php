@@ -43,6 +43,9 @@
              <div class="card-header">
                 <h3 class="card-title">Students
 				      	</h3>
+                <div class="container text-right">
+                  <a href="{{ URL::to('students/students')}}" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
               </div>
               <!-- /.card-header -->
               <div class="card-body p-0 table-responsive">
@@ -88,6 +91,9 @@
 					<h3 class="card-title">
 						Classes
 					</h3>
+          <div class="container text-right">
+                  <a href="{{ URL::to('tutor/classes')}}" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
 				</div>
 			  
               <!-- /.card-header -->
@@ -133,6 +139,9 @@
              <div class="card-header">
                 <h3 class="card-title">SMS
                 </h3>
+                <div class="container text-right">
+                  <a href="{{ URL::to('sms/inbox')}}" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
               </div>
               <!-- /.card-header -->
               <div class="card-body p-0 table-responsive">

@@ -47,6 +47,7 @@ class StudentsController extends Controller
                 ->leftJoin('courses', 'students.course_id', '=', 'courses.id')
                 ->select(['users.*', 'users.is_active as is_active','students.display_name', 'students.is_registered', 'courses.course', 'countries.name AS country_name', DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
                 ->where('user_type_id', 4)
+                ->where("users.is_active",1)
                 ->get();
             foreach($data as $d)
             {

@@ -61,6 +61,7 @@ Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 Route::get('/admin-students', 'HomeController@adminStudents')->name('admin-students')->middleware('auth');
 Route::get('/admin-tutor-class', 'HomeController@adminTutorClass')->name('admin-tutor-class')->middleware('auth');
 Route::get('/admin-sms', 'HomeController@adminSms')->name('admin-sms')->middleware('auth');
+Route::get('/tutor-students', 'HomeController@tutorStudents')->name('tutor-students')->middleware('auth');
 
 Route::post('/regfee', 'RegfeeController@paynow')->name('regfee.paynow'); //Regostration fee
 
