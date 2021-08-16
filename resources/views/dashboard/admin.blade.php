@@ -92,7 +92,12 @@
              <div class="card-header">
                 <h3 class="card-title">Students
 				      	</h3>
+                <div class="container text-right">
+                    <a href="{{ URL::to('admin-students')}}" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+                
               </div>
+              
               <!-- /.card-header -->
               <div class="card-body p-0 table-responsive">
                 <table class="table table-striped">
@@ -100,9 +105,7 @@
                     <tr>
                       <th style="width: 10px">#</th>
                       <th>Name</th>
-                      <th>Gender</th>
-                      <th>Email</th>
-                      <th>Phone</th>
+                      <th>Tutor</th>
                       <th>Course</th>
                     </tr>
                   </thead>
@@ -111,9 +114,7 @@
                     <tr>
 					  <td>{{ $key + 1 }}</td>
                       <td>{{$student->display_name}}({{ $student->name }})</td>
-                      <td>{{ $student->gender }}</td>
-                      <td>{{ $student->email }}</td>
-                      <td>{{ $student->phone }}</td>
+                      <td>@if($student->user_type_id == 3){{ $student->tutor_name }} @else NA @endif</td>
                       <td>{{ $student->course }}</td>
                     </tr>
 				  <?php } ?> 
@@ -141,6 +142,9 @@
 					<h3 class="card-title">
 						Tutors Class
 					</h3>
+          <div class="container text-right">
+                    <a href="{{ URL::to('admin-tutor-class')}}" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
 				</div>
 			  
               <!-- /.card-header -->
@@ -182,6 +186,9 @@
             <div class="card">
              <div class="card-header">
                 <h3 class="card-title">SMS</h3>
+                <div class="container text-right">
+                  <a href="{{ URL::to('admin-sms')}}" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
               </div>
               <!-- /.card-header -->
               <div class="card-body p-0 table-responsive">
