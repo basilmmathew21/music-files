@@ -73,14 +73,65 @@ class TutorEnquiryController extends Controller
     {
         $data = $request->all();
         $validatedData = Validator::make($request->all(), [
-            'email' => 'required|regex:/(.+)@(.+)\.(.+)/i|unique:users',
-            'phone' => 'required|digits:10',
+            'email' => 'required|regex:/(.+)@(.+)\.(.+)/i|unique:users|unique:tutor_enquiries',
+            'phone' => 'required',
         ]);
         //dd($validatedData);
         if ($validatedData->fails()) {
             $error['errors'] = $validatedData->errors();
-            return redirect()->route('tutorenquiries.tutorenquiry.create')
+            return redirect()->back()->withInput()
                 ->with($error);
+        }
+        ///////////////////////////////////////////////////////////////////////////////////////////////
+        //Check Phone number duplication 
+        //users table
+        $user_phone = User::where('phone', '=', $request->phone)
+        ->orWhere('whatsapp_number', '=', $request->phone)->first();
+
+        //tutor enquiry table
+        $tutrenquiry_phone=TutorEnquiry::where('phone', '=', $request->phone)
+        ->orWhere('whatsapp_number', '=', $request->phone)->first();
+
+
+       if($user_phone) 
+           $check_users_phone=1;
+       else 
+           $check_users_phone=0;
+
+       if($tutrenquiry_phone) 
+           $check_enquiry_phone=1;
+       else 
+           $check_enquiry_phone=0;
+
+       if($check_users_phone==1 ||  $check_enquiry_phone==1)
+       {
+           return redirect()->back()->withInput()->withErrors("The Phone has already been taken.");
+       }
+
+
+         //Check Whatsapp number Duplication
+         //users table
+         $user_whatsapp = User::where('phone', '=', $request->whatsapp_number)
+         ->orWhere('whatsapp_number', '=', $request->whatsapp_number)->first();
+
+         //tutor enquiry table
+         $tutrenquiry_whatsapp=TutorEnquiry::where('phone', '=', $request->whatsapp_number)
+         ->orWhere('whatsapp_number', '=', $request->whatsapp_number)->first();
+
+
+        if($user_whatsapp) 
+            $check_users_whatsapp=1;
+        else 
+            $check_users_whatsapp=0;
+
+        if($tutrenquiry_whatsapp) 
+            $check_enquiry_whatsapp=1;
+        else 
+            $check_enquiry_whatsapp=0;
+
+        if($check_users_whatsapp==1 ||  $check_enquiry_whatsapp==1)
+        {
+            return redirect()->back()->withInput()->withErrors("The Whatsapp Number has already been taken.");
         }
 
         /* if($request->has('image')){ 
@@ -156,7 +207,7 @@ class TutorEnquiryController extends Controller
     {
         $tutor = DB::table('tutor_enquiries')->where('tutor_enquiries.id', $id)
             ->leftJoin('countries', 'tutor_enquiries.country_id', '=', 'countries.id')
-            ->select(['tutor_enquiries.*', 'countries.name AS country_name', 'tutor_enquiries.dob', DB::raw('DATE_FORMAT(tutor_enquiries.dob, "%d-%m-%y") as dob'), DB::raw('CONCAT(countries.code," ",tutor_enquiries.phone) as phone')])
+            ->select(['tutor_enquiries.*', 'countries.name AS country_name', 'tutor_enquiries.dob', DB::raw('DATE_FORMAT(tutor_enquiries.dob, "%d-%m-%y") as dob'), DB::raw('CONCAT(countries.code," ",tutor_enquiries.phone) as phone'), DB::raw('CONCAT(countries.code," ",tutor_enquiries.whatsapp_number) as whatsapp_number')])
             ->first();
         // 
         if ($tutor->status == 'new')

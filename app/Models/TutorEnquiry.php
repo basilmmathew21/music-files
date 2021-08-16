@@ -12,7 +12,7 @@ use Carbon\Carbon;
 class TutorEnquiry extends Model
 {
     use HasFactory;
-    protected $fillable = ['name','dob','email','phone','gender','country_id','state','address','profile_image','status','teaching_stream','educational_qualification','teaching_experience','performance_experience','other_details','date_of_enquiry'];
+    protected $fillable = ['name','dob','email','phone','whatsapp_number','gender','country_id','state','address','profile_image','status','teaching_stream','educational_qualification','teaching_experience','performance_experience','other_details','date_of_enquiry'];
 
     public function accept_register($id){
      
@@ -32,6 +32,7 @@ class TutorEnquiry extends Model
             'name'  		 =>   $user_enquiry->name,
             'email'	 		 =>  $user_enquiry->email,
             'phone'			 =>	  $user_enquiry->phone,
+            'whatsapp_number'			 =>	  $user_enquiry->whatsapp_number,
             'user_type_id'	 		 =>    $user_type_id,
             'gender'	 			 =>   $user_enquiry->gender,
             'dob'	 		 =>  Carbon::parse($user_enquiry->dob)->format('Y-m-d'),
@@ -48,6 +49,7 @@ class TutorEnquiry extends Model
           //Tutor Table
           $tutor = DB::table('tutors')->insert([
             'user_id'  		 =>   $id_for_tutor['id'],
+            'display_name'   =>   $user_enquiry->name,
             'teaching_stream'	 		 =>   $user_enquiry->teaching_stream,
             'educational_qualification'			 =>	  $user_enquiry->educational_qualification,
             'teaching_experience'	 		 =>    $user_enquiry->teaching_experience,
