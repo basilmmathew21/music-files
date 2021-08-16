@@ -149,10 +149,6 @@ class HomeController extends Controller
           * Admin begins   
           *
           */
-
-
-
-
         if ($isAdmin || $isSuperAdmin) {
 
             $feesDue        =   DB::table('classes');
@@ -222,41 +218,5 @@ class HomeController extends Controller
            */
         return view('home');
     }
-
-    public function adminStudents()
-    {
-        $student = User::paginate(25);
-        return view('students.index', compact('student'));
-    }
-    
-    public function adminTutorClass()
-    {
-        $classes = TutorClass::leftJoin('users', 'classes.student_user_id', '=', 'users.id')->paginate(25);
-        return view('classes.index', compact('classes'));
-    }
-
-    public function adminSms()
-    {
-        $sms = Sms::paginate(25);
-        return view('sms.inbox', compact('sms'));
-    }
-    public function tutorStudents()
-    {
-        $id             =   Auth::user()->id;
-        $studentInfo    =   DB::table('users')
-                ->join('countries', 'users.country_id', '=', 'countries.id')
-                ->LeftJoin('students', 'students.user_id', '=', 'users.id')
-                //->Join('tutors', 'tutors.user_id', '=', 'users.id')
-                ->Join('tutor_students', 'tutor_students.user_id', '=', 'users.id')
-                ->where('tutor_students.tutor_id', $id)
-                ->leftJoin('courses', 'students.course_id', '=', 'courses.id')
-                ->select(['users.*','users.name as tutor_name','students.display_name', 'courses.course', 'countries.name AS country_name', DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
-                ->orderBy('users.created_at', 'desc')
-                ->get();
-        
-        return view('dashboard.tutor-table', compact('studentInfo'));
-    }
-
-    
     
 }
