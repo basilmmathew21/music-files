@@ -298,10 +298,20 @@ return [
             'can' => ['view testimonials'],
         ],
         [
-            'text' => 'Payments History',
-            'route'  => 'payments.payments.index',
+            'text' => 'Payments',
             'icon'    => 'fa fa-credit-card',
             'can' => ['view payments'],
+            'submenu' => [
+                [
+                    'text' => 'Payment History',
+                    'route'  => 'payments.payments.index',
+                    'can' => ['view payments'],
+                ], [
+                    'text' => 'Paymeny Dues',
+                    'route'  => 'paymentdue.paymentdue.index',
+                    'can' => ['view payments'],
+                ],
+            ]
         ],
         [
             'text' => 'settings',
