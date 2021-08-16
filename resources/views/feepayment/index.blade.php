@@ -132,7 +132,7 @@ body {
             {{ csrf_field() }}
             @method("PUT")
             <div class="d-flex pt-3 pl-3">
-                <div><img src="https://img.icons8.com/ios-filled/50/000000/visa.png" width="60" height="80" /></div>
+                <div><img src="/images/visa-icon.png" width="60" height="80" /></div>
                 <div class="mt-3 pl-2">      <h2>{{$user->name}} </h2>
                 </div>
             </div>
@@ -140,7 +140,8 @@ body {
             @if($isSuperAdmin)
             <div class="py-2 px-3">
                 <div class="second py-2">
-                <div class="form-check"><span style="display:none;" id="one_class_fee">@if($user->class_fee) {{$user->class_fee}} @else 0 @endif</span></div>
+                <div class="form-check">
+            </div>
                     <div class="pl-2 pr-2"><span class="head">Student</span>
                         <div class="d-flex">
                             <select name="student_user_id" id="student_user_id" class="form-control">
@@ -227,9 +228,13 @@ body {
 @section('js')
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
+    var one_class_fee;
+    
     $(document).ready(function() {
             $("#no_of_classes").change(function(){
-                var one_class_fee = parseInt($("#one_class_fee").text());
+                if(one_class_fee == null){
+                    one_class_fee = {{ $user->class_fee }};
+                }
                 var no_of_classes = parseInt($(this).val());
                 var class_fee     = one_class_fee*no_of_classes;
                 $("#class_fee").val(class_fee);
@@ -253,16 +258,14 @@ body {
                 success: function (response) {
 					response =   JSON.parse(response);
 					$("#no_class_fee_msg").html('');
-                    
-					$("#amount").html(response.user.credits);
+                    $("#amount").html(response.user.credits);
                     $(".dollar").html(response.user.symbol);
-                    $("#one_class_fee").html(response.user.class_fee);
-                    var one_class_fee = response.user.class_fee;
-                    var payment       = response.payment;
+                    one_class_fee = response.user.class_fee;
+                    var payment   = response.payment;
                     $("#payment").html(payment*one_class_fee);
                     $("#class_fee").val(0);
-                    $("#no_of_classes").val('');
-					if(response.user.class_fee == 0){
+                    
+                    if(response.user.class_fee == 0){
                         $("#no_class_fee_msg").html('<p class="text-danger">The course fee for the student has not updated</p>');
 						$(".content-wrapper").height(935);
 						$(".card").height(630);
