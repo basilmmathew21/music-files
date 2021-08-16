@@ -1,19 +1,19 @@
 <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
-    <label for="name" class="col-md-2 control-label">{{ trans('users.name') }}</label>
+    <label for="name" class="col-md-2 control-label"><span style="color:red">*</span>{{ trans('users.name') }}</label>
     <div class="col-md-10">
         <input class="form-control" name="name" type="text" id="name" value="{{ old('name', optional($user)->name) }}" minlength="1" maxlength="255" required="true" placeholder="{{ trans('users.name__placeholder') }}">
         {!! $errors->first('name', '<p class="text-danger">:message</p>') !!}
     </div>
 </div>
 <div class="form-group {{ $errors->has('display_name') ? 'has-error' : '' }}">
-    <label for="name" class="col-md-2 control-label">{{ trans('users.display_name') }}</label>
+    <label for="name" class="col-md-2 control-label"><span style="color:red">*</span>{{ trans('users.display_name') }}</label>
     <div class="col-md-10">
         <input class="form-control" name="display_name" type="text" id="display_name" value="@if(isset($tutor) && !empty($tutor)){{ optional($tutor[0])->display_name}}@endif" minlength="1" maxlength="255" required="true" placeholder="{{ trans('users.displayname__placeholder') }}">
         {!! $errors->first('display_name', '<p class="text-danger">:message</p>') !!}
     </div>
 </div>
 <div class="form-group {{ $errors->has('email') ? 'has-error' : '' }}">
-    <label for="email" class="col-md-2 control-label">{{ trans('users.email') }}</label>
+    <label for="email" class="col-md-2 control-label"><span style="color:red">*</span>{{ trans('users.email') }}</label>
     <div class="col-md-10">
         <input class="form-control" name="email" type="email" id="email" value="{{ old('email', optional($user)->email) }}" minlength="1" maxlength="255" required="true" placeholder="{{ trans('users.email__placeholder') }}">
         {!! $errors->first('email', '<p class="text-danger">:message</p>') !!}
@@ -23,7 +23,7 @@
 
 @if(!$user)
 <div class="form-group {{ $errors->has('password') ? 'has-error' : '' }}">
-    <label for="password" class="col-md-2 control-label">{{ trans('users.password') }}</label>
+    <label for="password" class="col-md-2 control-label"><span style="color:red">*</span>{{ trans('users.password') }}</label>
     <div class="col-md-10">
         <input class="form-control" name="password" type="password" id="password" value="{{ old('password', optional($user)->password) }}" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required placeholder="{{ trans('users.password__placeholder') }}">
         {!! $errors->first('password', '<p class="text-danger">:message</p>') !!}
@@ -41,7 +41,7 @@
 @endif
 
 <div class="form-group">
-    <label for="gender" class="col-md-2 control-label">{{ trans('students.gender') }}</label>
+    <label for="gender" class="col-md-2 control-label"><span style="color:red">*</span>{{ trans('students.gender') }}</label>
     <div class="col-md-10">
         <input type="radio" id="gender_male" name="gender" value="Male" <?php if (optional($user)->gender == 'Male') { ?> checked <?php } ?>>
           <label>Male</label>
@@ -54,7 +54,7 @@
 </div>
 
 <div class="form-group {{ $errors->has('dob') ? 'has-error' : '' }}">
-    <label for="phone" class="col-md-2 control-label">{{ trans('students.dob') }}</label>
+    <label for="phone" class="col-md-2 control-label"><span style="color:red">*</span>{{ trans('students.dob') }}</label>
     <div class="col-md-10">
         <input class="form-control datepicker" name="dob" type="text" id="dob" value="{{ old('dob', optional($user)->dob) }}" minlength="1" maxlength="255" required="true" placeholder="{{ trans('users.date_info')}}" autocomplete="off">
         <p class="text-danger" id="dob_err"></p>
@@ -62,7 +62,7 @@
 </div>
 
 <div class="form-group {{ $errors->has('phone') ? 'has-error' : '' }}">
-    <label for="phone" class="col-md-2 control-label">{{ trans('students.phone') }}</label>
+    <label for="phone" class="col-md-2 control-label"><span style="color:red">*</span>{{ trans('students.phone') }}</label>
     <div class="col-md-10">
         <input class="form-control" name="phone" type="text" id="phone" value="{{ old('phone', optional($user)->phone) }}" minlength="1" maxlength="255" required="true" placeholder="{{ trans('students.phone__placeholder') }}">
         {!! $errors->first('phone', '<p class="text-danger">:message</p>') !!}
@@ -71,7 +71,7 @@
 
 
 <div class="form-group">
-    <label for="name" class="col-md-2 control-label">{{ trans('students.nation') }}</label>
+    <label for="name" class="col-md-2 control-label"><span style="color:red">*</span>{{ trans('students.nation') }}</label>
     <div class="col-md-10">
         <select name="country" class="form-control">
             @if(isset($nationalities))
@@ -175,7 +175,7 @@
         <select class="form-control" multiple="true" id="studentpicker" name="students[]">
             <option value="">--Select--</option>
             @foreach ($students as  $stud)
-            <option value="{{ $stud->id }}">{{ $stud->display_name }}</option>
+            <option value="{{ $stud->id }}">{{ $stud->display_name }}({{ $stud->name }})</option>
             @endforeach
 
         </select>
@@ -190,12 +190,12 @@
             <option value="">--Select--</option>
             @if($selected)
             @foreach($students as $stud)
-            <option value="{{ $stud->id }}" @if(in_array( $stud->id ,$selected)) selected @endif>{{ $stud->display_name }}</option>
+            <option value="{{ $stud->id }}" @if(in_array( $stud->id ,$selected)) selected @endif>{{ $stud->display_name }}({{ $stud->name }})</option>
             @endforeach
             @endif
             @if(!$selected)
             @foreach($students as  $stud)
-            <option value="{{ $id }}">{{ $stud->display_name }}</option>
+            <option value="{{ $id }}">{{ $stud->display_name }}({{ $stud->name }})</option>
             @endforeach
 
             @endif
