@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\App;
 use App\Models\User;
 use App\Models\TutorClass;
 use App\Models\Classes;
+use App\Models\Sms;
 use Auth;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -219,5 +220,27 @@ class HomeController extends Controller
            * Default
            */
         return view('home');
+    }
+
+    public function adminStudents()
+    {
+        $student = User::paginate(25);
+        return view('students.index', compact('student'));
+    }
+    
+    public function adminTutorClass()
+    {
+        $classes = TutorClass::leftJoin('users', 'classes.student_user_id', '=', 'users.id')->paginate(25);
+        if (auth()->user()->roles[0]->id == 4)
+        {
+            return view('classes.index_for_studnts', compact('classes'));
+        }
+        return view('classes.index', compact('classes'));
+    }
+
+    public function adminSms()
+    {
+        $sms = Sms::paginate(25);
+        return view('sms.inbox', compact('sms'));
     }
 }
