@@ -61,7 +61,7 @@
                     <thead>
                         <tr>
                             <th>{{ trans('testimonial.slno') }}</th>
-                            <th>{{ trans('testimonial.title') }}</th>
+                            <th>{{ trans('testimonial.name_title') }}</th>
                             <th>{{ trans('testimonial.status') }}</th>
                             <th>{{ trans('testimonial.active') }}</th>
                             <th></th>
@@ -94,7 +94,7 @@
                 },
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                    {data: 'title', name: 'title'},
+                    {data: 'name', name: 'title'},
                     {data: 'status', name: 'status'},
                     {data:  'is_active', name: "is_active"},
                     {data: 'action', name: 'action', orderable: false, searchable: false},
