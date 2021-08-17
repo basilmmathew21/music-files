@@ -252,34 +252,36 @@ body {
 
             function changeStudent() {
                 var student_user_id = $('#student_user_id').val();
-			    $.ajax({
-				beforeSend: function (xhr) { // Add this line
-				    xhr.setRequestHeader('X-CSRF-Token', $('[name="_csrfToken"]').val());
-				 },
-				url: '{{ URL::to("/ajaxFeePayment")}}',
-				type: "POST",
-				data: {'student_user_id': student_user_id,"_token": "{{ csrf_token() }}"},
-                success: function (response) {
-					response =   JSON.parse(response);
-					$("#no_class_fee_msg").html('');
-                    $("#amount").html(response.user.credits);
-                    $(".dollar").html(response.user.symbol);
-                    one_class_fee = response.user.class_fee;
-                    var payment   = response.payment;
-                    $("#payment").html(payment*one_class_fee);
-                    $("#class_fee").val(0);
-                    $("#no_of_classes").val("");
-                    if(response.user.class_fee == 0){
-                        $("#no_class_fee_msg").html('<p class="text-danger">The course fee for the student has not updated</p>');
-						$(".content-wrapper").height(935);
-						$(".card").height(630);
-                    }
-					else{
-						$(".content-wrapper").height(915);
-					}
-					
-				},
-			    });
+                if(student_user_id != ''){
+                    $.ajax({
+                    beforeSend: function (xhr) { // Add this line
+                        xhr.setRequestHeader('X-CSRF-Token', $('[name="_csrfToken"]').val());
+                    },
+                    url: '{{ URL::to("/ajaxFeePayment")}}',
+                    type: "POST",
+                    data: {'student_user_id': student_user_id,"_token": "{{ csrf_token() }}"},
+                    success: function (response) {
+                        response =   JSON.parse(response);
+                        $("#no_class_fee_msg").html('');
+                        $("#amount").html(response.user.credits);
+                        $(".dollar").html(response.user.symbol);
+                        one_class_fee = response.user.class_fee;
+                        var payment   = response.payment;
+                        $("#payment").html(payment*one_class_fee);
+                        $("#class_fee").val(0);
+                        $("#no_of_classes").val("");
+                        if(response.user.class_fee == 0){
+                            $("#no_class_fee_msg").html('<p class="text-danger">The course fee for the student has not updated</p>');
+                            $(".content-wrapper").height(935);
+                            $(".card").height(630);
+                        }
+                        else{
+                            $(".content-wrapper").height(915);
+                        }
+                        
+                    },
+                    });
+                }
             }
             
             
