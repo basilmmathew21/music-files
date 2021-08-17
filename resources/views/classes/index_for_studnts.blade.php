@@ -2,13 +2,13 @@
 
 @section('content_header')
     <h1 class="m-0 text-dark">{{ trans('classes.listing') }}</h1>
-     
+    <!--
      <div class="btn-group btn-group-sm pull-right" role="group">
         <a href="{{ route('tutor.classes.create') }}" class="btn btn-success" title="{{ trans('classes.create') }}">
             <i class="fas fa-plus-circle"></i>
         </a>
     </div>
-
+    -->
 @stop
 
 @section('content')
