@@ -74,7 +74,7 @@ class TutorClassController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($student) {
 
-                    if (auth()->user()->roles[0]->id == 4 || auth()->user()->roles[0]->id == 2)
+                    if (auth()->user()->roles[0]->id == 4)
                     {
                         return view('classes.datatable_for_students', compact('student'));
                     }
@@ -92,7 +92,7 @@ class TutorClassController extends Controller
             return view('classes.index_for_studnts', compact('classes'));
         }
 
-        if (auth()->user()->roles[0]->id == 2)
+        if (auth()->user()->roles[0]->id == 1)
         {
             return view('classes.index_for_admin', compact('classes'));
         }
