@@ -132,7 +132,7 @@ body {
             {{ csrf_field() }}
             @method("PUT")
             <div class="d-flex pt-3 pl-3">
-                <div><img src="/images/visa-icon.png" width="60" height="80" /></div>
+                <div><img src="/images/visa.png" width="60" height="80" /></div>
                 <div class="mt-3 pl-2">      <h2>{{$user->name}} </h2>
                 </div>
             </div>
@@ -147,7 +147,7 @@ body {
                             <select name="student_user_id" id="student_user_id" class="form-control">
                                 <option value="" >Select</option>
                                 @foreach ($students as  $student)
-				                    <option value="{{$student->id}}" >{{$student->name}}</option>
+				                    <option value="{{$student->id}}" @if($id == $student->id) selected="selected" @endif >{{$student->name}}</option>
 			                    @endforeach
                             </select>
                         </div>

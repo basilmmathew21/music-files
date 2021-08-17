@@ -69,7 +69,7 @@ class FeepaymentController extends Controller
         }
 
         $isSuperAdmin       =   $user->hasRole('super-admin');
-        return view('feepayment.index', compact('user','payment','students','isSuperAdmin'));
+        return view('feepayment.index', compact('user','payment','students','isSuperAdmin','id'));
     }
 
 
