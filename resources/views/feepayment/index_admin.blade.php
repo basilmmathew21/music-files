@@ -147,7 +147,7 @@ body {
                             <select name="student_user_id" id="student_user_id" class="form-control">
                                 <option value="" >Select</option>
                                 @foreach ($students as  $student)
-				                    <option value="{{$student->id}}" @if($id == $student->id) selected="selected" @endif >{{$student->name}}</option>
+				                    <option value="{{$student->id}}">{{$student->name}}</option>
 			                    @endforeach
                             </select>
                         </div>
@@ -194,7 +194,6 @@ body {
 				 </div>
 				<div>
                     <span id="no_class_fee_msg">
-                    @if($user->class_fee == 0) <p class="text-danger">The course fee for the student has not updated</p>  @endif
                     </span>
 					{!! $errors->first('no_of_classes', '<p class="text-danger">:message</p>') !!}
 				</div>
@@ -229,15 +228,13 @@ body {
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
     var one_class_fee;
-    
-    $(document).ready(function() {
+   $(document).ready(function() {
             $("#no_of_classes").change(function(){
-                if(one_class_fee == null){
-                    one_class_fee = {{ $user->class_fee }};
+                if($('#student_user_id').val() != ""){
+                    var no_of_classes = parseInt($(this).val());
+                    var class_fee     = one_class_fee*no_of_classes;
+                    $("#class_fee").val(class_fee);
                 }
-                var no_of_classes = parseInt($(this).val());
-                var class_fee     = one_class_fee*no_of_classes;
-                $("#class_fee").val(class_fee);
             });
     });
 </script>
@@ -264,7 +261,7 @@ body {
                     var payment   = response.payment;
                     $("#payment").html(payment*one_class_fee);
                     $("#class_fee").val(0);
-                    
+                    $("#no_of_classes").val("");
                     if(response.user.class_fee == 0){
                         $("#no_class_fee_msg").html('<p class="text-danger">The course fee for the student has not updated</p>');
 						$(".content-wrapper").height(935);
