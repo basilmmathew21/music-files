@@ -53,7 +53,7 @@ class HomeController extends Controller
         $isSuperAdmin       =   $user->hasRole('super-admin');
         $isTutor            =   $user->hasRole('tutor');
         $isStudent          =   $user->hasRole('student');
-
+        
 
         if ($isTutor) {
 
