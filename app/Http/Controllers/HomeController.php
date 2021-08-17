@@ -58,17 +58,17 @@ class HomeController extends Controller
         if ($isTutor) {
 
             $students       =   User::with('student')
-                ->Join('students', 'students.user_id', '=', 'users.id');
-            $students       =   $students->where('tutors.user_id', $id)
-                ->Join('tutors', 'tutors.user_id', '=', 'users.id')
+                ->LeftJoin('students', 'students.user_id', '=', 'users.id');
+            $students       =   $students->where('tutor_students.tutor_id', $id)
+                //->Join('tutors', 'tutors.user_id', '=', 'users.id')
                 ->Join('tutor_students', 'tutor_students.tutor_id', '=', 'users.id');
             $students       =   $students->count();
-
+            
             $studentInfo    =   DB::table('users')
                 ->join('countries', 'users.country_id', '=', 'countries.id')
                 ->LeftJoin('students', 'students.user_id', '=', 'users.id')
                 //->Join('tutors', 'tutors.user_id', '=', 'users.id')
-                ->Join('tutor_students', 'tutor_students.user_id', '=', 'users.id')
+                ->Join('tutor_students', 'tutor_students.tutor_id', '=', 'users.id')
                 ->where('tutor_students.tutor_id', $id)
                 ->leftJoin('courses', 'students.course_id', '=', 'courses.id')
                 ->select(['users.*','users.name as tutor_name','students.display_name', 'courses.course', 'countries.name AS country_name', DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
