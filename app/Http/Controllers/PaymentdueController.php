@@ -37,7 +37,7 @@ class PaymentdueController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) { 
-        $data =DB::table('classes as c')
+       /*  $data =DB::table('classes as c')
         ->select('c.*','us.name as tutor_name','u.name as student_name','s.credits as credits', DB::raw('sum(c.class_fee) as sum_n'))
         ->groupBy('c.student_user_id')
         ->join('students as s', 's.user_id', '=', 'c.student_user_id')
@@ -45,7 +45,19 @@ class PaymentdueController extends Controller
         ->join('tutors as t', 't.user_id', '=', 'c.tutor_user_id')
         ->join('users as us','t.user_id', '=', 'us.id')
         ->where('c.is_paid','=','0')
+        ->get(); */
+
+
+        $data =DB::table('users as u')
+        ->select('c.*','us.name as tutor_name','u.name as student_name','s.credits as credits', DB::raw('sum(c.class_fee) as sum_n'))
+        ->groupBy('c.student_user_id')
+        ->join('classes as c', 'c.student_user_id', '=', 'u.id')
+        ->join('students as s', 's.user_id', '=', 'c.student_user_id')        
+        ->join('tutors as t', 't.user_id', '=', 'c.tutor_user_id')
+        ->join('users as us','t.user_id', '=', 'us.id')
+        ->where('c.is_paid','=','0')
         ->get();
+        
         $datatable =  DataTables::of($data)
                 ->filter(function ($instance) use ($request) {
                     if ($request->has('keyword') && $request->get('keyword')) {
@@ -78,7 +90,7 @@ class PaymentdueController extends Controller
         ->join('users as us','t.user_id', '=', 'us.id')->get();
         //$payments = DB::select(DB::raw('select `c`.*, `us`.`name` as `tutor_name`, `u`.`name` as `student_name`, `s`.`credits` as `credits`, sum(c.class_fee) as sum_n from `classes` as `c` where is_paid = "0" inner join `students` as `s` on `s`.`user_id` = `c`.`student_user_id` inner join `users` as `u` on `s`.`user_id` = `u`.`id` inner join `tutors` as `t` on `t`.`user_id` = `c`.`tutor_user_id` inner join `users` as `us` on `t`.`user_id` = `us`.`id` group by `c`.`student_user_id`'));
             
-        dd($payments);
+        //dd($payments);
         return view('paymentdue.index',compact('payments'));
     }
 
