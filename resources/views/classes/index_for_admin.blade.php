@@ -2,13 +2,13 @@
 
 @section('content_header')
     <h1 class="m-0 text-dark">{{ trans('classes.listing') }}</h1>
-    <!--
+     
      <div class="btn-group btn-group-sm pull-right" role="group">
         <a href="{{ route('tutor.classes.create') }}" class="btn btn-success" title="{{ trans('classes.create') }}">
             <i class="fas fa-plus-circle"></i>
         </a>
     </div>
-    -->
+
 @stop
 
 @section('content')
@@ -60,7 +60,9 @@
                     <thead>
                         <tr>
                             <th>{{ trans('classes.slno') }}</th>
-                            <th> Payment status </th>
+							<th>Course</th>
+                            <th>{{ trans('classes.student') }}</th>
+							<th>Tutor</th>
 							<th>{{ trans('classes.date') }}</th>
                             
                             <th></th>
@@ -93,22 +95,9 @@
                 },
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-					
-					 { 
-              data: 'is_paid', 
-              render: function(data) { 
-                if(data) {
-                  return 'Paid' 
-                }
-                else {
-                  return 'Pending'
-                }
-
-              },
-              defaultContent: 'default'
-            },
-					
-                    
+					{data: 'course', name: 'course'},
+                    {data: 'name', name: 'name'},
+					{data: 'tutor', name: 'tutor'},
                     {data: 'date', name: 'date'},
                
                     {data: 'action', name: 'action', orderable: false, searchable: false},

@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/storage-link', function () {
+    $exitCode = Artisan::call('storage:link');
+    echo $exitCode . ' - Storage link';
+});
+
 Route::get('/clear-cache', function () {
     $exitCode = Artisan::call('optimize');
     echo $exitCode . ' - Cache cleared';
@@ -28,6 +33,15 @@ Route::get('/seed', function () {
     $exitCode = Artisan::call('db:seed --class=PermissionsSeeder');
     echo $exitCode . ' - Seeded Permissions for 1,2,3,4';
 });
+
+Route::get('/shutdown', function () {
+    Artisan::call('down');
+});
+
+Route::get('/live', function () {
+    Artisan::call('up');
+});
+
 
 Route::get('lang/{locale}', 'HomeController@lang');
 

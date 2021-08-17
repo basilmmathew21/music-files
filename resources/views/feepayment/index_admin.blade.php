@@ -147,7 +147,7 @@ body {
                             <select name="student_user_id" id="student_user_id" class="form-control">
                                 <option value="" >Select</option>
                                 @foreach ($students as  $student)
-				                    <option value="{{$student->id}}" @if($id == $student->id) selected="selected" @endif >{{$student->name}}</option>
+				                    <option value="{{$student->id}}" @if($selectedUser && $selectedUser == $student->id) selected @endif>{{$student->name}}</option>
 			                    @endforeach
                             </select>
                         </div>
@@ -165,7 +165,7 @@ body {
                 <div class="firstpy-2">
                  
                     <div class="pl-2 pr-2"><span class="head">Total credits</span>
-                        <div><span class="dollar">{{$user->symbol}}</span><span class="amount" id="amount">{{ $user->credits}}</span></div>
+                        <div><span class="dollar"><!--{{$user->symbol}} --></span><span class="amount" id="amount"><!--{{ $user->credits}} --></span></div>
                     </div>
                 </div>
             </div>
@@ -173,7 +173,7 @@ body {
                 <div class="first py-2">
                   
                     <div class="pl-2 pr-2"><span class="head">Total amount due</span>
-                        <div><span class="dollar">{{$user->symbol}}</span><span class="amount" id="payment">{{$payment * $user->class_fee}}</span></div>
+                        <div><span class="dollar"><!--{{$user->symbol}}--></span><span class="amount" id="payment"><!--{{$payment * $user->class_fee}}--></span></div>
                     </div>
                 </div>
             </div>
@@ -194,7 +194,6 @@ body {
 				 </div>
 				<div>
                     <span id="no_class_fee_msg">
-                    @if($user->class_fee == 0) <p class="text-danger">The course fee for the student has not updated</p>  @endif
                     </span>
 					{!! $errors->first('no_of_classes', '<p class="text-danger">:message</p>') !!}
 				</div>
@@ -204,7 +203,7 @@ body {
                 <div class="second py-2">
                   
                     <div class="pl-2 pr-2"><span class="head">Pay amount</span>
-                        <div class="d-flex"><span class="dollar"  style="padding-top:5px;">{{$user->symbol}}</span>
+                        <div class="d-flex"><span class="dollar"  style="padding-top:5px;"><!-- {{$user->symbol}} --></span>
 						    <input type="text" id="class_fee" name="class_fee" class="form-control" required="true" readonly placeholder="0">
 						</div>
                     </div>
@@ -229,15 +228,13 @@ body {
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
     var one_class_fee;
-    
-    $(document).ready(function() {
+   $(document).ready(function() {
             $("#no_of_classes").change(function(){
-                if(one_class_fee == null){
-                    one_class_fee = {{ $user->class_fee }};
+                if($('#student_user_id').val() != ""){
+                    var no_of_classes = parseInt($(this).val());
+                    var class_fee     = one_class_fee*no_of_classes;
+                    $("#class_fee").val(class_fee);
                 }
-                var no_of_classes = parseInt($(this).val());
-                var class_fee     = one_class_fee*no_of_classes;
-                $("#class_fee").val(class_fee);
             });
     });
 </script>
@@ -246,37 +243,47 @@ body {
             $(document).ready(function() {
             
             $('#student_user_id').change(function(){
-                
-                var student_user_id = $(this).val();
-			    $.ajax({
-				beforeSend: function (xhr) { // Add this line
-				    xhr.setRequestHeader('X-CSRF-Token', $('[name="_csrfToken"]').val());
-				 },
-				url: '{{ URL::to("/ajaxFeePayment")}}',
-				type: "POST",
-				data: {'student_user_id': student_user_id,"_token": "{{ csrf_token() }}"},
-                success: function (response) {
-					response =   JSON.parse(response);
-					$("#no_class_fee_msg").html('');
-                    $("#amount").html(response.user.credits);
-                    $(".dollar").html(response.user.symbol);
-                    one_class_fee = response.user.class_fee;
-                    var payment   = response.payment;
-                    $("#payment").html(payment*one_class_fee);
-                    $("#class_fee").val(0);
-                    
-                    if(response.user.class_fee == 0){
-                        $("#no_class_fee_msg").html('<p class="text-danger">The course fee for the student has not updated</p>');
-						$(".content-wrapper").height(935);
-						$(".card").height(630);
-                    }
-					else{
-						$(".content-wrapper").height(915);
-					}
-					
-				},
-			    });
+                changeStudent();
             });
+
+            $(function () {
+                changeStudent();
+            });
+
+            function changeStudent() {
+                var student_user_id = $('#student_user_id').val();
+                if(student_user_id != ''){
+                    $.ajax({
+                    beforeSend: function (xhr) { // Add this line
+                        xhr.setRequestHeader('X-CSRF-Token', $('[name="_csrfToken"]').val());
+                    },
+                    url: '{{ URL::to("/ajaxFeePayment")}}',
+                    type: "POST",
+                    data: {'student_user_id': student_user_id,"_token": "{{ csrf_token() }}"},
+                    success: function (response) {
+                        response =   JSON.parse(response);
+                        $("#no_class_fee_msg").html('');
+                        $("#amount").html(response.user.credits);
+                        $(".dollar").html(response.user.symbol);
+                        one_class_fee = response.user.class_fee;
+                        var payment   = response.payment;
+                        $("#payment").html(payment*one_class_fee);
+                        $("#class_fee").val(0);
+                        $("#no_of_classes").val("");
+                        if(response.user.class_fee == 0){
+                            $("#no_class_fee_msg").html('<p class="text-danger">The course fee for the student has not updated</p>');
+                            $(".content-wrapper").height(935);
+                            $(".card").height(630);
+                        }
+                        else{
+                            $(".content-wrapper").height(915);
+                        }
+                        
+                    },
+                    });
+                }
+            }
+            
             
         });
 </script>

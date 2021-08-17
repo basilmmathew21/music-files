@@ -39,9 +39,11 @@ class FeepaymentController extends Controller
      */
     public function index(Request $request)
     {
-        $id     = Auth::user()->id;
+        $id             = Auth::user()->id;
+        $selectedUser   = false;
         if(Session::get('user_id')){
-            $id = Session::get('user_id');
+            $id             = Session::get('user_id');
+            $selectedUser   = Session::get('user_id');  
             Session::forget('user_id');
         }
         $user   = User::with('student')
@@ -67,8 +69,11 @@ class FeepaymentController extends Controller
         {
             $student['name']= $student['display_name']."(".$student['name'].")";
         }
-
-        $isSuperAdmin       =   $user->hasRole('super-admin');
+        $logUser            =   Auth::user();
+        $isSuperAdmin       =   $logUser->hasRole('super-admin');
+        if($isSuperAdmin){
+            return view('feepayment.index_admin', compact('user','payment','students','isSuperAdmin','id','selectedUser'));
+        }
         return view('feepayment.index', compact('user','payment','students','isSuperAdmin'));
     }
 

@@ -60,6 +60,7 @@
                     <thead>
                         <tr>
                             <th>{{ trans('classes.slno') }}</th>
+							<th>Course</th>
                             <th>{{ trans('classes.student') }}</th>
 							<th>{{ trans('classes.date') }}</th>
                             
@@ -93,6 +94,7 @@
                 },
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+					{data: 'course', name: 'course'},
                     {data: 'name', name: 'name'},
                     {data: 'date', name: 'date'},
                
