@@ -147,7 +147,7 @@ body {
                             <select name="student_user_id" id="student_user_id" class="form-control">
                                 <option value="" >Select</option>
                                 @foreach ($students as  $student)
-				                    <option value="{{$student->id}}">{{$student->name}}</option>
+				                    <option value="{{$student->id}}" @if($selectedUser && $selectedUser == $student->id) selected @endif>{{$student->name}}</option>
 			                    @endforeach
                             </select>
                         </div>
@@ -165,7 +165,7 @@ body {
                 <div class="firstpy-2">
                  
                     <div class="pl-2 pr-2"><span class="head">Total credits</span>
-                        <div><span class="dollar">{{$user->symbol}}</span><span class="amount" id="amount">{{ $user->credits}}</span></div>
+                        <div><span class="dollar"><!--{{$user->symbol}} --></span><span class="amount" id="amount"><!--{{ $user->credits}} --></span></div>
                     </div>
                 </div>
             </div>
@@ -173,7 +173,7 @@ body {
                 <div class="first py-2">
                   
                     <div class="pl-2 pr-2"><span class="head">Total amount due</span>
-                        <div><span class="dollar">{{$user->symbol}}</span><span class="amount" id="payment">{{$payment * $user->class_fee}}</span></div>
+                        <div><span class="dollar"><!--{{$user->symbol}}--></span><span class="amount" id="payment"><!--{{$payment * $user->class_fee}}--></span></div>
                     </div>
                 </div>
             </div>
@@ -203,7 +203,7 @@ body {
                 <div class="second py-2">
                   
                     <div class="pl-2 pr-2"><span class="head">Pay amount</span>
-                        <div class="d-flex"><span class="dollar"  style="padding-top:5px;">{{$user->symbol}}</span>
+                        <div class="d-flex"><span class="dollar"  style="padding-top:5px;"><!-- {{$user->symbol}} --></span>
 						    <input type="text" id="class_fee" name="class_fee" class="form-control" required="true" readonly placeholder="0">
 						</div>
                     </div>
@@ -243,8 +243,15 @@ body {
             $(document).ready(function() {
             
             $('#student_user_id').change(function(){
-                
-                var student_user_id = $(this).val();
+                changeStudent();
+            });
+
+            $(function () {
+                changeStudent();
+            });
+
+            function changeStudent() {
+                var student_user_id = $('#student_user_id').val();
 			    $.ajax({
 				beforeSend: function (xhr) { // Add this line
 				    xhr.setRequestHeader('X-CSRF-Token', $('[name="_csrfToken"]').val());
@@ -273,7 +280,8 @@ body {
 					
 				},
 			    });
-            });
+            }
+            
             
         });
 </script>
