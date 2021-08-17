@@ -43,6 +43,9 @@
              <div class="card-header">
                 <h3 class="card-title">Students
 				      	</h3>
+                <div class="container text-right">
+                  <a href="{{ URL::to('students/students')}}" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
               </div>
               <!-- /.card-header -->
               <div class="card-body p-0 table-responsive">
@@ -51,7 +54,7 @@
                     <tr>
                       <th style="width: 10px">#</th>
                       <th>Name</th>
-                      <th>Gender</th>
+                      <th>Tutor</th>
                       <th>Course</th>
                     </tr>
                   </thead>
@@ -59,8 +62,8 @@
 				  <?php foreach($studentInfo as $key => $student){  ?>
                     <tr>
 					  <td>{{ $key + 1 }}</td>
-                      <td>{{ $student->name }}</td>
-                      <td>{{ $student->gender }}</td>
+                      <td>{{ $student->display_name }}({{ $student->name }})</td>
+                      <td>{{ $student->tutor_name }}</td>
                       <td>{{ $student->course }}</td>
                     </tr>
 				  <?php } ?> 
@@ -86,8 +89,11 @@
             <div class="card">
 				<div class="card-header">
 					<h3 class="card-title">
-						Tutors Class
+						Classes
 					</h3>
+          <div class="container text-right">
+                  <a href="{{ URL::to('tutor/classes')}}" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
 				</div>
 			  
               <!-- /.card-header -->
@@ -104,7 +110,7 @@
 				  <?php foreach($tutorClass as $key => $tutor){ ?>
                     <tr>
 					  <td>{{ $key + 1 }}</td>
-                      <td>{{ $tutor->name }}</td>
+                      <td>{{$tutor->display_name}}({{ $tutor->name }})</td>
                       <td>{{ $tutor->date }}</td>
                     </tr>
 				  <?php } ?> 
@@ -133,6 +139,9 @@
              <div class="card-header">
                 <h3 class="card-title">SMS
                 </h3>
+                <div class="container text-right">
+                  <a href="{{ URL::to('sms/inbox')}}" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
               </div>
               <!-- /.card-header -->
               <div class="card-body p-0 table-responsive">
@@ -150,7 +159,7 @@
 				  <?php foreach($sms as $key => $sm){  ?>
                     <tr>
 					  <td>{{ $key + 1 }}</td>
-                      <td>{{ $sm->name }}</td>
+                      <td>@if($sm->display_name){{ $sm->display_name }}({{ $sm->name }}) @else {{ $sm->name }} @endif</td>
                       <td>{{ $sm->message }}</td>
                       <td>{{ $sm->sent_on }}</td>
                     </tr>

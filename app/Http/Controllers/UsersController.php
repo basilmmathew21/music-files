@@ -39,13 +39,31 @@ class UsersController extends Controller
         /**
          * Ajax call by datatable for listing of the users.
          */
+      
+                             
 
         if ($request->ajax()) {
             
             $data = User::join('countries', 'users.country_id', '=', 'countries.id')
-                        ->join('user_types', 'users.user_type_id', '=', 'user_types.id')
-                        ->select(['users.*','user_types.user_type','countries.name AS country_name','users.dob',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%y") as dob'),DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
-                        ->get();
+            ->join('user_types', 'users.user_type_id', '=', 'user_types.id')
+            ->leftjoin('students','students.user_id','=','users.id') 
+             ->leftjoin('tutors','tutors.user_id','=','users.id')  
+            ->select(['users.*','user_types.user_type','countries.name AS country_name','users.dob',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%y") as dob')
+            ,DB::raw('CONCAT(countries.code," ",users.phone) as phone'),
+            \DB::raw('(CASE 
+                                  WHEN users.user_type_id = "3" THEN tutors.display_name
+                                  WHEN users.user_type_id = "4" THEN students.display_name 
+                                  ELSE users.name  END) AS display_name')])->get();
+    
+            foreach($data as $d)
+            {
+                if($d['user_type_id']==3 ||$d['user_type_id']==4 )
+                {
+                    $d['name']=$d['display_name']."(".$d['name'].")";
+                }
+                
+    
+            }
                                            
             $datatable =  DataTables::of($data)
                 ->filter(function ($instance) use ($request) {
@@ -111,9 +129,22 @@ class UsersController extends Controller
         $user = DB::table('users')->where('users.id',$id)
                     ->leftJoin('countries', 'users.country_id', '=', 'countries.id')
                     ->leftJoin('user_types', 'users.user_type_id', '=', 'user_types.id')
-                    ->select(['users.*','user_types.user_type','countries.name AS country_name','users.dob',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%y") as dob'),DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
+                    ->leftJoin('students', 'students.user_id', '=', 'users.id')
+                    ->leftJoin('tutors', 'tutors.user_id', '=', 'users.id')
+                    ->select(['users.*', \DB::raw('(CASE 
+                    WHEN users.user_type_id = "3" THEN tutors.display_name
+                    WHEN users.user_type_id = "4" THEN students.display_name 
+                    ELSE users.name  END) AS display_name'),'user_types.user_type','countries.name AS country_name','users.dob',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%y") as dob'),DB::raw('CONCAT(countries.code," ",users.phone) as phone'),DB::raw('CONCAT(countries.code," ",users.whatsapp_number) as whatsapp_number')])
                     ->first();
-        
+          
+                   
+                        if($user->user_type_id==3 ||$user->user_type_id==4 )
+                        {
+                            $user->name=$user->display_name."(".$user->name.")";
+                        }
+                        
+            
+                   
         return view('users.show', compact('user'));
     }
 

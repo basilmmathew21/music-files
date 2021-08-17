@@ -38,6 +38,8 @@
                     <dd>{{ $user->email }}</dd>
                     <dt>{{ trans('users.phone') }}</dt>
                     <dd>{{ $user->phone }}</dd>
+                    <dt>{{ trans('users.whatsappnumber') }}</dt>
+                    <dd>{{ $user->whatsapp_number }}</dd>
                     <dt>{{ trans('users.user_type') }}</dt>
                     <dd>{{ $user->user_type }}</dd>
                     <dt>{{ trans('users.gender') }}</dt>

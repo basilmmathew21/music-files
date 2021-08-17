@@ -38,6 +38,8 @@
                     <dd>{{ $user->email }}</dd>
                     <dt>{{ trans('students.phone') }}</dt>
                     <dd>{{ $user->phone }}</dd>
+                    <dt>{{ trans('users.whatsappnumber') }}</dt>
+                    <dd>{{ $user->whatsapp_number }}</dd>
                     <dt>{{ trans('students.user_type') }}</dt>
                     <dd>{{ $user->user_type }}</dd>
                     <dt>{{ trans('students.gender') }}</dt>
@@ -52,6 +54,8 @@
                     <dd> {{ $user->code }}({{$user->symbol}})</dd>
                     <dt>{{ trans('students.fee') }}</dt>
                     <dd>{{ $user->class_fee }}</dd>
+                    <dt>{{ trans('students.onlineclasslink') }}</dt>
+                    <dd>{{ $user->online_class_link }}</dd>
                     <dt>{{ trans('students.state') }}</dt>
                     <dd>{{ $user->state }}</dd>
                     <dt>{{ trans('students.address') }}</dt>

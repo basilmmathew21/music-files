@@ -44,7 +44,7 @@
                 <select class="form-control" name="to_user" required >
                     <option>--Select--</option>
                     @foreach($users as $user)
-                        <option value='{{$user->id}} '>{{$user->name}}</option>
+                        <option value='{{$user->id}} '>@if(isset($user->display_name)){{$user->display_name}}@else{{$user->name}}@endif</option>
                     @endforeach
                 </select>
               </div>

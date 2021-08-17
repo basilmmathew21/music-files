@@ -47,7 +47,12 @@ class StudentsController extends Controller
                 ->leftJoin('courses', 'students.course_id', '=', 'courses.id')
                 ->select(['users.*', 'users.is_active as is_active','students.display_name', 'students.is_registered', 'courses.course', 'countries.name AS country_name', DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
                 ->where('user_type_id', 4)
+                ->where("users.is_active",1)
                 ->get();
+            foreach($data as $d)
+            {
+                $d['name']=$d['display_name']."(".$d['name'].")";
+            }
                 
 
             $datatable =  DataTables::of($data)
@@ -99,6 +104,22 @@ class StudentsController extends Controller
     public function store(Request $request)
     {
         $data = $this->getData($request);
+
+         //Check Whatsapp number Duplication
+         $user_whatsapp = User::where('phone', '=', $request->whatsapp_number)
+         ->orWhere('whatsapp_number', '=', $request->whatsapp_number)->first();
+
+        if($user_whatsapp)
+        $check_whatsapp=1;
+        else
+        $check_whatsapp=0;
+
+        if($check_whatsapp==1)
+        {
+            return redirect()->back()->withInput()->withErrors("Whatsapp Number Already Exist");
+        }
+
+        $data['whatsapp_number']=$request->whatsapp_number;
         $data['password']       = Hash::make($data['password']); //Encrypting password
         $data['country_id']     = $data['country']; //country
         $data['state']          = $request->state;
@@ -122,10 +143,12 @@ class StudentsController extends Controller
         $student['display_name']   =  $request->display_name;
         $student['country_id']     =  $data['country'];
         $student['course_id']      =  $request->course;
+        $student['online_class_link']      =  $request->online_class_link;
        // $student['currency_id']    =  $request->currency;
         $student['class_fee']      =  $request->class_fee;
         $student['is_registered']  =  1;
         //$student['is_active']      =  $request->status ? $request->status : 0;
+        
         Student::create($student);
 
         return redirect()->route('students.student.index')
@@ -148,7 +171,7 @@ class StudentsController extends Controller
 
         $user           = User::with('student')
             ->leftJoin('students', 'students.user_id', '=', 'users.id')
-            ->select(['users.*', 'users.is_active as is_active','students.display_name', 'students.class_fee', 'students.is_registered', 'students.country_id', 'students.course_id', 'students.currency_id', DB::raw('DATE_FORMAT(users.dob, "%d-%m-%Y") as dob')])
+            ->select(['users.*', 'users.is_active as is_active','students.display_name', 'students.class_fee', 'students.is_registered', 'students.country_id', 'students.course_id', 'students.currency_id','students.online_class_link',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%Y") as dob')])
             ->findOrFail($id);
         $nationalities  = Country::pluck('name', 'id')->all();
         $courses        = Course::pluck('course', 'id')->all();
@@ -169,7 +192,27 @@ class StudentsController extends Controller
 
         $data                   = $this->getData($request, $id);
         $user                   = User::findOrFail($id);
+
+        //Check Whatsapp number Duplication
+        $user_whatsapp = User::where('id','!=',$id) 
+                                ->where(function ($query)  use ($request){
+                                    $query->where('phone', '=', $request->whatsapp_number)
+                                    ->orWhere('whatsapp_number', '=', $request->whatsapp_number);
+                                })->first();
+
+       
+       
+        if($user_whatsapp)
+            $check_whatsapp=1;
+        else
+            $check_whatsapp=0;
+       if($check_whatsapp==1)
+        {
+            return redirect()->back()->withInput()->withErrors("Whatsapp Number Already Exist");
+        }
+
         $data['country_id']     = $request->country;
+        $data['whatsapp_number']=$request->whatsapp_number;
         $data['state']          = $request->state;
         $data['address']        = $request->address;
         $data['dob']            = Carbon::createFromFormat('d-m-Y', $request->dob)->format('Y-m-d');
@@ -204,6 +247,7 @@ class StudentsController extends Controller
             $student['course_id']      =  $request->course;
             $student['currency_id']    =  $request->currency;
             $student['class_fee']      =  $request->class_fee;
+            $student['online_class_link']      =  $request->online_class_link;
             $student['is_registered']  =  $request->is_registered;
             //$student['is_active']      =  $request->status;
            /* if ($student['is_active'] == "Active") {
@@ -247,8 +291,10 @@ class StudentsController extends Controller
             ->leftJoin('courses', 'students.course_id', '=', 'courses.id')
             ->leftJoin('currencies', 'students.currency_id', '=', 'currencies.id')
             ->leftJoin('user_types', 'users.user_type_id', '=', 'user_types.id')
-            ->select(['users.*', 'users.is_active as is_active', 'students.class_fee', 'user_types.user_type', 'currencies.code', 'currencies.symbol', 'students.is_registered', 'courses.course', 'countries.name AS country_name', DB::raw('DATE_FORMAT(users.dob, "%d-%m-%Y") as dob'), DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
+            ->select(['users.*', 'users.is_active as is_active', 'students.class_fee', 'students.display_name','user_types.user_type', 'currencies.code', 'currencies.symbol', 'students.is_registered', 'courses.course', 'countries.name AS country_name', DB::raw('DATE_FORMAT(users.dob, "%d-%m-%Y") as dob'), DB::raw('CONCAT(countries.code," ",users.phone) as phone'),DB::raw('CONCAT(countries.code," ",users.whatsapp_number) as whatsapp_number')])
             ->findOrFail($id);
+
+        $user->name=$user->display_name."(".$user->name.")";
         return view('students.show', compact('user'));
     }
 
@@ -297,10 +343,11 @@ class StudentsController extends Controller
                 }),
             ],
             'phone' => [
-                'digits:10',
+                //'digits:10',
                 Rule::unique('users')->where(function ($query) {
                 }),
             ],
+           
             'password' => 'string|min:8|max:255',
             'gender' => 'nullable',
             'dob' => 'nullable',
@@ -319,7 +366,7 @@ class StudentsController extends Controller
                     }),
                 ],
                 'phone' => [
-                    'digits:10',
+                    //'digits:10',
                     Rule::unique('users')->ignore($id)->where(function ($query) {
                     }),
                 ],

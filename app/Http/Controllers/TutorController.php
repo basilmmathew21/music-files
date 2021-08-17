@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Lang;
 use Mail;
 use Illuminate\Support\Facades\Hash;
 
+use Illuminate\Database\Eloquent\Builder;
 
 
 
@@ -48,6 +49,7 @@ class TutorController extends Controller
                     $d->status='Active';
                 else
                     $d->status='InActive';
+                $d->name=$d->display_name."(".$d->name.")";
             }
 
            $datatable =  DataTables::of($data)
@@ -87,7 +89,7 @@ class TutorController extends Controller
               ->join('students', 'students.user_id', '=', 'users.id')
               ->where('is_active',1)
               ->whereNotIN('users.id',$tutor_students)
-              ->select('students.display_name','users.id')->get();
+              ->select('students.display_name','users.name','users.id')->get();
         return view('tutors.create', compact('nationalities','currency','students'));
     }
 
@@ -103,7 +105,7 @@ class TutorController extends Controller
         $validatedData = $request->validate([
             
             'email' => 'required|regex:/(.+)@(.+)\.(.+)/i',
-            'phone' => 'required|digits:10',
+            'phone' => 'required',
     
            ]);
            //Check Email Duplication
@@ -122,6 +124,15 @@ class TutorController extends Controller
         else
             $check_phone=0;
 
+        //Check Whatsapp number Duplication
+        $user_whatsapp = User::where('phone', '=', $request->whatsapp_number)
+                            ->orWhere('whatsapp_number', '=', $request->whatsapp_number)->first();
+        
+        if($user_whatsapp)
+           $check_whatsapp=1;
+        else
+            $check_whatsapp=0;
+
 
         if($check_mail==1)
         {
@@ -130,6 +141,10 @@ class TutorController extends Controller
         else if($check_phone==1)
         {
             return redirect()->back()->withErrors("Phone Number Already Exist");
+        }
+        else if($check_whatsapp==1)
+        {
+            return redirect()->back()->withErrors("Whatsapp Number Already Exist");
         }
         else
         {
@@ -165,9 +180,11 @@ class TutorController extends Controller
     {
         $user = DB::table('users')->where('users.id',$id)
                     ->leftJoin('countries', 'users.country_id', '=', 'countries.id')
-                    ->select(['users.*','countries.name AS country_name','users.dob',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%y") as dob'),DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
+                    ->leftJoin('tutors', 'tutors.user_id', '=', 'users.id')
+                    ->select(['users.*','tutors.display_name','countries.name AS country_name','users.dob',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%y") as dob'),DB::raw('CONCAT(countries.code," ",users.phone) as phone'),DB::raw('CONCAT(countries.code," ",users.whatsapp_number) as whatsapp_number')])
                     ->first();
                    // 
+                $user->name=$user->display_name."(".$user->name.")";
         $tutor = Tutor::where('user_id',$id)->get();
         if(count($tutor)>0)
         {
@@ -225,7 +242,7 @@ class TutorController extends Controller
             ->join('students', 'students.user_id', '=', 'users.id')
               ->where('is_active',1)
               ->whereNotIN('users.id',$tutor_students)
-              ->select('students.display_name','users.id')->get();
+              ->select('students.display_name','users.name','users.id')->get();
 
             
 
@@ -265,7 +282,7 @@ class TutorController extends Controller
         $validatedData = $request->validate([
            
             'email' => 'required|regex:/(.+)@(.+)\.(.+)/i',
-            'phone' => 'required|digits:10'
+            'phone' => 'required'
     
            ]);
 
@@ -287,6 +304,19 @@ class TutorController extends Controller
         else
             $check_phone=0;
 
+        //Check Whatsapp number Duplication
+        $user_whatsapp = User::where('id','!=',$id) 
+                                ->where(function ($query)  use ($request){
+                                    $query->where('phone', '=', $request->whatsapp_number)
+                                    ->orWhere('whatsapp_number', '=', $request->whatsapp_number);
+                                })->first();
+
+       
+       
+        if($user_whatsapp)
+            $check_whatsapp=1;
+        else
+            $check_whatsapp=0;
 
         if($check_email==1)
         {
@@ -295,6 +325,10 @@ class TutorController extends Controller
         else if($check_phone==1)
         {
             return redirect()->back()->withErrors("Phone Number Already Exist");
+        }
+        else if($check_whatsapp==1)
+        {
+            return redirect()->back()->withErrors("Whatsapp Number Already Exist");
         }
         else
         {

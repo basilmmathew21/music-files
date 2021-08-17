@@ -92,7 +92,12 @@
              <div class="card-header">
                 <h3 class="card-title">Students
 				      	</h3>
+                <div class="container text-right">
+                    <a href="{{ URL::to('students/students')}}" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+                
               </div>
+              
               <!-- /.card-header -->
               <div class="card-body p-0 table-responsive">
                 <table class="table table-striped">
@@ -100,9 +105,7 @@
                     <tr>
                       <th style="width: 10px">#</th>
                       <th>Name</th>
-                      <th>Gender</th>
-                      <th>Email</th>
-                      <th>Phone</th>
+                      <th>Tutor</th>
                       <th>Course</th>
                     </tr>
                   </thead>
@@ -110,10 +113,8 @@
 				  <?php foreach($studentInfo as $key => $student){  ?>
                     <tr>
 					  <td>{{ $key + 1 }}</td>
-                      <td>{{ $student->name }}</td>
-                      <td>{{ $student->gender }}</td>
-                      <td>{{ $student->email }}</td>
-                      <td>{{ $student->phone }}</td>
+                      <td>{{$student->display_name}}({{ $student->name }})</td>
+                      <td>@if($student->user_type_id == 3){{ $student->tutor_name }} @else NA @endif</td>
                       <td>{{ $student->course }}</td>
                     </tr>
 				  <?php } ?> 
@@ -133,12 +134,61 @@
             
           <!-- /.Left col -->
           <!-- right col (We are only adding the ID to make the widgets sortable)-->
+            
+          <section class="col-lg-6 connectedSortable">
+
+            <div class="card">
+				<div class="card-header">
+					<h3 class="card-title">
+						Tutors Class
+					</h3>
+          <div class="container text-right">
+                    <a href="{{ URL::to('tutor/classes')}}" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+				</div>
+			  
+              <!-- /.card-header -->
+              <div class="card-body p-0 table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th style="width: 10px">No</th>
+                      <th>Tutor Name</th>
+                      <th>Student Name</th>
+                      <th>Course</th>
+                      <th>Date</th>
+          					 </tr>
+                  </thead>
+                  <tbody>
+				  <?php foreach($tutorClass as $key => $tutor){ ?>
+                    <tr>
+					  <td>{{ $key + 1 }}</td>
+                      <td>{{ $tutor->tutor_displayname }}</td>
+                      <td>{{ $tutor->student_displayname }}</td>
+                      <td>{{ $tutor->course }}</td>
+                      <td>{{ $tutor->date }}</td>
+                    </tr>
+				  <?php } ?> 
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- solid sales graph -->
+            
+            <!-- Calendar -->
+            
+            <!-- /.card -->
+          </section>
           
           <section class="col-lg-6 connectedSortable">
             <!-- Custom tabs (Charts with tabs)-->
             <div class="card">
              <div class="card-header">
                 <h3 class="card-title">SMS</h3>
+                <div class="container text-right">
+                  <a href="{{ URL::to('sms/inbox')}}" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
               </div>
               <!-- /.card-header -->
               <div class="card-body p-0 table-responsive">
@@ -156,7 +206,7 @@
 				  <?php foreach($sms as $key => $sm){  ?>
                     <tr>
 					  <td>{{ $key + 1 }}</td>
-                      <td>{{ $sm->name }}</td>
+                      <td>{{$sm->tutor_displayname}}{{$sm->student_displayname}}({{ $sm->name }})</td>
                       <td>{{ $sm->message }}</td>
                       <td>{{ $sm->sent_on }}</td>
                     </tr>
