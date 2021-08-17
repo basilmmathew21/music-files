@@ -135,6 +135,7 @@ class PermissionsSeeder extends Seeder
 
         //Admin Permissions
         $adminRole = Role::where('name', 'admin')->first();
+        
 
         //Tutor Permissions
         $tutorRole = Role::where('name', 'tutor')->first();

@@ -39,13 +39,14 @@ class TutorClassController extends Controller
          $logged_in_id = auth()->user()->id;
 
         if ($request->ajax()) {
-            $data = TutorClass::leftJoin('users', 'classes.student_user_id', '=', 'users.id');
+            $data = TutorClass::leftJoin('users', 'classes.student_user_id', '=', 'users.id')
+                    ->join('students', 'students.user_id', '=', 'users.id')
+                    ->join('users as tutors', 'tutors.id', '=', 'classes.tutor_user_id')
+                    ->leftJoin('courses', 'students.course_id', '=', 'courses.id');
 
             if (auth()->user()->roles[0]->id == 3)
         {
-            $data = $data->leftjoin('students','students.user_id','=','classes.student_user_id')
-                  ->where('tutor_user_id',$logged_in_id)
-                  ->select(['classes.*','students.display_name as name',DB::raw('DATE_FORMAT(classes.date, "%d-%b-%Y") as date')]);
+            $data = $data->where('tutor_user_id',$logged_in_id);
         }
 
         
@@ -53,14 +54,8 @@ class TutorClassController extends Controller
         {
             $data = $data->where('student_user_id',$logged_in_id);
         }
-        if (auth()->user()->roles[0]->id == 1)
-        {
-            $data = $data->leftjoin('students','students.user_id','=','classes.student_user_id')
-                         ->select(['classes.*','students.display_name as name',DB::raw('DATE_FORMAT(classes.date, "%d-%b-%Y") as date')]);
-        }
-        
 
-        $data = $data->get();
+        $data = $data->select(['classes.*','users.name','courses.course','tutors.name as tutor',DB::raw('DATE_FORMAT(classes.date, "%d-%b-%Y") as date')])->get();
 
             $datatable = DataTables::of($data)
                 ->filter(function ($instance) use ($request) {
@@ -95,6 +90,11 @@ class TutorClassController extends Controller
         if (auth()->user()->roles[0]->id == 4)
         {
             return view('classes.index_for_studnts', compact('classes'));
+        }
+
+        if (auth()->user()->roles[0]->id == 1)
+        {
+            return view('classes.index_for_admin', compact('classes'));
         }
         return view('classes.index', compact('classes'));
     }
