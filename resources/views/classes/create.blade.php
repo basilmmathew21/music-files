@@ -118,9 +118,20 @@
                     }
 
                     jQuery("#student_user_id").html(showData);
+					$("#student_user_id").val("<?php echo old('student_user_id') ?>");
                     //jQuery('#loader').hide();
                 },
             });
         });
     };
+	
+	$(document).ready(function (){
+		var tutor_id = jQuery('#tutor_id').val();
+		if(tutor_id){
+			getStudents();
+			
+			
+			 
+		}
+	});
 </script>

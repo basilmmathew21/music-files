@@ -17,7 +17,7 @@
         <select name="tutor_user_id" id="tutor_id" onchange="getStudents()" class="form-control">
 			<option value="" >Select</option>
 			@foreach ($tutors as $l => $tutor)
-				<option value="{{$l}}" >{{$tutor}}</option>
+				<option value="{{$l}}" @if (old('tutor_user_id') == $l) selected @endif>{{$tutor}}</option>
 			@endforeach
         </select>
 	</div>
@@ -32,7 +32,7 @@
         <select name="student_user_id" id="student_user_id" class="form-control">
 			<option value="" >Select</option>
 			@foreach ($students as $k => $student)
-				<option value="{{$k}}" >{{$student}}</option>
+				<option value="{{$k}}" @if (old('student_user_id') == $k) selected @endif>{{$student}}</option>
 			@endforeach
         </select>
 	</div>
@@ -44,7 +44,7 @@
     <label for="dob" class="col-md-2 control-label">{{ trans('classes.date') }}<sup style="color:red">*</sup></label>
     <div class="col-md-10">
         <input class="form-control datepicker" name="date" type="text" id="dob"
-            value="{{ old('dob', optional($user)->dob) }}" minlength="1" maxlength="255" required="true"
+            value="{{ old('date', optional($user)->dob) }}" minlength="1" maxlength="255" required="true"
             placeholder="{{ trans('classes.date__placeholder') }}" readonly>
         {!! $errors->first('dob', '<p class="text-danger">:message</p>') !!}
     </div>
@@ -53,7 +53,7 @@
 <div class="form-group {{ $errors->has('dob') ? 'has-error' : '' }}">
     <label for="dob" class="col-md-2 control-label">{{ trans('classes.summary') }}<sup style="color:red">*</sup></label>
     <div class="col-md-10">
-        <textarea class="form-control text-editor" name="summary" id="summary"></textarea> 
+        <textarea class="form-control text-editor" name="summary" id="summary">{{ old('summary')}}</textarea> 
 		{!! $errors->first('dob', '<p class="text-danger">:message</p>') !!}
     </div>
 </div>
