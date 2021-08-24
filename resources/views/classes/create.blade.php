@@ -114,10 +114,10 @@
                     var showData = [];
                     for (i = 0; i < res.length; ++i) {
                         var j = i + 1;
-                        showData[i] = "<option value=''>Select</option><option value='" + res[i].id + "'>" + res[i].name + "</option>";
+                        showData[i] = "<option value='" + res[i].id + "'>" + res[i].name + "</option>";
                     }
 
-                    jQuery("#student_user_id").html(showData);
+                    jQuery("#student_user_id").html("<option value=''>Select</option>"+showData);
 					$("#student_user_id").val("<?php echo old('student_user_id') ?>");
                     //jQuery('#loader').hide();
                 },
