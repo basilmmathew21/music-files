@@ -314,7 +314,7 @@ return [
                     'route'  => 'payments.payments.index',
                     'can' => ['view payments'],
                 ], [
-                    'text' => 'Paymeny Dues',
+                    'text' => 'Payment Dues',
                     'route'  => 'paymentdue.paymentdue.index',
                     'can' => ['view payments'],
                 ],
