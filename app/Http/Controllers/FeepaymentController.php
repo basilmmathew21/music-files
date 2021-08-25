@@ -126,7 +126,8 @@ class FeepaymentController extends Controller
        ->where('users.id',$id)
        ->get();
        
-       $amountPay   =   $request->class_fee;
+       $amountPay       =   $request->class_fee;
+       $amountPayTotal  =   $amountPay;
        if(count($paymentDetails) != 0){
            foreach($paymentDetails as $payment){
                 $classInfo                  = Classes::findOrFail($payment['classIds']);
@@ -134,7 +135,9 @@ class FeepaymentController extends Controller
                 $paymentData['is_paid']     = 1;
                 $amountPay  = $amountPay - $studentDetais['class_fee'];
                 if(($amountPay >= $studentDetais->class_fee) ||  ($amountPay == 0)){
+                
                 $classInfo->update($paymentData);
+                /*
                     $student['credits']      =  $studentDetais->credits - $studentDetais['class_fee'];
                     $studentDetais->update($student);
 
@@ -148,16 +151,20 @@ class FeepaymentController extends Controller
                     $data['payment_date']       = date("Y-m-d H:i:s");
                     $data['currency_id']        = $studentDetais->currency_id;
                     $data['amount']             = $studentDetais['class_fee'];
+                    
                     $data['no_of_classes']      = $request->no_of_classes;
                     $data['payment_method_id']  = '1';
                     $data['status']             ='paid';
                     PaymentHistory::create($data);
+                */
                 }
             }
-            if($amountPay > 0){
-                $student['credits']         =  $studentDetais->credits + $amountPay;
+            //if($amountPay > 0){
+              if($amountPayTotal > 0){
+                //$student['credits']       =  $studentDetais->credits + $amountPay;
+                $student['credits']         =  $studentDetais->credits + $amountPayTotal;
                 $studentDetais->update($student);
-
+                
                 $data                       = array();
                 $data['student_user_id']    = $id;
                 $data['tutor_user_id']      = 0;
@@ -167,7 +174,7 @@ class FeepaymentController extends Controller
                 }
                 $data['payment_date']       = date("Y-m-d H:i:s");
                 $data['currency_id']        = $studentDetais->currency_id;
-                $data['amount']             = $amountPay;
+                $data['amount']             = $amountPayTotal;
                 $data['no_of_classes']      = $request->no_of_classes;
                 $data['payment_method_id']  = '1';
                 $data['status']             ='paid';
