@@ -36,6 +36,7 @@ class PaymentdueController extends Controller
 
     public function index(Request $request)
     {
+        
         if ($request->ajax()) { 
        /*  $data =DB::table('classes as c')
         ->select('c.*','us.name as tutor_name','u.name as student_name','s.credits as credits', DB::raw('sum(c.class_fee) as sum_n'))
@@ -47,6 +48,8 @@ class PaymentdueController extends Controller
         ->where('c.is_paid','=','0')
         ->get(); */
 
+        $logged_in_id = auth()->user()->id;
+
 
         $data =DB::table('users as u')
         ->select('c.*','us.name as tutor_name','u.name as student_name','s.credits as credits', DB::raw('sum(c.class_fee) as sum_n'))
@@ -55,8 +58,13 @@ class PaymentdueController extends Controller
         ->join('students as s', 's.user_id', '=', 'c.student_user_id')        
         ->join('tutors as t', 't.user_id', '=', 'c.tutor_user_id')
         ->join('users as us','t.user_id', '=', 'us.id')
-        ->where('c.is_paid','=','0')
-        ->get();
+        ->where('c.is_paid','=','0');
+
+        if (auth()->user()->roles[0]->id == 4)
+        {
+            $data=$data->where('c.student_user_id',$logged_in_id);
+        }
+        $data=$data->get();
         
         $datatable =  DataTables::of($data)
                 ->filter(function ($instance) use ($request) {

@@ -61,7 +61,8 @@
                         <tr>
                             <th>{{ trans('paymenthistory.slno') }}</th>
                             <th>{{ trans('paymenthistory.name') }}</th>
-                            <th>{{ trans('paymenthistory.tutor') }}</th>
+                            <th>Due</th>
+							<th>Credit</th>
                             <!-- <th>{{ trans('paymenthistory.payment_date') }}</th>
                             <th>{{ trans('paymenthistory.amount') }}</th>
                             <th>{{ trans('paymenthistory.status') }}</th>
@@ -88,7 +89,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "{{ route('payments.payments.index') }}",
+                    url: "{{ route('paymentdue.paymentdue.index') }}",
                     data: function (d) {
                         d.keyword = $('#keyword').val();
                     }
@@ -96,9 +97,11 @@
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                     {data: 'student_name', name: 'student_name'},
-                    {data: 'tutor_name', name: 'tutor_name'},
+					{data: 'sum_n', name: 'sum_n'},
+					{data: 'credits', name: 'credits'},
+                    //{data: 'tutor_name', name: 'tutor_name'},
                     //{data: 'payment_date', name: 'payment_date'},
-                    //{data: 'amount', name: 'amount'},
+                    
                    // {data: 'status', name: 'status'},
                     //{data:  'is_active', name: "is_active"},
                     //{data: 'action', name: 'action', orderable: false, searchable: false},
