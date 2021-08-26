@@ -176,10 +176,11 @@ class PaymentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $pay = $request->all();
-        $payment = PaymentHistory::find($id);
+        $pay        =   $request->all();
+        $payment    =   PaymentHistory::find($id);
+        $prevStatus =   $payment->status;
         $payment->update($pay);
-        if($request->status == "3"){
+        if($prevStatus == "2" && $request->status == "3"){
            $paymentDetails   = User
             ::Join('students', 'students.user_id', '=', 'users.id')
             ->Join('classes', 'students.user_id', '=', 'classes.student_user_id')
