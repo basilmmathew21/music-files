@@ -156,7 +156,7 @@ class PaymentController extends Controller
             ->join('users as u', 'p.student_user_id', '=', 'u.id')
             ->leftjoin('payment_methods as pm', 'p.payment_method_id', '=', 'pm.id')
             ->join('currencies as c', 'p.currency_id', '=', 'c.id')
-            ->select('p.*','c.*', 'u.name as student_name', 'pm.payment_method', 'p.id as main_id', DB::raw('DATE_FORMAT(p.payment_date, "%d-%b-%Y") as payment_date'))
+            ->select('p.*','c.symbol', 'u.name as student_name', 'pm.payment_method', 'p.id as main_id', DB::raw('DATE_FORMAT(p.payment_date, "%d-%b-%Y") as payment_date'))
 
             ->where('p.id', '=', $id)
             ->first();
