@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\PaymentHistory;
+use App\Models\User;
+use App\Models\Student;
+use App\Models\Classes;
 use DataTables;
 use DB;
 use Illuminate\Http\Request;
@@ -176,6 +179,30 @@ class PaymentController extends Controller
         $pay = $request->all();
         $payment = PaymentHistory::find($id);
         $payment->update($pay);
+        if($request->status == "3"){
+           $paymentDetails   = User
+            ::Join('students', 'students.user_id', '=', 'users.id')
+            ->Join('classes', 'students.user_id', '=', 'classes.student_user_id')
+            ->select(['students.class_fee','classes.id as classIds'])
+            ->where('classes.is_paid','1')
+            ->where('users.id',$payment->student_user_id)
+            ->orderBy('classes.id','desc')
+            ->get();
+            $studentDetais              =   Student::where('user_id', $payment->student_user_id)->first();
+            $noOfClassesPaymentFailed   =   $payment->amount/$studentDetais->class_fee;
+            $student['credits']         =   $studentDetais->credits - $payment->amount;
+            $studentDetais->update($student);
+
+            foreach($paymentDetails as $payInfo){
+                if($noOfClassesPaymentFailed > 0)
+                $classInfo                  = Classes::findOrFail($payInfo->classIds);
+                $paymentData['is_paid']     = 0;
+                $classInfo->update($paymentData);
+                $noOfClassesPaymentFailed--;
+            }
+
+            
+        }
         // echo '<pre>';print_r($id);echo '</pre>';exit;
         return redirect()->route('payments.payments.index')
             ->with('success_message', trans('paymenthistory.model_was_updated'));

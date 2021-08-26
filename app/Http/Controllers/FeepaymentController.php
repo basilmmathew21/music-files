@@ -128,6 +128,7 @@ class FeepaymentController extends Controller
        
        $amountPay       =   $request->class_fee;
        $amountPayTotal  =   $amountPay;
+       
        if(count($paymentDetails) != 0){
            foreach($paymentDetails as $payment){
                 $classInfo                  = Classes::findOrFail($payment['classIds']);
@@ -137,7 +138,6 @@ class FeepaymentController extends Controller
                 if(($amountPay >= $studentDetais->class_fee) ||  ($amountPay == 0)){
                 
                 $classInfo->update($paymentData);
-                
                     $student['credits']      =  $studentDetais->credits - $studentDetais['class_fee'];
                     $studentDetais->update($student);
                /*
@@ -160,9 +160,9 @@ class FeepaymentController extends Controller
                 }
             }
             //if($amountPay > 0){
-              if($amountPayTotal > 0){
+              if($amountPay > 0){
                 //$student['credits']       =  $studentDetais->credits + $amountPay;
-                $student['credits']         =  $studentDetais->credits + $amountPayTotal;
+                $student['credits']         =  $studentDetais->credits + $amountPay;
                 $studentDetais->update($student);
                 
                 $data                       = array();
