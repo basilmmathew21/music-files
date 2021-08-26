@@ -28,8 +28,7 @@
                     <dt>{{ trans('paymenthistory.name') }}</dt>
                     <dd>{{ $payment->student_name }}</dd>                   
                     <dt>{{ trans('paymenthistory.tutor') }}</dt>
-                    <dd>{{ $payment->tutor_name }}</dd>
-                    <dt>{{ trans('paymenthistory.amount') }}</dt>
+                    
                     <dd>{{ $payment->symbol }}{{ $payment->amount }}</dd>
                     <dt>{{ trans('paymenthistory.status') }}</dt>
                     <dd>{{ $payment->status }}</dd>

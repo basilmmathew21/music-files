@@ -34,8 +34,7 @@
                 <dl class="dl-horizontal">
                     <dt>{{ trans('paymenthistory.name') }}</dt>
                     <dd>{{ $payment->student_name }}</dd>                   
-                    <dt>{{ trans('paymenthistory.tutor') }}</dt>
-                    <dd>{{ $payment->tutor_name }}</dd>
+                    
                     <dt>{{ trans('paymenthistory.fee_type') }}</dt>
                      @if($payment->fee_type == 'registration_fee')
                     <dd>Registration Fee</dd>

@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\PaymentHistory;
 use DataTables;
-use Illuminate\Support\Str;
 use DB;
-
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class PaymentController extends Controller
 {
@@ -25,7 +24,7 @@ class PaymentController extends Controller
     /**
      * Sets the language.
      *
-    */
+     */
     public function lang($locale)
     {
         App::setLocale($locale);
@@ -35,8 +34,9 @@ class PaymentController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->ajax()) { 
-        $data = DB::table('payment_histories as p')
+        $logged_in_id = auth()->user()->id;
+        if ($request->ajax()) {
+            /* $data = DB::table('payment_histories as p')
             ->join('students as s', 's.user_id', '=', 'p.student_user_id')
             ->join('users as u', 's.user_id', '=', 'u.id')
             ->join('tutors as t', 't.user_id', '=', 'p.tutor_user_id')
@@ -44,15 +44,26 @@ class PaymentController extends Controller
             ->join('payment_methods as pm','p.payment_method_id','=','pm.id')
             ->join('currencies as c','p.currency_id','=','c.id')
             ->select('p.*','us.name as tutor_name','u.name as student_name','c.*','pm.payment_method')
-            ->get();
-        $datatable =  DataTables::of($data)
+            ->get();*/
+
+            $data = DB::table('payment_histories as p')
+                ->join('users as u', 'p.student_user_id', '=', 'u.id')
+                ->leftjoin('payment_methods as pm', 'p.payment_method_id', '=', 'pm.id')
+                ->select('p.*', 'u.name as student_name', 'pm.payment_method', DB::raw('DATE_FORMAT(p.payment_date, "%d-%b-%Y") as payment_date'));
+
+            if (auth()->user()->roles[0]->id == 4) {
+                $data = $data->where('p.student_user_id', $logged_in_id);
+            }
+            $data = $data->get();
+
+            $datatable = DataTables::of($data)
                 ->filter(function ($instance) use ($request) {
                     if ($request->has('keyword') && $request->get('keyword')) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains(Str::lower($row['student_name'] .$row['tutor_name']. $row['status']), Str::lower($request->get('keyword'))) ? true : false;
+                            return Str::contains(Str::lower($row['student_name'] . $row['tutor_name'] . $row['status']), Str::lower($request->get('keyword'))) ? true : false;
                         });
                     }
-                    
+
                 })
                 ->addIndexColumn()
                 ->addColumn('action', function ($payments) {
@@ -60,18 +71,18 @@ class PaymentController extends Controller
                 })
                 ->rawColumns(['action'])
                 ->make(true);
-                return $datatable;
-            }
-        $user = \Auth::user()->id;
-        $user_data = DB::table('users')->select('*')->where('id','=',$user)->first();
-        if($user_data->user_type_id == '4'){
-            $payments = PaymentHistory::paginate(25);
-            return view('paymenthistory.index-student',compact('payments'));
-        }else{
-            $payments = PaymentHistory::paginate(25);
-            return view('paymenthistory.index',compact('payments'));
+            return $datatable;
         }
-        
+        $user = \Auth::user()->id;
+        $user_data = DB::table('users')->select('*')->where('id', '=', $user)->first();
+        if ($user_data->user_type_id == '4') {
+            $payments = PaymentHistory::paginate(25);
+            return view('paymenthistory.index-student', compact('payments'));
+        } else {
+            $payments = PaymentHistory::paginate(25);
+            return view('paymenthistory.index', compact('payments'));
+        }
+
     }
 
     /**
@@ -102,14 +113,14 @@ class PaymentController extends Controller
         $data['amount'] = '100.00';
         $data['no_of_classes'] = '12';
         $data['payment_method_id'] = '1';
-        $data['status'] ='pending';
+        $data['status'] = 'pending';
         $data['created_at'] = '2021-07-08 19:59:04';
         $data['updated_at'] = '2021-07-08 19:59:04';
-        
+
         PaymentHistory::create($data);
         return redirect()->route('payments.payments.index')
             ->with('success_message', trans('paymenthistory.model_was_added'));
-        
+
     }
 
     /**
@@ -121,18 +132,16 @@ class PaymentController extends Controller
     public function show($id)
     {
         $payment = DB::table('payment_histories as p')
-            ->join('students as s', 's.user_id', '=', 'p.student_user_id')
-            ->join('users as u', 's.user_id', '=', 'u.id')
-            ->join('tutors as t', 't.user_id', '=', 'p.tutor_user_id')
-            ->join('users as us','t.user_id', '=', 'us.id')
-            ->join('currencies as c','p.currency_id','=','c.id')
-            ->join('payment_methods as pm','p.payment_method_id','=','pm.id')
-            ->select('p.*','us.name as tutor_name','u.name as student_name','c.*','pm.payment_method','p.id as main_id')
-            ->where('p.id','=', $id)
+            ->join('users as u', 'p.student_user_id', '=', 'u.id')
+            ->leftjoin('payment_methods as pm', 'p.payment_method_id', '=', 'pm.id')
+            ->join('currencies as c', 'p.currency_id', '=', 'c.id')
+            ->select('p.*','c.*', 'u.name as student_name', 'pm.payment_method', 'p.id as main_id', DB::raw('DATE_FORMAT(p.payment_date, "%d-%b-%Y") as payment_date'))
+
+            ->where('p.id', '=', $id)
             ->first();
-            //echo '<pre>';print_r($payment);echo '</pre>';
+        //echo '<pre>';print_r($payment);echo '</pre>';
         return view('paymenthistory.show', compact('payment'));
-        
+
     }
 
     /**
@@ -143,17 +152,15 @@ class PaymentController extends Controller
      */
     public function edit($id)
     {
-          $payment = DB::table('payment_histories as p')
-            ->join('students as s', 's.user_id', '=', 'p.student_user_id')
-            ->join('users as u', 's.user_id', '=', 'u.id')
-            ->join('tutors as t', 't.user_id', '=', 'p.tutor_user_id')
-            ->join('users as us','t.user_id', '=', 'us.id')
-            ->join('currencies as c','p.currency_id','=','c.id')
-            ->join('payment_methods as pm','p.payment_method_id','=','pm.id')
-            ->select('p.*','us.name as tutor_name','u.name as student_name','c.*','pm.payment_method')
-            ->where('p.id','=', $id)
+        $payment = DB::table('payment_histories as p')
+            ->join('users as u', 'p.student_user_id', '=', 'u.id')
+            ->leftjoin('payment_methods as pm', 'p.payment_method_id', '=', 'pm.id')
+            ->join('currencies as c', 'p.currency_id', '=', 'c.id')
+            ->select('p.*','c.*', 'u.name as student_name', 'pm.payment_method', 'p.id as main_id', DB::raw('DATE_FORMAT(p.payment_date, "%d-%b-%Y") as payment_date'))
+
+            ->where('p.id', '=', $id)
             ->first();
-            //echo '<pre>';print_r($payment);echo '</pre>';
+        //echo '<pre>';print_r($payment);echo '</pre>';
         return view('paymenthistory.edit', compact('payment'));
     }
 

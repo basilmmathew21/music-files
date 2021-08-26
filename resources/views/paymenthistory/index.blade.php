@@ -61,10 +61,10 @@
                         <tr>
                             <th>{{ trans('paymenthistory.slno') }}</th>
                             <th>{{ trans('paymenthistory.name') }}</th>
-                            <th>{{ trans('paymenthistory.amount') }}</th>
-                            <th>{{ trans('paymenthistory.payment_method') }}</th>
-                            <th>{{ trans('paymenthistory.payment_date') }}</th>
-                            <th>{{ trans('paymenthistory.tutor') }}</th>
+                            
+                           <!-- <th>{{ trans('paymenthistory.payment_method') }}</th>-->
+                            
+                           
                             <th>{{ trans('paymenthistory.payment_date') }}</th>
                             <th>{{ trans('paymenthistory.amount') }}</th>
                             <th>{{ trans('paymenthistory.status') }}</th>
@@ -99,10 +99,9 @@
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                     {data: 'student_name', name: 'student_name'},
-                    {data: 'amount', name: 'amount'},
-                    {data: 'payment_method', name: 'payment_method'},
-                    {data: 'payment_date', name: 'payment_date'},
-                    {data: 'tutor_name', name: 'tutor_name'},
+                    
+                   // {data: 'payment_method', name: 'payment_method'},
+                    
                     {data: 'payment_date', name: 'payment_date'},
                     {data: 'amount', name: 'amount'},
                     {data: 'status', name: 'status'},
