@@ -1,7 +1,7 @@
 @extends('adminlte::page')
 
 @section('content_header')
-    <h1 class="m-0 text-dark">{{ trans('paymenthistory.listing') }}</h1>
+    <h1 class="m-0 text-dark">{{ trans('paymentdue.listing') }}</h1>
      
      <!-- <div class="btn-group btn-group-sm pull-right" role="group">
         <a href="{{ route('testimonials.testimonial.create') }}" class="btn btn-success" title="{{ trans('testimonial.create') }}">
@@ -42,14 +42,14 @@
                 <div class="col-md-12">
                     <form method="POST" id="search-form" class="form-inline" role="form">
                         <div class="form-group ">
-                            <label class="mb-2 mr-sm-2">{{ trans('paymenthistory.filters') }} : </label>
+                            <label class="mb-2 mr-sm-2">{{ trans('paymentdue.filters') }} : </label>
                         </div>                        
                         <div class="form-group">
-                            <label for="keyword" class="mb-2 mr-sm-2">{{__('paymenthistory.keyword_filter')}}</label>
+                            <label for="keyword" class="mb-2 mr-sm-2">{{__('paymentdue.keyword_filter')}}</label>
                             <input type="textbox" class="form-control mb-2 mr-sm-2" name="keyword" id="keyword"
                                 value="">
                         </div>
-                        <button type="submit" class="btn btn-primary mb-2 mr-sm-2">{{ trans('paymenthistory.search') }}</button>
+                        <button type="submit" class="btn btn-primary mb-2 mr-sm-2">{{ trans('paymentdue.search') }}</button>
                     </form>
                 </div>
             </div>
@@ -59,13 +59,13 @@
                 <table id="dataList" class="display table table-striped">
                     <thead>
                         <tr>
-                            <th>{{ trans('paymenthistory.slno') }}</th>
-                            <th>{{ trans('paymenthistory.name') }}</th>
+                            <th>{{ trans('paymentdue.slno') }}</th>
+                            <th>{{ trans('paymentdue.name') }}</th>
                             <th>Due</th>
 							<th>Credit</th>
-                            <!-- <th>{{ trans('paymenthistory.payment_date') }}</th>
-                            <th>{{ trans('paymenthistory.amount') }}</th>
-                            <th>{{ trans('paymenthistory.status') }}</th>
+                            <!-- <th>{{ trans('paymentdue.payment_date') }}</th>
+                            <th>{{ trans('paymentdue.amount') }}</th>
+                            <th>{{ trans('paymentdue.status') }}</th>
                             <th></th> -->
                         </tr>
                     </thead>
