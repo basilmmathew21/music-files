@@ -180,7 +180,7 @@ class PaymentController extends Controller
         $payment    =   PaymentHistory::find($id);
         $prevStatus =   $payment->status;
         $payment->update($pay);
-        if($prevStatus == "2" && $request->status == "3"){
+        if($prevStatus == "paid" && $request->status == "3"){
            $paymentDetails   = User
             ::Join('students', 'students.user_id', '=', 'users.id')
             ->Join('classes', 'students.user_id', '=', 'classes.student_user_id')
@@ -193,7 +193,7 @@ class PaymentController extends Controller
             $noOfClassesPaymentFailed   =   $payment->amount/$studentDetais->class_fee;
             $student['credits']         =   $studentDetais->credits - $payment->amount;
             $studentDetais->update($student);
-
+            
             foreach($paymentDetails as $payInfo){
                 if($noOfClassesPaymentFailed > 0)
                 $classInfo                  = Classes::findOrFail($payInfo->classIds);
