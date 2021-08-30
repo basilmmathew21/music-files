@@ -180,7 +180,9 @@ class PaymentController extends Controller
         $payment    =   PaymentHistory::find($id);
         $prevStatus =   $payment->status;
         $payment->update($pay);
-        if($prevStatus == "paid" && $request->status == "3"){
+        //status   1 - Pending , 2 - paid, 3 -failed
+        //Failed status
+        if($prevStatus == "paid" && ($request->status == "3" || $request->status = "1")){
            $paymentDetails   = User
             ::Join('students', 'students.user_id', '=', 'users.id')
             ->Join('classes', 'students.user_id', '=', 'classes.student_user_id')
@@ -201,8 +203,49 @@ class PaymentController extends Controller
                 $classInfo->update($paymentData);
                 $noOfClassesPaymentFailed--;
             }
-
+       }
+       //Paid status
+       if(($prevStatus == "failed" || $prevStatus == "pending") && $request->status == "2"){
+                
+                if($payment->student_user_id != null){
+                    $id     =   $payment->student_user_id;
+                }
             
+                $studentDetais    = Student::where('user_id', $id)->first();
+                $paymentDetails   = User
+                    ::Join('students', 'students.user_id', '=', 'users.id')
+                ->Join('classes', 'students.user_id', '=', 'classes.student_user_id')
+                ->select(['students.class_fee','classes.id as classIds'])
+                ->where('classes.is_paid','0')
+                ->where('users.id',$id)
+                ->get();
+            
+            $amountPay       =   $payment->amount;
+            
+            if(count($paymentDetails) != 0){
+                foreach($paymentDetails as $payment){
+                        $classInfo                  = Classes::findOrFail($payment['classIds']);
+                        $paymentData['date']        = date("Y-m-d"); 
+                        $paymentData['is_paid']     = 1;
+                        $amountPay  = $amountPay - $studentDetais['class_fee'];
+                        if(($amountPay >= $studentDetais->class_fee) ||  ($amountPay == 0)){
+                        
+                            $classInfo->update($paymentData);
+                            $student['credits']      =  $studentDetais->credits - $studentDetais['class_fee'];
+                            $studentDetais->update($student);
+                        }
+                    }
+                    if($amountPay > 0){
+                        $student['credits']         =  $studentDetais->credits + $amountPay;
+                        $studentDetais->update($student);
+                    }
+                }else{
+                    if($studentDetais && $studentDetais != null){
+                        $student['credits']      =  $studentDetais->credits + $amountPay;
+                        $studentDetais->update($student);
+                    }
+                }
+       
         }
         // echo '<pre>';print_r($id);echo '</pre>';exit;
         return redirect()->route('payments.payments.index')
