@@ -105,6 +105,17 @@ class StudentsRegistrationController extends Controller
 
         \Mail::to($data['email'])->send(new \App\Mail\RegistrationMail($details));
 
+        $adminInfo =   User::find(1);
+
+        $details = [
+            'subject' => 'New Student Registed' . config('adminlte.title'),
+            'content' =>  $request->name.' Is registered',
+            'login'   => ''
+        ];
+
+        \Mail::to($adminInfo['email'])->send(new \App\Mail\RegistrationMail($details));
+
+
         return Redirect::to('thankyou')->with('success_message',"Registration Successful");;
 
     }
