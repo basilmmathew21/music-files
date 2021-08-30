@@ -160,7 +160,7 @@ class FeepaymentController extends Controller
                 }
             }
             //if($amountPay > 0){
-              if($amountPay > 0){
+              if($amountPay >= 0){
                 //$student['credits']       =  $studentDetais->credits + $amountPay;
                 $student['credits']         =  $studentDetais->credits + $amountPay;
                 $studentDetais->update($student);
