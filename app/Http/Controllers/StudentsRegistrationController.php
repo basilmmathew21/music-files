@@ -108,7 +108,7 @@ class StudentsRegistrationController extends Controller
         $adminInfo =   User::find(1);
 
         $details = [
-            'subject' => 'New Student Registed' . config('adminlte.title'),
+            'subject' => 'New Student Registed',
             'content' =>  $request->name.' Is registered',
             'login'   => ''
         ];
