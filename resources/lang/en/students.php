@@ -35,6 +35,7 @@ return [
     'state__placeholder' => 'Enter state here...',
     'fee'               =>  'Fees',
     'reg'               =>  'Registered',
+    'is_registered'     =>  'Is Registered',
     'regfee_title'  => 'Registration fee',
     'paynow' => 'Pay Now',
     'regfee_success' => 'You have successfully completed the registration process.',
