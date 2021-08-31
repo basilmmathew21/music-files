@@ -138,8 +138,10 @@ class FeepaymentController extends Controller
                 if(($amountPay >= $studentDetais->class_fee) ||  ($amountPay == 0)){
                 
                 $classInfo->update($paymentData);
+                if($studentDetais->credits > 0){
                     $student['credits']      =  $studentDetais->credits - $studentDetais['class_fee'];
                     $studentDetais->update($student);
+                }
                /*
                     $data                       = array();
                     $data['student_user_id']    = $id;
