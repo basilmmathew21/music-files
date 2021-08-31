@@ -106,7 +106,7 @@ class HomeController extends Controller
             $classes        =   DB::table('classes')->where('classes.student_user_id', $id);
             $classes        =   $classes->count();
 
-            $feesDue        =   DB::table('classes')->where('classes.student_user_id', $id);
+            $feesDue        =   DB::table('classes')->where('classes.student_user_id', $id)->where("is_paid","0");
             $feesDue        =   $feesDue->sum('class_fee');
 
             $credits        =    User::with('student')
@@ -149,7 +149,7 @@ class HomeController extends Controller
           */
         if ($isAdmin || $isSuperAdmin) {
 
-            $feesDue        =   DB::table('classes');
+            $feesDue        =   DB::table('classes')->where("is_paid",'0');
             $feesDue        =   $feesDue->sum('class_fee');
 
             $credits        =    User::with('student')
