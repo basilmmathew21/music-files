@@ -188,7 +188,7 @@ class HomeController extends Controller
             $sms            =   $sms->where('to_user_id', $id);
             $sms            =   $sms->limit(10)->orderby('sent_on', 'desc')->get();
 
-
+            
             $tutorClass     =   TutorClass::leftJoin('users as student_user', 'student_user.id', '=', 'classes.student_user_id')
                 ->leftjoin('users as tutor_user', 'tutor_user.id', '=', 'classes.tutor_user_id')
                 ->leftjoin('students', 'students.user_id', '=', 'classes.student_user_id')
