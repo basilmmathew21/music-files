@@ -59,6 +59,9 @@
                     </tr>
                   </thead>
                   <tbody>
+                  @if(empty($studentInfo))
+                  <tr class="odd"><td valign="top" colspan="3" class="dataTables_empty">No data available in table</td></tr>
+                  @endif
 				  <?php foreach($studentInfo as $key => $student){  ?>
                     <tr>
 					  <td>{{ $key + 1 }}</td>
@@ -107,6 +110,9 @@
           					 </tr>
                   </thead>
                   <tbody>
+                  @if(empty($tutorClass))
+                  <tr class="odd"><td valign="top" colspan="3" class="dataTables_empty">No data available in table</td></tr>
+                  @endif
 				  <?php foreach($tutorClass as $key => $tutor){ ?>
                     <tr>
 					  <td>{{ $key + 1 }}</td>
@@ -156,14 +162,17 @@
                   </thead>
 
                   <tbody>
-				  <?php foreach($sms as $key => $sm){  ?>
+                  @if(empty($sms))
+                  <tr class="odd"><td valign="top" colspan="4" class="dataTables_empty">No data available in table</td></tr>
+                  @endif
+				          <?php foreach($sms as $key => $sm){  ?>
                     <tr>
-					  <td>{{ $key + 1 }}</td>
+					            <td>{{ $key + 1 }}</td>
                       <td>@if($sm->display_name){{ $sm->display_name }}({{ $sm->name }}) @else {{ $sm->name }} @endif</td>
                       <td>{{ $sm->message }}</td>
                       <td>{{ $sm->sent_on }}</td>
                     </tr>
-				  <?php } ?> 
+				          <?php } ?> 
                   </tbody>
                 </table>
               </div>

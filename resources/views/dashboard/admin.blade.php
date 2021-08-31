@@ -110,6 +110,9 @@
                     </tr>
                   </thead>
                   <tbody>
+                  @if(empty($studentInfo))
+                  <tr class="odd"><td valign="top" colspan="4" class="dataTables_empty">No data available in table</td></tr>
+                  @endif   
 				  <?php foreach($studentInfo as $key => $student){  ?>
                     <tr>
 					  <td>{{ $key + 1 }}</td>
@@ -160,6 +163,9 @@
           					 </tr>
                   </thead>
                   <tbody>
+                  @if(empty($tutorClass))
+                  <tr class="odd"><td valign="top" colspan="5" class="dataTables_empty">No data available in table</td></tr>
+                  @endif 
 				  <?php foreach($tutorClass as $key => $tutor){ ?>
                     <tr>
 					  <td>{{ $key + 1 }}</td>
@@ -203,6 +209,9 @@
                   </thead>
 
                   <tbody>
+                  @if(empty($sms))
+                  <tr class="odd"><td valign="top" colspan="4" class="dataTables_empty">No data available in table</td></tr>
+                  @endif 
 				  <?php foreach($sms as $key => $sm){  ?>
                     <tr>
 					  <td>{{ $key + 1 }}</td>
