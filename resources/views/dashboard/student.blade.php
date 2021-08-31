@@ -90,7 +90,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                  @if(empty($paymentHistory))
+                  @if(count($paymentHistory) == 0)
                   <tr class="odd"><td valign="top" colspan="5" class="dataTables_empty">No data available in table</td></tr>
                   @endif
 				  <?php foreach($paymentHistory as $key => $history){  ?>
@@ -141,7 +141,7 @@
           					 </tr>
                   </thead>
                   <tbody>
-                  @if(empty($tutorClass))
+                  @if(count($tutorClass) == 0)
                   <tr class="odd"><td valign="top" colspan="2" class="dataTables_empty">No data available in table</td></tr>
                   @endif          
 				  <?php foreach($tutorClass as $key => $tutor){ ?>
@@ -187,7 +187,7 @@
                   </thead>
 
                   <tbody>
-                  @if(empty($sms))
+                  @if(count($sms) == 0)
                   <tr class="odd"><td valign="top" colspan="4" class="dataTables_empty">No data available in table</td></tr>
                   @endif 
 				  <?php foreach($sms as $key => $sm){  ?>

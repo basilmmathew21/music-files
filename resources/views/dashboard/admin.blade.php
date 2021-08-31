@@ -110,7 +110,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                  @if(empty($studentInfo))
+                  @if(count($studentInfo) == 0)
                   <tr class="odd"><td valign="top" colspan="4" class="dataTables_empty">No data available in table</td></tr>
                   @endif   
 				  <?php foreach($studentInfo as $key => $student){  ?>
@@ -163,7 +163,7 @@
           					 </tr>
                   </thead>
                   <tbody>
-                  @if(empty($tutorClass))
+                  @if(count($tutorClass) == 0)
                   <tr class="odd"><td valign="top" colspan="5" class="dataTables_empty">No data available in table</td></tr>
                   @endif 
 				  <?php foreach($tutorClass as $key => $tutor){ ?>
@@ -209,7 +209,7 @@
                   </thead>
 
                   <tbody>
-                  @if(empty($sms))
+                  @if(count($sms) == 0)
                   <tr class="odd"><td valign="top" colspan="4" class="dataTables_empty">No data available in table</td></tr>
                   @endif 
 				  <?php foreach($sms as $key => $sm){  ?>
