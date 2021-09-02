@@ -45,7 +45,7 @@ class StudentsController extends Controller
                 ->join('countries', 'users.country_id', '=', 'countries.id')
                 ->join('students', 'students.user_id', '=', 'users.id')
                 ->leftJoin('courses', 'students.course_id', '=', 'courses.id')
-                ->select(['users.*', 'users.is_active as is_active','students.display_name', 'students.is_registered', 'courses.course', 'countries.name AS country_name', DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
+                ->select(['users.*', 'users.is_active as is_active','students.credits','students.display_name', 'students.is_registered', 'courses.course', 'countries.name AS country_name', DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
                 ->where('user_type_id', 4)
                 ->where("users.is_active",1)
                 ->get();
@@ -57,14 +57,14 @@ class StudentsController extends Controller
 
             $datatable =  DataTables::of($data)
                 ->filter(function ($instance) use ($request) {
-                    if ($request->has('keyword') && $request->get('keyword')) {
+                  /*  if ($request->has('keyword') && $request->get('keyword')) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
                             return Str::contains(Str::lower($row['display_name']), Str::lower($request->get('keyword'))) ? true : false;
                         });
-                    }
+                    }*/
                     if ($request->has('keyword') && $request->get('keyword')) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains(Str::lower($row['phone'] . $row['email'] . $row['display_name']), Str::lower($request->get('keyword'))) ? true : false;
+                            return Str::contains(Str::lower($row['phone'] . $row['email'] . $row['display_name'].$row['course'].$row['name']), Str::lower($request->get('keyword'))) ? true : false;
                         });
                     }
                 })
