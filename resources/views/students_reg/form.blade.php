@@ -47,9 +47,9 @@
 
 <div class="row">
     <div class="col-md-6 mb-3">
-        <label class="form-label">Country</label>
+        <label class="form-label">Residing Country</label>
         <select name="country" class="form-control" required="true">
-            <option value="" selected disabled>--Choose Nation--</option>
+            <option value="" selected disabled>--Choose Residing Country --</option>
             @if(isset($nationalities))
             @foreach ($nationalities as $id => $nation)
             <option value="{{ $id }}" @if(old('country')==$id) selected @endif>{{ $nation }}</option>
@@ -57,7 +57,7 @@
             @endif
         </select>
     </div>
-    <div class="col-md-6 mb-3">
+ <!--   <div class="col-md-6 mb-3">
         <label class="form-label">Currency</label>
         <select name="currency" class="form-control" required="true">
             <option value="" selected disabled>--Choose Currency--</option>
@@ -67,7 +67,7 @@
             @endforeach
             @endif
         </select>
-    </div>
+    </div>-->
 </div>
 <div class="row">
     <div class="col-md-6 mb-3">
