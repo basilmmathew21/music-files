@@ -191,7 +191,7 @@ class PaymentController extends Controller
 
            $paymentDetails   = User::Join('students', 'students.user_id', '=', 'users.id')
                                     ->Join('classes', 'students.user_id', '=', 'classes.student_user_id')
-                                    ->select(['students.class_fee','classes.id as classIds'])
+                                    ->select(['classes.class_fee','classes.id as classIds'])
                                     ->where('classes.is_paid','1')
                                     ->where('users.id',$payment->student_user_id)
                                     ->orderBy('classes.id','desc')
@@ -224,7 +224,7 @@ class PaymentController extends Controller
             
             $paymentDetails   = User::Join('students', 'students.user_id', '=', 'users.id')
                                     ->Join('classes', 'students.user_id', '=', 'classes.student_user_id')
-                                    ->select(['students.class_fee','classes.id as classIds'])
+                                    ->select(['classes.class_fee','classes.id as classIds'])
                                     ->where('classes.is_paid','0')
                                     ->where('users.id',$id)
                                     ->get();
