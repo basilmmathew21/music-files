@@ -189,14 +189,13 @@ class PaymentController extends Controller
            $student['credits']  =   $studentDetais->credits - $payment->amount;
            $studentDetais->update($student);
 
-           $paymentDetails   = User
-            ::Join('students', 'students.user_id', '=', 'users.id')
-            ->Join('classes', 'students.user_id', '=', 'classes.student_user_id')
-            ->select(['students.class_fee','classes.id as classIds'])
-            ->where('classes.is_paid','1')
-            ->where('users.id',$payment->student_user_id)
-            ->orderBy('classes.id','desc')
-            ->get();
+           $paymentDetails   = User::Join('students', 'students.user_id', '=', 'users.id')
+                                    ->Join('classes', 'students.user_id', '=', 'classes.student_user_id')
+                                    ->select(['students.class_fee','classes.id as classIds'])
+                                    ->where('classes.is_paid','1')
+                                    ->where('users.id',$payment->student_user_id)
+                                    ->orderBy('classes.id','desc')
+                                    ->get();
             
             foreach($paymentDetails as $payInfo){
                 if($studentDetais->credits <= 0)
@@ -224,13 +223,12 @@ class PaymentController extends Controller
             $student['credits']  =  $studentDetais->credits + $amountPay;
             $studentDetais->update($student);
             
-            $paymentDetails   = User
-                    ::Join('students', 'students.user_id', '=', 'users.id')
-                ->Join('classes', 'students.user_id', '=', 'classes.student_user_id')
-                ->select(['students.class_fee','classes.id as classIds'])
-                ->where('classes.is_paid','0')
-                ->where('users.id',$id)
-                ->get();
+            $paymentDetails   = User::Join('students', 'students.user_id', '=', 'users.id')
+                                    ->Join('classes', 'students.user_id', '=', 'classes.student_user_id')
+                                    ->select(['students.class_fee','classes.id as classIds'])
+                                    ->where('classes.is_paid','0')
+                                    ->where('users.id',$id)
+                                    ->get();
 
             if(count($paymentDetails) != 0){
                 foreach($paymentDetails as $payment){
