@@ -115,98 +115,61 @@ class FeepaymentController extends Controller
         if($request->student_user_id != null){
             $id     =   $request->student_user_id;
         }
-       
-        $data             = $this->getData($request, $id);
-        $studentDetais    = Student::where('user_id', $id)->first();
-        $paymentDetails   = User
-        ::Join('students', 'students.user_id', '=', 'users.id')
-       ->Join('classes', 'students.user_id', '=', 'classes.student_user_id')
-       ->select(['students.class_fee','classes.id as classIds'])
-       ->where('classes.is_paid','0')
-       ->where('users.id',$id)
-       ->get();
-       
-       $amountPay       =   $request->class_fee;
-       $amountPayTotal  =   $amountPay;
+        $data                =  $this->getData($request, $id);
+        $studentDetais       =  Student::where('user_id', $id)->first();
+        $amountPay           =  $request->class_fee;
+        $student['credits']  =  $studentDetais->credits + $amountPay;
+        $studentDetais->update($student);
+        $this->updatePaymentHistory($id,$studentDetais,$request);
+        
+        $paymentDetails   = User::Join('students', 'students.user_id', '=', 'users.id')
+                                ->Join('classes', 'students.user_id', '=', 'classes.student_user_id')
+                                ->select(['students.class_fee','classes.id as classIds'])
+                                ->where('classes.is_paid','0')
+                                ->where('users.id',$id)
+                                ->orderBy('classes.id','asc')
+                                ->get();
        
        if(count($paymentDetails) != 0){
-           foreach($paymentDetails as $payment){
-                $classInfo                  = Classes::findOrFail($payment['classIds']);
-                $paymentData['date']        = date("Y-m-d"); 
-                $paymentData['is_paid']     = 1;
-                $amountPay  = $amountPay - $studentDetais['class_fee'];
-                if(($amountPay >= $studentDetais->class_fee) ||  ($amountPay == 0)){
-                
-                $classInfo->update($paymentData);
-                if($studentDetais->credits > 0){
-                    $student['credits']      =  $studentDetais->credits - $studentDetais['class_fee'];
+          foreach($paymentDetails as $payment){
+                if($student['credits'] > 0)
+                {
+                    $classInfo               = Classes::findOrFail($payment['classIds']);
+                    $paymentData['date']     = date("Y-m-d"); 
+                    $paymentData['is_paid']  = 1;
+                    $classInfo->update($paymentData);
+                    $student['credits']      =  $studentDetais->credits - $studentDetais->class_fee;
                     $studentDetais->update($student);
                 }
-               /*
-                    $data                       = array();
-                    $data['student_user_id']    = $id;
-                    $data['tutor_user_id']      = $classInfo->tutor_user_id;
-                    $data['fee_type']           = 'class_fee';
-                    if($request->student_user_id != null){
-                        $data['fee_type']       = 'admin';
-                    }
-                    $data['payment_date']       = date("Y-m-d H:i:s");
-                    $data['currency_id']        = $studentDetais->currency_id;
-                    $data['amount']             = $studentDetais['class_fee'];
-                    
-                    $data['no_of_classes']      = $request->no_of_classes;
-                    $data['payment_method_id']  = '1';
-                    $data['status']             ='paid';
-                    PaymentHistory::create($data);
-                */
+                else{
+                    break;
                 }
-            }
-            //if($amountPay > 0){
-              if($amountPay >= 0){
-                //$student['credits']       =  $studentDetais->credits + $amountPay;
-                $student['credits']         =  $studentDetais->credits + $amountPay;
-                $studentDetais->update($student);
-                
-                $data                       = array();
-                $data['student_user_id']    = $id;
-                $data['tutor_user_id']      = 0;
-                $data['fee_type']           = 'class_fee';
-                if($request->student_user_id != null){
-                    $data['fee_type']       = 'admin';
-                }
-                $data['payment_date']       = date("Y-m-d H:i:s");
-                $data['currency_id']        = $studentDetais->currency_id;
-                $data['amount']             = $amountPayTotal;
-                $data['no_of_classes']      = $request->no_of_classes;
-                $data['payment_method_id']  = '1';
-                $data['status']             ='paid';
-                PaymentHistory::create($data);
-            }
-        }else{
-            if($studentDetais && $studentDetais != null){
-               $student['credits']      =  $studentDetais->credits + $data['class_fee'];
-               $studentDetais->update($student);
-
-               $data                       = array();
-               $data['student_user_id']    = $id;
-               $data['tutor_user_id']      = 0;
-               $data['fee_type']           = 'class_fee';
-               if($request->student_user_id != null){
-                $data['fee_type']       = 'admin';
-               }
-               $data['payment_date']       = date("Y-m-d H:i:s");
-               $data['currency_id']        = $studentDetais->currency_id;
-               $data['amount']             = $request->class_fee;
-               $data['no_of_classes']      = $request->no_of_classes;
-               $data['payment_method_id']  = '1';
-               $data['status']             ='paid';
-               PaymentHistory::create($data);
             }
         }
-       
+      
  
         return redirect()->route('feepayment.fee.index')
             ->with(['success_message' => trans('users.model_fee_updated'),'user_id' => $id]);
+    }
+
+
+
+    private function updatePaymentHistory($id,$studentDetais,$request)
+    {
+        $data                       = array();
+        $data['student_user_id']    = $id;
+        $data['tutor_user_id']      = 0;
+        $data['fee_type']           = 'class_fee';
+        if($request->student_user_id != null){
+            $data['fee_type']       = 'admin';
+        }
+        $data['payment_date']       = date("Y-m-d H:i:s");
+        $data['currency_id']        = $studentDetais->currency_id;
+        $data['amount']             = $request->class_fee;
+        $data['no_of_classes']      = $request->no_of_classes;
+        $data['payment_method_id']  = '1';
+        $data['status']             ='paid';
+        PaymentHistory::create($data);
     }
 
     /**
