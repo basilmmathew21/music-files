@@ -15,7 +15,6 @@ class ChangeCountriesTableFields extends Migration
     {
         Schema::table('countries', function (Blueprint $table) {
             $table->boolean('is_active')->default(1)->change();
-            $table->string('whatsapp_number',20)->after('phone');
         });
     }
 

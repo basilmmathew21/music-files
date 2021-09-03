@@ -33,6 +33,10 @@ Route::get('/seed', function () {
     $exitCode = Artisan::call('db:seed --class=PermissionsSeeder');
     echo $exitCode . ' - Seeded Permissions for 1,2,3,4';
 });
+Route::get('/seed-country', function () {
+    $exitCode = Artisan::call('db:seed --class=CountriesSeeder');
+    echo $exitCode . ' - Seeded Countries for 1,2,3,4';
+});
 
 Route::get('/shutdown', function () {
     Artisan::call('down');
