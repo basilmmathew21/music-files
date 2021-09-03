@@ -91,7 +91,7 @@ class StudentsRegistrationController extends Controller
         $student['display_name']        =$request->name;
         $student['country_id']     =  $data['country'];
         $student['course_id']      =  $request->course;
-        $student['currency_id']    =  $request->currency;
+       // $student['currency_id']    =  $request->currency;
         $student['class_fee']      =  0;
         $student['is_registered']  =  0;
         //$student['is_active']      =  0;
