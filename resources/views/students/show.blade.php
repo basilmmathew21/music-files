@@ -54,6 +54,8 @@
                     <dd> {{ $user->code }}({{$user->symbol}})</dd>
                     <dt>{{ trans('students.fee') }}</dt>
                     <dd>{{ $user->class_fee }}</dd>
+                    <dt>{{ trans('students.credits') }}</dt>
+                    <dd>{{ $user->credits }}</dd>
                     <dt>{{ trans('students.onlineclasslink') }}</dt>
                     <dd>{{ $user->online_class_link }}</dd>
                     <dt>{{ trans('students.state') }}</dt>
