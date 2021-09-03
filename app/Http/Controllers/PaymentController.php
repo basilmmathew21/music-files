@@ -196,14 +196,13 @@ class PaymentController extends Controller
                                     ->where('users.id',$payment->student_user_id)
                                     ->orderBy('classes.id','desc')
                                     ->get();
-            
             foreach($paymentDetails as $payInfo){
                 if($studentDetais->credits <= 0)
                 {
                     $classInfo                  = Classes::findOrFail($payInfo->classIds);
                     $paymentData['is_paid']     = 0;
                     $classInfo->update($paymentData);
-                    $student['credits']         = $studentDetais->credits + $studentDetais->class_fee;
+                    $student['credits']         = $studentDetais->credits + $payInfo->class_fee;
                     $studentDetais->update($student);
                 }else{
                     break;
@@ -232,13 +231,13 @@ class PaymentController extends Controller
 
             if(count($paymentDetails) != 0){
                 foreach($paymentDetails as $payment){
-                    if($student['credits'] >= $studentDetais->class_fee)
+                    if($student['credits'] >= $payment->class_fee)
                     {
                         $classInfo               = Classes::findOrFail($payment['classIds']);
                         $paymentData['date']     = date("Y-m-d"); 
                         $paymentData['is_paid']  = 1;
                         $classInfo->update($paymentData);
-                        $student['credits']      =  $studentDetais->credits - $studentDetais->class_fee;
+                        $student['credits']      = $studentDetais->credits - $payment->class_fee;
                         $studentDetais->update($student);
                     }
                     else{
