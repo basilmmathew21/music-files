@@ -197,7 +197,7 @@ class PaymentController extends Controller
                                     ->orderBy('classes.id','desc')
                                     ->get();
             foreach($paymentDetails as $payInfo){
-                if($studentDetais->credits <= 0)
+                if($student['credits'] <= 0)
                 {
                     $classInfo                  = Classes::findOrFail($payInfo->classIds);
                     $paymentData['is_paid']     = 0;
