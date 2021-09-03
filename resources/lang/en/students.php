@@ -122,5 +122,6 @@ return [
     'display_name'=>'Display Name',
     'displayname__placeholder'=>'Enter display name here ...',
     'onlineclasslink'=>'Online Class Link',
+    'credits'=>'Credits'
 
 ];

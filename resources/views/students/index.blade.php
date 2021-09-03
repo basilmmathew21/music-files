@@ -61,11 +61,11 @@
                         <tr>
                             <th>{{ trans('students.slno') }}</th>
                             <th>{{ trans('students.name') }}</th>
-                            <th>{{ trans('students.email') }}</th>
-                            <th>{{ trans('students.gender') }}</th>
+                            <th>{{ trans('students.email') }}</th>                           
                             <th>{{ trans('students.phone') }}</th>
                             <th>{{ trans('students.country') }}</th>
                             <th>{{ trans('students.course') }}</th>
+                            <th>{{ trans('students.credits') }}</th>
                             <th>{{ trans('students.registered') }}</th>
                             <th>{{ trans('students.status') }}</th>
                             <th></th>
@@ -99,11 +99,11 @@
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                     {data: 'name', name: 'name'},
-                    {data: 'email', name: 'email'},
-                    {data:  'gender', name: "gender"},
+                    {data: 'email', name: 'email'},                    
                     {data:  'phone', name: "phone"},
                     {data:  'country_name', name: "country_name"},
                     {data:  'course', name: "course"},
+                    {data:  'credits', name: "credits"},
                     {data:  'is_registered', name: "is_registered"},
                     {data:  'is_active', name: "is_active"},
                     {data: 'action', name: 'action', orderable: false, searchable: false},
