@@ -202,7 +202,7 @@ class PaymentController extends Controller
                     $classInfo                  = Classes::findOrFail($payInfo->classIds);
                     $paymentData['is_paid']     = 0;
                     $classInfo->update($paymentData);
-                    $student['credits']         = $studentDetais->credits + $payInfo->class_fee;
+                    $student['credits']         = $student['credits'] + $payInfo->class_fee;
                     $studentDetais->update($student);
                 }else{
                     break;
@@ -237,7 +237,7 @@ class PaymentController extends Controller
                         $paymentData['date']     = date("Y-m-d"); 
                         $paymentData['is_paid']  = 1;
                         $classInfo->update($paymentData);
-                        $student['credits']      = $studentDetais->credits - $payment->class_fee;
+                        $student['credits']      = $student['credits'] - $payment->class_fee;
                         $studentDetais->update($student);
                     }
                     else{
