@@ -40,7 +40,7 @@ class TutorController extends Controller
             $data  = DB::table('users')
             ->join('countries', 'users.country_id', '=', 'countries.id')
             ->join('tutors', 'tutors.user_id', '=', 'users.id')
-            ->select(['users.*','tutors.display_name','countries.name AS country_name',DB::raw('CONCAT(countries.code," ",users.phone) as phone')])
+            ->select(['users.*','tutors.display_name','countries.name AS country_name',DB::raw('CONCAT(countries.phone_code," ",users.phone) as phone')])
             ->where('user_type_id', 3)
             ->get();
             foreach($data as $d)
@@ -181,7 +181,7 @@ class TutorController extends Controller
         $user = DB::table('users')->where('users.id',$id)
                     ->leftJoin('countries', 'users.country_id', '=', 'countries.id')
                     ->leftJoin('tutors', 'tutors.user_id', '=', 'users.id')
-                    ->select(['users.*','tutors.display_name','countries.name AS country_name','users.dob',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%y") as dob'),DB::raw('CONCAT(countries.code," ",users.phone) as phone'),DB::raw('CONCAT(countries.code," ",users.whatsapp_number) as whatsapp_number')])
+                    ->select(['users.*','tutors.display_name','countries.name AS country_name','users.dob',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%y") as dob'),DB::raw('CONCAT(countries.phone_code," ",users.phone) as phone'),DB::raw('CONCAT(countries.phone_code," ",users.whatsapp_number) as whatsapp_number')])
                     ->first();
                    // 
                 $user->name=$user->display_name."(".$user->name.")";

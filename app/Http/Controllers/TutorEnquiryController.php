@@ -31,7 +31,7 @@ class TutorEnquiryController extends Controller
         if ($request->ajax()) {
             $data  = DB::table('tutor_enquiries')
                 ->join('countries', 'tutor_enquiries.country_id', '=', 'countries.id')
-                ->select(['tutor_enquiries.*', 'countries.name AS country_name', DB::raw('CONCAT(countries.code," ",tutor_enquiries.phone) as phone')])
+                ->select(['tutor_enquiries.*', 'countries.name AS country_name', DB::raw('CONCAT(countries.phone_code," ",tutor_enquiries.phone) as phone')])
                 ->orderBy('tutor_enquiries.created_at', 'desc')
                 ->get();
                 
@@ -207,7 +207,7 @@ class TutorEnquiryController extends Controller
     {
         $tutor = DB::table('tutor_enquiries')->where('tutor_enquiries.id', $id)
             ->leftJoin('countries', 'tutor_enquiries.country_id', '=', 'countries.id')
-            ->select(['tutor_enquiries.*', 'countries.name AS country_name', 'tutor_enquiries.dob', DB::raw('DATE_FORMAT(tutor_enquiries.dob, "%d-%m-%y") as dob'), DB::raw('CONCAT(countries.code," ",tutor_enquiries.phone) as phone'), DB::raw('CONCAT(countries.code," ",tutor_enquiries.whatsapp_number) as whatsapp_number')])
+            ->select(['tutor_enquiries.*', 'countries.name AS country_name', 'tutor_enquiries.dob', DB::raw('DATE_FORMAT(tutor_enquiries.dob, "%d-%m-%y") as dob'), DB::raw('CONCAT(countries.phone_code," ",tutor_enquiries.phone) as phone'), DB::raw('CONCAT(countries.phone_code," ",tutor_enquiries.whatsapp_number) as whatsapp_number')])
             ->first();
         // 
         if ($tutor->status == 'new')

@@ -49,7 +49,7 @@ class UsersController extends Controller
             ->leftjoin('students','students.user_id','=','users.id') 
              ->leftjoin('tutors','tutors.user_id','=','users.id')  
             ->select(['users.*','user_types.user_type','countries.name AS country_name','users.dob',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%y") as dob')
-            ,DB::raw('CONCAT(countries.code," ",users.phone) as phone'),
+            ,DB::raw('CONCAT(countries.phone_code," ",users.phone) as phone'),
             \DB::raw('(CASE 
                                   WHEN users.user_type_id = "3" THEN tutors.display_name
                                   WHEN users.user_type_id = "4" THEN students.display_name 
@@ -134,7 +134,7 @@ class UsersController extends Controller
                     ->select(['users.*', \DB::raw('(CASE 
                     WHEN users.user_type_id = "3" THEN tutors.display_name
                     WHEN users.user_type_id = "4" THEN students.display_name 
-                    ELSE users.name  END) AS display_name'),'user_types.user_type','countries.name AS country_name','users.dob',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%y") as dob'),DB::raw('CONCAT(countries.code," ",users.phone) as phone'),DB::raw('CONCAT(countries.code," ",users.whatsapp_number) as whatsapp_number')])
+                    ELSE users.name  END) AS display_name'),'user_types.user_type','countries.name AS country_name','users.dob',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%y") as dob'),DB::raw('CONCAT(countries.phone_code," ",users.phone) as phone'),DB::raw('CONCAT(countries.phone_code," ",users.whatsapp_number) as whatsapp_number')])
                     ->first();
           
                    
