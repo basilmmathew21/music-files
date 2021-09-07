@@ -385,25 +385,16 @@ class TutorController extends Controller
         
         //Send Login Credentials
 
-        $data['title'] = "Login Credentials";
-        $data['username']=$user->email;
-        $data['password']=$password;
- 
-        Mail::send('emails.email', $data, function($message) {
- 
-            $message->to($user->email, 'Receiver Name')
- 
-                    ->subject('Login Credentials');
-        });
- 
-       /* if (Mail::failures()) {
-           return response()->Fail('Sorry! Please try again latter');
-         }else{
-           return response()->success('Great! Successfully send in your mail');
-         }*/
+        
+        $details = [
+            'Username' => $user->email,
+            'Password' => $password
+        ];
+       
+       
+        \Mail::to($user->email)->send(new \App\Mail\TutorCredentials($details));      
 
-
-
+ 
         return redirect()->route('tutors.tutor.index')
         ->with('success_message', 'Credentials Send Succesfully');
 
