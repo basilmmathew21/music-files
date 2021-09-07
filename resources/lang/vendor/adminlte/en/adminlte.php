@@ -13,6 +13,7 @@ return [
     'thankyou_registration'       => 'Thank you for initiating the registration process with Music Shikshan. Please wait for sometime until we enable your profile, then you can login and complete the registration process.',
     'thankyou_title'              => 'THANK YOU',
     'thankyou_tutor_enquiry'      => 'Thank you for your enquiry. Admin will contact you soon.',
+    'thankyou_tutor_admin_info'   =>  'Tutor enquiry is being initiated.',
     'i_forgot_my_password'        => 'I forgot my password',
     'i_already_have_a_membership' => 'I already have a membership',
     'sign_in'                     => 'Sign In',
