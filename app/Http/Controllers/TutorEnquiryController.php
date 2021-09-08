@@ -148,8 +148,25 @@ class TutorEnquiryController extends Controller
         $data['dob'] = date_format(date_create($data['dob']), 'Y-m-d');
         $data['date_of_enquiry'] = date('Y-m-d');
         TutorEnquiry::create($data);
-        $admin = User::find('2');
         $country = Country::find($data['country_id']);
+
+
+        $adminInfo =   User::find(1);
+
+     
+        $details = [
+            'subject' => 'Tutor Enquiry',
+            'content' =>  __('adminlte::adminlte.thankyou_tutor_enquiry')
+        ];
+        \Mail::to($data['email'])->send(new \App\Mail\TutorMail($details));
+
+
+        $details = [
+            'subject' => 'Tutor Enquiry '.$data['name'],
+            'content' =>  __('adminlte::adminlte.thankyou_tutor_admin_info')
+        ];
+        \Mail::to($adminInfo['email'])->send(new \App\Mail\TutorMail($details));
+
         /* Mail::send('emails.tutor-enquiry', ['data' => $data, 'admin' => $admin], function ($m) use ($data, $admin, $country) {
             $m->from($data['email'], 'Tutor Enquiry');
             if ($data['name'])

@@ -102,8 +102,7 @@ class StudentsRegistrationController extends Controller
             'content' =>  __('adminlte::adminlte.thankyou_registration'),
             'login'   => 'email address : '.$data['email'].', Password : '.$request->password
         ];
-
-        \Mail::to($data['email'])->send(new \App\Mail\RegistrationMail($details));
+        \Mail::to($data['email'])->send(new \App\Mail\MyTestMail($details));
 
         $adminInfo =   User::find(1);
 
@@ -113,7 +112,7 @@ class StudentsRegistrationController extends Controller
             'login'   => ''
         ];
 
-        \Mail::to($adminInfo['email'])->send(new \App\Mail\RegistrationMail($details));
+        \Mail::to($adminInfo['email'])->send(new \App\Mail\MyTestMail($details));
 
 
         return Redirect::to('thankyou')->with('success_message',"Registration Successful");;
