@@ -56,7 +56,7 @@ class TutorController extends Controller
                ->filter(function ($instance) use ($request) {
                    if ($request->has('keyword') && $request->get('keyword')) {
                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains(Str::lower($row['phone'] . $row['email'] . $row['name'] ), Str::lower($request->get('keyword'))) ? true : false;
+                        return Str::contains(Str::lower($row['phone'] . $row['email'] . $row['country_name'] . $row['display_name'] . $row['name'] ), Str::lower($request->get('keyword'))) ? true : false;
                        });
                    }
                   

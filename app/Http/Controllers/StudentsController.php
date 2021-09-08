@@ -63,7 +63,7 @@ class StudentsController extends Controller
                     }*/
                     if ($request->has('keyword') && $request->get('keyword')) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains(Str::lower($row['phone'] . $row['email'] . $row['display_name'].$row['course'].$row['name']), Str::lower($request->get('keyword'))) ? true : false;
+                            return Str::contains(Str::lower($row['phone'] . $row['email'] . $row['display_name'].$row['course'].$row['name'].$row['country_name']), Str::lower($request->get('keyword'))) ? true : false;
                         });
                     }
                 })
