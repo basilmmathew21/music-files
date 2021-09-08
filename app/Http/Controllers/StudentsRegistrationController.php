@@ -98,7 +98,7 @@ class StudentsRegistrationController extends Controller
         Student::create($student);
 
         $details = [
-            'subject' => 'Registration - Mail from ' . config('adminlte.title'),
+            'subject' => config('adminlte.title').' Registration',
             'content' =>  __('adminlte::adminlte.thankyou_registration'),
             'login'   => 'email address : '.$data['email'].', Password : '.$request->password
         ];
@@ -107,7 +107,7 @@ class StudentsRegistrationController extends Controller
         $adminInfo =   User::find(1);
 
         $details = [
-            'subject' => 'New Student Registed',
+            'subject' => config('adminlte.title').' Registration',
             'content' =>  $request->name.' Is registered',
             'login'   => ''
         ];
