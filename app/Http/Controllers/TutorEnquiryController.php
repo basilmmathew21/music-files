@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\TutorEnquiry;
 use App\Models\User;
 use App\Models\Country;
+use App\Models\Settings;
 use DataTables;
 use DB;
 use Mail;
@@ -151,7 +152,7 @@ class TutorEnquiryController extends Controller
         $country = Country::find($data['country_id']);
 
 
-        $adminInfo =   User::find(1);
+        $adminInfo =   Settings::find(3);
 
      
         $details = [
@@ -165,7 +166,7 @@ class TutorEnquiryController extends Controller
             'subject' => 'Tutor Enquiry '.$data['name'],
             'content' =>  __('adminlte::adminlte.thankyou_tutor_admin_info')
         ];
-        \Mail::to($adminInfo['email'])->send(new \App\Mail\TutorMail($details));
+        \Mail::to($adminInfo['value'])->send(new \App\Mail\TutorMail($details));
 
         /* Mail::send('emails.tutor-enquiry', ['data' => $data, 'admin' => $admin], function ($m) use ($data, $admin, $country) {
             $m->from($data['email'], 'Tutor Enquiry');
