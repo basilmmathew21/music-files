@@ -375,7 +375,8 @@ class TutorController extends Controller
     {
         // fetch the details
         $user=User::where('id',$id)->get()->first();
-        $password =  Hash::make(Str::random(8));
+        $passwordStr    =  Str::random(8);
+        $password       =  Hash::make($passwordStr);
         //Accept the Enquiry
         $active= User::where('id', $id)->update(['is_active' => 1]);
 
@@ -385,17 +386,23 @@ class TutorController extends Controller
         
         //Send Login Credentials
 
-        $data['title'] = "Login Credentials";
-        $data['username']=$user->email;
-        $data['password']=$password;
- 
+        $details = [
+            'subject' => "Login Credentials ".$user->name,
+            'content' =>  __('adminlte::adminlte.thankyou_tutor_cred_info'),
+            'login'   => 'email address : '.$user->email.', Password : '.$passwordStr,
+            'button'  =>  true
+        ];
+        \Mail::to($user->email)->send(new \App\Mail\TutorMail($details));
+        
+        /*
         Mail::send('emails.email', $data, function($message) {
- 
+            dd($user);
             $message->to($user->email, 'Receiver Name')
  
                     ->subject('Login Credentials');
         });
- 
+        */
+
        /* if (Mail::failures()) {
            return response()->Fail('Sorry! Please try again latter');
          }else{

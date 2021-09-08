@@ -14,6 +14,7 @@ return [
     'thankyou_title'              => 'THANK YOU',
     'thankyou_tutor_enquiry'      => 'Thank you for your enquiry. Admin will contact you soon.',
     'thankyou_tutor_admin_info'   =>  'Tutor enquiry is being initiated.',
+    'thankyou_tutor_cred_info'    =>  'Tutor login credentials are,',
     'i_forgot_my_password'        => 'I forgot my password',
     'i_already_have_a_membership' => 'I already have a membership',
     'sign_in'                     => 'Sign In',
