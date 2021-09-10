@@ -55,9 +55,9 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/registration', 'StudentsRegistrationController@create')->name('registration');
-Route::post('/registration', 'StudentsRegistrationController@store')->name('registration.store');
-Route::get('/thankyou', 'StudentsRegistrationController@thankyou')->name('thankyou');
+Route::get('/registration', 'StudentsRegistrationController@create')->name('registration')->middleware('guest');
+Route::post('/registration', 'StudentsRegistrationController@store')->name('registration.store')->middleware('guest');
+Route::get('/thankyou', 'StudentsRegistrationController@thankyou')->name('thankyou')->middleware('guest');
 
 
 
@@ -66,11 +66,11 @@ Route::group([
     'prefix' => 'tutorenquiries',
 ], function () {
     Route::post('/create', 'TutorEnquiryController@store')
-        ->name('tutorenquiries.tutorenquiry.store');
+        ->name('tutorenquiries.tutorenquiry.store')->middleware('guest');
     Route::get('/create', 'TutorEnquiryController@create')
-        ->name('tutorenquiries.tutorenquiry.create');
+        ->name('tutorenquiries.tutorenquiry.create')->middleware('guest');
     Route::get('/thankyou-tutor', 'TutorEnquiryController@thankyou')
-        ->name('tutorenquiries.tutorenquiry.thankyou');
+        ->name('tutorenquiries.tutorenquiry.thankyou')->middleware('guest');
 });
 
 
