@@ -156,14 +156,14 @@ class TutorEnquiryController extends Controller
 
      
         $details = [
-            'subject' => 'Tutor Enquiry',
+            'subject' => config('adminlte.title').' Tutor Enquiry',
             'content' =>  __('adminlte::adminlte.thankyou_tutor_enquiry')
         ];
         \Mail::to($data['email'])->send(new \App\Mail\TutorMail($details));
 
 
         $details = [
-            'subject' => 'Tutor Enquiry '.$data['name'],
+            'subject' => config('adminlte.title').' Tutor Enquiry',
             'content' =>  __('adminlte::adminlte.thankyou_tutor_admin_info')
         ];
         \Mail::to($adminInfo['value'])->send(new \App\Mail\TutorMail($details));

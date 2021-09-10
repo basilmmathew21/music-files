@@ -1,11 +1,10 @@
 @component('mail::message')
-# Introduction
 
     {{ $details['subject'] }}
 
     {{ $details['content'] }}
 
-@if($details['login'])
+@if(isset($details['login']) && $details['login'])
     {{ $details['login'] }}
 @endif
 
