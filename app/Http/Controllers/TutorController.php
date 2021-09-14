@@ -411,6 +411,7 @@ class TutorController extends Controller
 
 
 
+ 
         return redirect()->route('tutors.tutor.index')
         ->with('success_message', 'Credentials Send Succesfully');
 

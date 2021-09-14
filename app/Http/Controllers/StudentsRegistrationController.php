@@ -76,7 +76,8 @@ class StudentsRegistrationController extends Controller
         $data['country_id']     = $data['country']; //country
         $data['state']          = $request->state;
         $data['address']        = $request->address;
-        $data['dob']            = Carbon::createFromFormat('d-m-Y',$request->dob)->format('Y-m-d');
+        if($data['dob'])    
+            $data['dob']            = Carbon::createFromFormat('d-m-Y',$request->dob)->format('Y-m-d');        
         $data['user_type_id']   = 4;
         $data['is_active']      =  $request->status?$request->status:0; 
         if ($request->hasFile('profile_image')) {

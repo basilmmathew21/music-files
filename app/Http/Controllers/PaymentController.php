@@ -63,7 +63,7 @@ class PaymentController extends Controller
                 ->filter(function ($instance) use ($request) {
                     if ($request->has('keyword') && $request->get('keyword')) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains(Str::lower($row['student_name'] . $row['tutor_name'] . $row['status']), Str::lower($request->get('keyword'))) ? true : false;
+                            return Str::contains(Str::lower($row['payment_date']  . $row['amount'] . $row['status'] ), Str::lower($request->get('keyword'))) ? true : false;
                         });
                     }
 
@@ -78,7 +78,7 @@ class PaymentController extends Controller
         }
         $user = \Auth::user()->id;
         $user_data = DB::table('users')->select('*')->where('id', '=', $user)->first();
-        if ($user_data->user_type_id == '4') {
+        if ($user_data->user_type_id == '4') { 
             $payments = PaymentHistory::paginate(25);
             return view('paymenthistory.index-student', compact('payments'));
         } else {
