@@ -202,9 +202,9 @@ return [
 
     //'register_url' => true,
 
-    //'password_reset_url' => 'password/reset',
+    'password_reset_url' => 'password/reset',
 
-    'password_reset_url' => false,
+    //'password_reset_url' => true,
 
     'password_email_url' => 'password/email',
 
