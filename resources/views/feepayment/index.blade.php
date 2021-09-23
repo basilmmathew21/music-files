@@ -173,7 +173,7 @@ body {
                 <div class="first py-2">
                   
                     <div class="pl-2 pr-2"><span class="head">Total amount due</span>
-                        <div><span class="dollar">{{$user->symbol}}</span><span class="amount" id="payment">{{$payment * $user->class_fee}}</span></div>
+                        <div><span class="dollar">{{$user->symbol}}</span><span class="amount" id="payment">{{$payment}}</span></div>
                     </div>
                 </div>
             </div>
