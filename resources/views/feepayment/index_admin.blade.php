@@ -267,7 +267,7 @@ body {
                         $(".dollar").html(response.user.symbol);
                         one_class_fee = response.user.class_fee;
                         var payment   = response.payment;
-                        $("#payment").html(payment*one_class_fee);
+                        $("#payment").html(payment);
                         $("#class_fee").val(0);
                         $("#no_of_classes").val("");
                         if(response.user.class_fee == 0){

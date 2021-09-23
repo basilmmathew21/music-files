@@ -58,7 +58,7 @@ class FeepaymentController extends Controller
         ->select(['classes.id as totalClass'])
         ->where('classes.is_paid','0')
         ->where('users.id',$id)
-        ->count();
+        ->sum('classes.class_fee');
 
         $students  = User::join('students','students.user_id','=','users.id')
         ->where('users.user_type_id',4)
@@ -93,7 +93,7 @@ class FeepaymentController extends Controller
         ->select(['classes.id as totalClass'])
         ->where('classes.is_paid','0')
         ->where('users.id',$id)
-        ->count();
+        ->sum('classes.class_fee');
 
         $arrayResponse  =   array('user' => $user,'payment' => $payment);
         echo json_encode($arrayResponse);
