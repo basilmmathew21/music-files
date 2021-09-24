@@ -272,13 +272,21 @@ return [
             'can' => ['view users'],
         ],
         [
-
             'text' => 'Students',
-            'route'  => 'students.student.index',
             'icon'    => 'fa fa-book',
             'can' => ['view students'],
-
-        ],
+            'submenu' => [
+                [
+                    'text' => 'All Students',
+                    'route'  => 'students.student.index',
+                    'can' => ['view students'],
+                ], [
+                    'text' => 'Registered Students',
+                    'route'  => 'students.registered.index',
+                    'can' => ['view students'],
+                ],
+            ]
+            ],
         [
             'text' => 'Tutors',
             'route'  => 'tutors.tutor.index',

@@ -75,9 +75,62 @@ class StudentsController extends Controller
                 ->make(true);
             return $datatable;
         }
+        $registered =   false;
+        $student    =   User::paginate(25);
+        return view('students.index', compact('student','registered'));
+    }
 
-        $student = User::paginate(25);
-        return view('students.index', compact('student'));
+    /**
+     * Display a listing of the registered students.
+     *
+     * @return Illuminate\View\View
+     */
+    public function registered(Request $request)
+    {
+        /**
+         * Ajax call by datatable for listing of the students.
+         */
+
+        if ($request->ajax()) {
+            $data = User::with('student')
+                ->join('countries', 'users.country_id', '=', 'countries.id')
+                ->join('students', 'students.user_id', '=', 'users.id')
+                ->leftJoin('courses', 'students.course_id', '=', 'courses.id')
+                ->select(['users.*', 'users.is_active as is_active','students.credits','students.display_name', 'students.is_registered', 'courses.course', 'countries.name AS country_name', DB::raw('CONCAT(countries.phone_code," ",users.phone) as phone')])
+                ->where('user_type_id', 4)
+                ->where('is_registered', 1)
+                ->whereNotNull('regfee_date')
+                ->get();
+            foreach($data as $d)
+            {
+                $d['name']=$d['display_name']."(".$d['name'].")";
+            }
+                
+
+            $datatable =  DataTables::of($data)
+                ->filter(function ($instance) use ($request) {
+                  /*  if ($request->has('keyword') && $request->get('keyword')) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains(Str::lower($row['display_name']), Str::lower($request->get('keyword'))) ? true : false;
+                        });
+                    }*/
+                    if ($request->has('keyword') && $request->get('keyword')) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains(Str::lower($row['phone'] . $row['email'] . $row['display_name'].$row['course'].$row['name'].$row['country_name']), Str::lower($request->get('keyword'))) ? true : false;
+                        });
+                    }
+                })
+                ->addIndexColumn()
+                ->addColumn('action', function ($student) {
+                    return view('students.datatable', compact('student'));
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+            return $datatable;
+        }
+        $registered =   true;
+        $student    =   User::paginate(25);
+        return view('students.registered', compact('student','registered'));
     }
 
     /**
