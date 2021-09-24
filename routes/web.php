@@ -150,6 +150,8 @@ Route::group([
 ], function () {
     Route::get('/students', 'StudentsController@index')
         ->name('students.student.index');
+    Route::get('/registered', 'StudentsController@registered')
+        ->name('students.registered.index');    
     Route::get('/create', 'StudentsController@create')->middleware(['permission:add students'])
         ->name('students.student.create');
     Route::get('/show/{student}', 'StudentsController@show')
