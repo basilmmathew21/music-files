@@ -207,8 +207,13 @@ class TutorController extends Controller
             $user->other_details='-';
 
         }
-        
-        return view('tutors.show', compact('user','tutor'));
+
+        $students  = User::join('students', 'students.user_id', '=', 'users.id')
+                         ->join('tutor_students','tutor_students.user_id','=','students.user_id')
+                         ->select('students.display_name','users.name','users.id')
+                         ->where('tutor_students.tutor_id', $id)
+                         ->get();
+        return view('tutors.show', compact('user','tutor','students'));
         
     }
 
