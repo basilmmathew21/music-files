@@ -103,6 +103,7 @@ class StudentsController extends Controller
                 ->where('user_type_id', 4)
                 ->where('is_registered', 1)
                 ->whereNotNull('regfee_date')
+                ->orderBy('students.id','desc')
                 ->get();
             foreach($data as $d)
             {
@@ -132,7 +133,7 @@ class StudentsController extends Controller
             return $datatable;
         }
         
-        $student    =   User::paginate(25);
+        $student    =   User::orderBy('id','desc')->paginate(25);
         return view('students.registered', compact('student'));
     }
 
