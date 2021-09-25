@@ -20,7 +20,7 @@ class SettingsController extends Controller
         
         if ($request->ajax()) {           
 
-            $data = Settings::all();
+            $data = Settings::orderBy('id','desc')->get();
             $datatable =  Datatables::of($data)
             ->filter(function ($instance) use ($request) {
                 if ($request->has('keyword') && $request->get('keyword')) {
@@ -40,7 +40,7 @@ class SettingsController extends Controller
         }
         
 
-        $settings = Settings::paginate(25);
+        $settings = Settings::orderBy('id','desc')->paginate(25);
 
         return view('settings.index', compact('settings'));
     }

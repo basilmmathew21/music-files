@@ -128,7 +128,7 @@ class HomeController extends Controller
             $sms            =   DB::table('sms')
                 ->select('sms.*', 'users.name', 'tutors.display_name', DB::raw('DATE_FORMAT(sms.sent_on, "%d-%b-%Y %h:%i:%s") as sent_on'))
                 ->leftjoin('users', 'users.id', '=', 'sms.from_user_id')
-                ->LeftJoin('tutors', 'tutors.user_id', '=', 'sms.from_user_id');;
+                ->LeftJoin('tutors', 'tutors.user_id', '=', 'sms.from_user_id');
             $sms            =   $sms->where('to_user_id', $id);
             $sms            =   $sms->limit(10)->orderby('sent_on', 'desc')->get();
 
@@ -176,7 +176,7 @@ class HomeController extends Controller
                 ->select(['users.*','users.name as tutor_name' ,'students.display_name', 'courses.course', 'countries.name AS country_name', DB::raw('CONCAT(countries.phone_code," ",users.phone) as phone')])
                 ->limit(10)
                 ->where("users.is_active",'1')
-                ->orderBy('users.created_at', 'desc')
+                ->orderBy('users.id', 'desc')
                 ->get();
             
 
@@ -184,7 +184,8 @@ class HomeController extends Controller
                 ->select('sms.*', 'users.name', 'students.display_name as student_displayname', 'tutors.display_name as tutor_displayname', DB::raw('DATE_FORMAT(sms.sent_on, "%d-%b-%Y %h:%i:%s") as sent_on'))
                 ->leftjoin('users', 'users.id', '=', 'sms.from_user_id')
                 ->LeftJoin('students', 'students.user_id', '=', 'sms.from_user_id')
-                ->LeftJoin('tutors', 'tutors.user_id', '=', 'sms.from_user_id');
+                ->LeftJoin('tutors', 'tutors.user_id', '=', 'sms.from_user_id')
+                ->orderBy('sms.id','desc');
             $sms            =   $sms->where('to_user_id', $id);
             $sms            =   $sms->limit(10)->orderby('sent_on', 'desc')->get();
 
