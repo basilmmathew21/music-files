@@ -38,7 +38,7 @@ class TutorController extends Controller
 
         if ($request->ajax()) {
             $data  = DB::table('users')
-            ->join('countries', 'users.country_id', '=', 'countries.id')
+            ->leftJoin('countries', 'users.country_id', '=', 'countries.id')
             ->join('tutors', 'tutors.user_id', '=', 'users.id')
             ->select(['users.*','tutors.display_name','countries.name AS country_name',DB::raw('CONCAT(countries.phone_code," ",users.phone) as phone')])
             ->where('user_type_id', 3)
@@ -212,6 +212,7 @@ class TutorController extends Controller
                          ->join('tutor_students','tutor_students.user_id','=','students.user_id')
                          ->select('students.display_name','users.name','users.id')
                          ->where('tutor_students.tutor_id', $id)
+                         ->orderBy('students.id','desc')
                          ->get();
         return view('tutors.show', compact('user','tutor','students'));
         
