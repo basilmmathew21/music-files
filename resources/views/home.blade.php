@@ -59,7 +59,34 @@
               @method("POST")
               <div class="form-group">
                 <div class="col-md-12 text-center">
-                  Fees : 500
+                  <?php
+                  // set API Endpoint and API key 
+                  
+$endpoint = 'latest';
+$access_key = '0d0b39254cefb941a64f7838ba522781';
+
+// Initialize CURL:
+$ch = curl_init('http://data.fixer.io/api/'.$endpoint.'?access_key='.$access_key.'');
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+// Store the data:
+$json = curl_exec($ch);
+curl_close($ch);
+
+// Decode JSON response:
+$exchangeRates = json_decode($json, true);
+
+// Access the exchange rate values
+$Inr_Euro=$exchangeRates['rates']['INR'];
+$fees=500;
+$fee_euro=round(($fees/$Inr_Euro),2);
+$student_currency_rate=round(($exchangeRates['rates'][$student_currency]),2);
+$student_pay_amount=$fee_euro*$student_currency_rate;
+echo "Fees : ".round($student_pay_amount,2);
+
+
+                  ?>
+                
                   <input class="form-control" name="regfee" type="hidden" id="regfee" value="500">
                 </div>
               </div>

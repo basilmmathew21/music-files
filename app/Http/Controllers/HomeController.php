@@ -54,8 +54,10 @@ class HomeController extends Controller
         $isTutor            =   $user->hasRole('tutor');
         $isStudent          =   $user->hasRole('student');
         
+        $noRole=0;
 
         if ($isTutor) {
+            $noRole=1;
 
             $students       =   User::with('student')
                 ->LeftJoin('students', 'students.user_id', '=', 'users.id');
@@ -103,6 +105,8 @@ class HomeController extends Controller
 
 
         if ($isStudent) {
+            $noRole=1;
+
             $classes        =   DB::table('classes')->where('classes.student_user_id', $id);
             $classes        =   $classes->count();
 
@@ -148,6 +152,8 @@ class HomeController extends Controller
           *
           */
         if ($isAdmin || $isSuperAdmin) {
+
+            $noRole=1;
 
             $feesDue        =   DB::table('classes')->where("is_paid",'0');
             $feesDue        =   $feesDue->sum('class_fee');
@@ -214,6 +220,15 @@ class HomeController extends Controller
            *
            * Default
            */
+
+           if($noRole==0)
+           {
+            $currency_id            =   DB::table('students')->select('currency_id')->where('user_id',$id) ->get()->first();
+            $currency_code           =   DB::table('currencies')->select('code')->where('id',$currency_id->currency_id) ->get()->first();
+            $student_currency= $currency_code->code;
+            return view('home', compact('student_currency'));
+          
+           }
         return view('home');
     }
     
