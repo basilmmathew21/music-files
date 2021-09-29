@@ -38,6 +38,12 @@ Route::get('/seed-country', function () {
     echo $exitCode . ' - Seeded Countries for 1,2,3,4';
 });
 
+
+Route::get('/seed-currency', function () {
+    $exitCode = Artisan::call('db:seed --class=CurrencySeeder');
+    echo $exitCode . ' - Seeded currencies for 1,2,3,4';
+});
+
 Route::get('/shutdown', function () {
     Artisan::call('down');
 });
