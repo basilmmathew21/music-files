@@ -61,6 +61,7 @@
                             <th>{{ trans('students.credits') }}</th>
                             <th>{{ trans('students.registered') }}</th>
                             <th>{{ trans('students.status') }}</th>
+                            <th></th>
                         </tr>
                     </thead>
                 </table>
@@ -98,6 +99,7 @@
                     {data:  'credits', name: "credits"},
                     {data:  'is_registered', name: "is_registered"},
                     {data:  'is_active', name: "is_active"},
+                    {data: 'action', name: 'action', orderable: false, searchable: false},
                 ]
             });
         $('#search-form').on('submit', function(e) {

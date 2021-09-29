@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Exception;
 use DataTables;
 use DB;
+use Session;
 use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
@@ -39,7 +40,7 @@ class StudentsController extends Controller
         /**
          * Ajax call by datatable for listing of the students.
          */
-
+        
         if ($request->ajax()) {
             $data = User::with('student')
                 ->join('countries', 'users.country_id', '=', 'countries.id')
@@ -75,9 +76,9 @@ class StudentsController extends Controller
                 ->make(true);
             return $datatable;
         }
-        $registered =   false;
+        Session::forget('student_user');
         $student    =   User::paginate(25);
-        return view('students.index', compact('student','registered'));
+        return view('students.index', compact('student'));
     }
 
     /**
@@ -90,6 +91,8 @@ class StudentsController extends Controller
         /**
          * Ajax call by datatable for listing of the students.
          */
+        Session::put('student_user',true);
+        
 
         if ($request->ajax()) {
             $data = User::with('student')
@@ -100,6 +103,7 @@ class StudentsController extends Controller
                 ->where('user_type_id', 4)
                 ->where('is_registered', 1)
                 ->whereNotNull('regfee_date')
+                ->orderBy('students.id','desc')
                 ->get();
             foreach($data as $d)
             {
@@ -128,9 +132,9 @@ class StudentsController extends Controller
                 ->make(true);
             return $datatable;
         }
-        $registered =   true;
-        $student    =   User::paginate(25);
-        return view('students.registered', compact('student','registered'));
+        
+        $student    =   User::orderBy('id','desc')->paginate(25);
+        return view('students.registered', compact('student'));
     }
 
     /**
@@ -321,6 +325,13 @@ class StudentsController extends Controller
 
             $studentDetais->update($student);
         }
+        
+        if(Session::get('student_user')){
+            return redirect()->route('students.registered.index')
+            ->with('success_message', trans('students.model_was_updated'));
+            Session::forget('student_user');
+        }
+        
         return redirect()->route('students.student.index')
             ->with('success_message', trans('students.model_was_updated'));
     }
@@ -367,6 +378,12 @@ class StudentsController extends Controller
 
             $user = User::findOrFail($id);
             $user->delete();
+
+            if(Session::get('student_user')){
+                return redirect()->route('students.registered.index')
+                ->with('success_message', trans('students.model_was_deleted'));
+                Session::forget('student_user');
+            }
 
             return redirect()->route('students.index')
                 ->with('success_message', trans('students.model_was_deleted'));

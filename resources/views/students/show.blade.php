@@ -7,10 +7,15 @@
         <input name="_method" value="DELETE" type="hidden">
         {{ csrf_field() }}
         <div class="btn-group btn-group-sm" role="group">
+            @if(session()->has('student_user'))
+            <a href="{{ route('students.registered.index') }}" class="btn btn-primary" title="{{ trans('students.show_all') }}">
+                <i class="fas fa-list-alt"></i>
+            </a>
+            @else
             <a href="{{ route('students.student.index') }}" class="btn btn-primary" title="{{ trans('students.show_all') }}">
                 <i class="fas fa-list-alt"></i>
             </a>
-            
+            @endif
             <a href="{{ route('students.student.edit', $user->id ) }}" class="btn btn-primary"
                 title="{{ trans('students.edit') }}">
                 <i class="fas fa-edit"></i>
