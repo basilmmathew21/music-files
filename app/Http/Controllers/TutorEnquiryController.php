@@ -55,7 +55,7 @@ class TutorEnquiryController extends Controller
             return $datatable;
         }
 
-        $tutor = TutorEnquiry::paginate(25);
+        $tutor = TutorEnquiry::orderBy('id','desc')->paginate(25);
         return view('tutor_enquiry.index', compact('tutor'));
     }
 

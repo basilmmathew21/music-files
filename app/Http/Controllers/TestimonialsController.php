@@ -64,7 +64,7 @@ class TestimonialsController extends Controller
             return $datatable;
         }
 
-        $testimonial = Testimonial::with('user')->paginate(25);
+        $testimonial = Testimonial::with('user')->orderBy('testimonials.id','desc')->paginate(25);
         //dd($testimonial);
         return view('testimonial.index', compact('testimonial'));
     }

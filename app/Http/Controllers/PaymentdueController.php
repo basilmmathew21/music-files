@@ -64,7 +64,7 @@ class PaymentdueController extends Controller
         {
             $data=$data->where('c.student_user_id',$logged_in_id);
         }
-        $data=$data->get();
+        $data=$data->orderBy('u.id','desc')->get();
         
         $datatable =  DataTables::of($data)
                 ->filter(function ($instance) use ($request) {
@@ -95,7 +95,7 @@ class PaymentdueController extends Controller
         $payments = Classes::select('*',DB::raw('sum(classes.class_fee) as sum_n'))->where('classes.is_paid','=','0')->groupBy('student_user_id')->join('students as s', 's.user_id', '=', 'classes.student_user_id')
         ->join('users as u', 's.user_id', '=', 'u.id')
         ->join('tutors as t', 't.user_id', '=', 'classes.tutor_user_id')
-        ->join('users as us','t.user_id', '=', 'us.id')->get();
+        ->join('users as us','t.user_id', '=', 'us.id')->orderBy('classes.id','desc')->get();
         //$payments = DB::select(DB::raw('select `c`.*, `us`.`name` as `tutor_name`, `u`.`name` as `student_name`, `s`.`credits` as `credits`, sum(c.class_fee) as sum_n from `classes` as `c` where is_paid = "0" inner join `students` as `s` on `s`.`user_id` = `c`.`student_user_id` inner join `users` as `u` on `s`.`user_id` = `u`.`id` inner join `tutors` as `t` on `t`.`user_id` = `c`.`tutor_user_id` inner join `users` as `us` on `t`.`user_id` = `us`.`id` group by `c`.`student_user_id`'));
             
         //dd($payments);

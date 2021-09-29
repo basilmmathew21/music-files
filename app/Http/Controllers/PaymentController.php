@@ -57,7 +57,7 @@ class PaymentController extends Controller
             if (auth()->user()->roles[0]->id == 4) {
                 $data = $data->where('p.student_user_id', $logged_in_id);
             }
-            $data = $data->get();
+            $data = $data->orderBy('p.id','desc')->get();
 
             $datatable = DataTables::of($data)
                 ->filter(function ($instance) use ($request) {
@@ -79,11 +79,11 @@ class PaymentController extends Controller
         $user = \Auth::user()->id;
         $user_data = DB::table('users')->select('*')->where('id', '=', $user)->first();
         if ($user_data->user_type_id == '4') { 
-            $payments = PaymentHistory::paginate(25);
+            $payments = PaymentHistory::orderBy('id','desc')->paginate(25);
             return view('paymenthistory.index-student', compact('payments'));
         } else {
             
-            $payments = PaymentHistory::paginate(25);
+            $payments = PaymentHistory::orderBy('id','desc')->paginate(25);
             return view('paymenthistory.index', compact('payments'));
         }
 

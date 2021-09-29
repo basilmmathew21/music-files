@@ -48,6 +48,7 @@ class StudentsController extends Controller
                 ->leftJoin('courses', 'students.course_id', '=', 'courses.id')
                 ->select(['users.*', 'users.is_active as is_active','students.credits','students.display_name', 'students.is_registered', 'courses.course', 'countries.name AS country_name', DB::raw('CONCAT(countries.phone_code," ",users.phone) as phone')])
                 ->where('user_type_id', 4)
+                ->orderBy('users.id','desc')
                 ->get();
             foreach($data as $d)
             {
@@ -76,8 +77,8 @@ class StudentsController extends Controller
                 ->make(true);
             return $datatable;
         }
-        Session::forget('student_user');
-        $student    =   User::paginate(25);
+
+        $student = User::orderBy('id','desc')->paginate(25);
         return view('students.index', compact('student'));
     }
 

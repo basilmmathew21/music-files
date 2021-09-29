@@ -42,6 +42,7 @@ class TutorController extends Controller
             ->join('tutors', 'tutors.user_id', '=', 'users.id')
             ->select(['users.*','tutors.display_name','countries.name AS country_name',DB::raw('CONCAT(countries.phone_code," ",users.phone) as phone')])
             ->where('user_type_id', 3)
+            ->orderBy('users.id','desc')
             ->get();
             foreach($data as $d)
             {
@@ -71,7 +72,7 @@ class TutorController extends Controller
            return $datatable;
        }
 
-       $tutor = User::paginate(25);
+       $tutor = User::orderBy('id','desc')->paginate(25);
        return view('tutors.index', compact('tutor'));
     }
 
