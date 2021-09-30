@@ -38,10 +38,11 @@ class TutorController extends Controller
 
         if ($request->ajax()) {
             $data  = DB::table('users')
-            ->join('countries', 'users.country_id', '=', 'countries.id')
+            ->leftJoin('countries', 'users.country_id', '=', 'countries.id')
             ->join('tutors', 'tutors.user_id', '=', 'users.id')
             ->select(['users.*','tutors.display_name','countries.name AS country_name',DB::raw('CONCAT(countries.phone_code," ",users.phone) as phone')])
             ->where('user_type_id', 3)
+            ->orderBy('users.id','desc')
             ->get();
             foreach($data as $d)
             {
@@ -56,7 +57,7 @@ class TutorController extends Controller
                ->filter(function ($instance) use ($request) {
                    if ($request->has('keyword') && $request->get('keyword')) {
                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains(Str::lower($row['phone'] . $row['email'] . $row['name'] ), Str::lower($request->get('keyword'))) ? true : false;
+                        return Str::contains(Str::lower($row['phone'] . $row['email'] . $row['country_name'] . $row['display_name'] . $row['name'] ), Str::lower($request->get('keyword'))) ? true : false;
                        });
                    }
                   
@@ -71,7 +72,7 @@ class TutorController extends Controller
            return $datatable;
        }
 
-       $tutor = User::paginate(25);
+       $tutor = User::orderBy('id','desc')->paginate(25);
        return view('tutors.index', compact('tutor'));
     }
 
@@ -207,8 +208,14 @@ class TutorController extends Controller
             $user->other_details='-';
 
         }
-        
-        return view('tutors.show', compact('user','tutor'));
+
+        $students  = User::join('students', 'students.user_id', '=', 'users.id')
+                         ->join('tutor_students','tutor_students.user_id','=','students.user_id')
+                         ->select('students.display_name','users.name','users.id')
+                         ->where('tutor_students.tutor_id', $id)
+                         ->orderBy('students.id','desc')
+                         ->get();
+        return view('tutors.show', compact('user','tutor','students'));
         
     }
 
@@ -387,7 +394,7 @@ class TutorController extends Controller
         //Send Login Credentials
 
         $details = [
-            'subject' => "Login Credentials ".$user->name,
+            'subject' => config('adminlte.title')." Tutor Login Credentials ",
             'content' =>  __('adminlte::adminlte.thankyou_tutor_cred_info'),
             'login'   => 'email address : '.$user->email.', Password : '.$passwordStr,
             'button'  =>  true

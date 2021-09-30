@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Exception;
 use DataTables;
 use DB;
+use Session;
 use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
@@ -39,7 +40,7 @@ class StudentsController extends Controller
         /**
          * Ajax call by datatable for listing of the students.
          */
-
+        
         if ($request->ajax()) {
             $data = User::with('student')
                 ->join('countries', 'users.country_id', '=', 'countries.id')
@@ -47,6 +48,7 @@ class StudentsController extends Controller
                 ->leftJoin('courses', 'students.course_id', '=', 'courses.id')
                 ->select(['users.*', 'users.is_active as is_active','students.credits','students.display_name', 'students.is_registered', 'courses.course', 'countries.name AS country_name', DB::raw('CONCAT(countries.phone_code," ",users.phone) as phone')])
                 ->where('user_type_id', 4)
+                ->orderBy('users.id','desc')
                 ->get();
             foreach($data as $d)
             {
@@ -63,7 +65,7 @@ class StudentsController extends Controller
                     }*/
                     if ($request->has('keyword') && $request->get('keyword')) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains(Str::lower($row['phone'] . $row['email'] . $row['display_name'].$row['course'].$row['name']), Str::lower($request->get('keyword'))) ? true : false;
+                            return Str::contains(Str::lower($row['phone'] . $row['email'] . $row['display_name'].$row['course'].$row['name'].$row['country_name']), Str::lower($request->get('keyword'))) ? true : false;
                         });
                     }
                 })
@@ -76,8 +78,64 @@ class StudentsController extends Controller
             return $datatable;
         }
 
-        $student = User::paginate(25);
+        $student = User::orderBy('id','desc')->paginate(25);
         return view('students.index', compact('student'));
+    }
+
+    /**
+     * Display a listing of the registered students.
+     *
+     * @return Illuminate\View\View
+     */
+    public function registered(Request $request)
+    {
+        /**
+         * Ajax call by datatable for listing of the students.
+         */
+        Session::put('student_user',true);
+        
+
+        if ($request->ajax()) {
+            $data = User::with('student')
+                ->join('countries', 'users.country_id', '=', 'countries.id')
+                ->join('students', 'students.user_id', '=', 'users.id')
+                ->leftJoin('courses', 'students.course_id', '=', 'courses.id')
+                ->select(['users.*', 'users.is_active as is_active','students.credits','students.display_name', 'students.is_registered', 'courses.course', 'countries.name AS country_name', DB::raw('CONCAT(countries.phone_code," ",users.phone) as phone')])
+                ->where('user_type_id', 4)
+                ->where('is_registered', 1)
+                ->whereNotNull('regfee_date')
+                ->orderBy('students.id','desc')
+                ->get();
+            foreach($data as $d)
+            {
+                $d['name']=$d['display_name']."(".$d['name'].")";
+            }
+                
+
+            $datatable =  DataTables::of($data)
+                ->filter(function ($instance) use ($request) {
+                  /*  if ($request->has('keyword') && $request->get('keyword')) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains(Str::lower($row['display_name']), Str::lower($request->get('keyword'))) ? true : false;
+                        });
+                    }*/
+                    if ($request->has('keyword') && $request->get('keyword')) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains(Str::lower($row['phone'] . $row['email'] . $row['display_name'].$row['course'].$row['name'].$row['country_name']), Str::lower($request->get('keyword'))) ? true : false;
+                        });
+                    }
+                })
+                ->addIndexColumn()
+                ->addColumn('action', function ($student) {
+                    return view('students.datatable', compact('student'));
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+            return $datatable;
+        }
+        
+        $student    =   User::orderBy('id','desc')->paginate(25);
+        return view('students.registered', compact('student'));
     }
 
     /**
@@ -268,6 +326,13 @@ class StudentsController extends Controller
 
             $studentDetais->update($student);
         }
+        
+        if(Session::get('student_user')){
+            return redirect()->route('students.registered.index')
+            ->with('success_message', trans('students.model_was_updated'));
+            Session::forget('student_user');
+        }
+        
         return redirect()->route('students.student.index')
             ->with('success_message', trans('students.model_was_updated'));
     }
@@ -314,6 +379,12 @@ class StudentsController extends Controller
 
             $user = User::findOrFail($id);
             $user->delete();
+
+            if(Session::get('student_user')){
+                return redirect()->route('students.registered.index')
+                ->with('success_message', trans('students.model_was_deleted'));
+                Session::forget('student_user');
+            }
 
             return redirect()->route('students.index')
                 ->with('success_message', trans('students.model_was_deleted'));

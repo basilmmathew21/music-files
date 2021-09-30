@@ -55,13 +55,13 @@ class TutorClassController extends Controller
             $data = $data->where('student_user_id',$logged_in_id);
         }
 
-        $data = $data->select(['classes.*','users.name','courses.course','tutors.name as tutor',DB::raw('DATE_FORMAT(classes.date, "%d-%b-%Y") as date')])->get();
+        $data = $data->select(['classes.*','users.name','courses.course','tutors.name as tutor',DB::raw('DATE_FORMAT(classes.date, "%d-%b-%Y") as date')])->orderBy('classes.id','desc')->get();
 
             $datatable = DataTables::of($data)
                 ->filter(function ($instance) use ($request) {
                     if ($request->has('keyword') && $request->get('keyword')) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains(Str::lower($row['name']), Str::lower($request->get('keyword'))) ? true : false;
+                            return Str::contains(Str::lower($row['name'] . $row['tutor']. $row['course']), Str::lower($request->get('keyword'))) ? true : false;
                         });
                     }
                   /*  if ($request->has('keyword') && $request->get('keyword')) {
@@ -85,7 +85,7 @@ class TutorClassController extends Controller
             return $datatable;
         }
 
-        $classes = TutorClass::leftJoin('users', 'classes.student_user_id', '=', 'users.id')->paginate(25);
+        $classes = TutorClass::leftJoin('users', 'classes.student_user_id', '=', 'users.id')->orderBy('classes.id','desc')->paginate(25);
         //var_dump($classes);exit;
         if (auth()->user()->roles[0]->id == 4)
         {

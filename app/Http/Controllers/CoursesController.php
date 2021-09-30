@@ -20,7 +20,7 @@ class CoursesController extends Controller
         
         if ($request->ajax()) {           
 
-            $data = Courses::all();
+            $data = Courses::orderBy('id','desc')->get();
             foreach($data as $d)
             {
                 if($d['is_active']==1)
@@ -48,7 +48,7 @@ class CoursesController extends Controller
         }
         
 
-        $courses = Courses::paginate(25);
+        $courses = Courses::orderBy('id','desc')->paginate(25);
 
         return view('courses.index', compact('courses'));
     }

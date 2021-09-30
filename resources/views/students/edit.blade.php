@@ -3,15 +3,20 @@
 @section('content_header')
     <h1 class="m-0 text-dark">{{ !empty($user->name) ? $user->name : 'User' }}</h1>
     <div class="btn-group btn-group-sm pull-right" role="group">
-
+        @if(session()->has('student_user'))
+        <a href="{{ route('students.registered.index') }}" class="btn btn-primary" title="{{ trans('students.show_all') }}">
+            <i class="fas fa-list-alt"></i>
+        </a>
+        @else
         <a href="{{ route('students.student.index') }}" class="btn btn-primary" title="{{ trans('students.show_all') }}">
             <i class="fas fa-list-alt"></i>
         </a>
-
+        @endif
+        @if(!session()->has('student_user'))
         <a href="{{ route('students.student.create') }}" class="btn btn-success" title="{{ trans('students.create') }}">
             <i class="fas fa-plus-circle"></i>
         </a>
-
+        @endif
     </div>
 @stop
 
@@ -39,7 +44,11 @@
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input class="btn btn-primary" type="submit" value="{{ trans('students.update') }}">
+                        @if(session()->has('student_user'))
+                        <a href="{{ URL::to('students/registered')}}" type="button" class="btn btn-default">{{ trans('students.back') }}</a>
+                        @else
                         <a href="{{ URL::to('students/students')}}" type="button" class="btn btn-default">{{ trans('students.back') }}</a>
+                        @endif
                     </div>
                 </div>
             </form>

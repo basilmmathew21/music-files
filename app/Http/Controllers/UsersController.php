@@ -53,7 +53,7 @@ class UsersController extends Controller
             \DB::raw('(CASE 
                                   WHEN users.user_type_id = "3" THEN tutors.display_name
                                   WHEN users.user_type_id = "4" THEN students.display_name 
-                                  ELSE users.name  END) AS display_name')])->get();
+                                  ELSE users.name  END) AS display_name')])->orderBy('users.id','desc')->get();
     
             foreach($data as $d)
             {
@@ -83,7 +83,7 @@ class UsersController extends Controller
         }
 
 
-        $users = User::paginate(25);
+        $users = User::orderBy('id','desc')->paginate(25);
 
         return view('users.index', compact('users'));
     }

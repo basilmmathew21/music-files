@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Course;
 use App\Models\Currency;
 use App\Models\Student;
+use App\Models\Settings;
 use Illuminate\Http\Request;
 use Exception;
 use DataTables;
@@ -99,21 +100,21 @@ class StudentsRegistrationController extends Controller
         Student::create($student);
 
         $details = [
-            'subject' => 'Registration - Mail from ' . config('adminlte.title'),
+            'subject' => config('adminlte.title').' Registration',
             'content' =>  __('adminlte::adminlte.thankyou_registration'),
             'login'   => 'email address : '.$data['email'].', Password : '.$request->password
         ];
         \Mail::to($data['email'])->send(new \App\Mail\MyTestMail($details));
 
-        $adminInfo =   User::find(1);
+        $adminInfo =   Settings::find(2);
 
         $details = [
-            'subject' => 'New Student Registed',
+            'subject' => config('adminlte.title').' Registration',
             'content' =>  $request->name.' Is registered',
             'login'   => ''
         ];
 
-        \Mail::to($adminInfo['email'])->send(new \App\Mail\MyTestMail($details));
+        \Mail::to($adminInfo['value'])->send(new \App\Mail\MyTestMail($details));
 
 
         return Redirect::to('thankyou')->with('success_message',"Registration Successful");;

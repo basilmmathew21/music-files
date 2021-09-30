@@ -38,6 +38,12 @@ Route::get('/seed-country', function () {
     echo $exitCode . ' - Seeded Countries for 1,2,3,4';
 });
 
+
+Route::get('/seed-currency', function () {
+    $exitCode = Artisan::call('db:seed --class=CurrencySeeder');
+    echo $exitCode . ' - Seeded currencies for 1,2,3,4';
+});
+
 Route::get('/shutdown', function () {
     Artisan::call('down');
 });
@@ -150,6 +156,8 @@ Route::group([
 ], function () {
     Route::get('/students', 'StudentsController@index')
         ->name('students.student.index');
+    Route::get('/registered', 'StudentsController@registered')
+        ->name('students.registered.index');    
     Route::get('/create', 'StudentsController@create')->middleware(['permission:add students'])
         ->name('students.student.create');
     Route::get('/show/{student}', 'StudentsController@show')

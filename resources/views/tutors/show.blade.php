@@ -35,6 +35,22 @@
                     <dd>{{ $user->gender }}</dd>
                     <dt>{{ trans('users.dob') }}</dt>
                     <dd>{{ $user->dob }}</dd>
+                    @if(count($students) > 0)
+                    <dt>Students</dt>
+                    <dd>  
+                    <div class="row">
+                        <div class="col-4">
+                        <div class="list-group" id="list-tab" role="tablist">
+                            <ul class="list-group">
+                                @foreach ($students as $student)
+                                    <li class="list-group-item">{{$student->display_name}} ({{$student->name}}) </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        </div>
+                    </div>
+                    </dd>
+                    @endif
                     <dt>{{trans('users.profile_image')}}</dt>
                     <dd>
                     <?php

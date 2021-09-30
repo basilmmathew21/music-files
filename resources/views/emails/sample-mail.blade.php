@@ -1,5 +1,4 @@
 @component('mail::message')
-# Introduction
 
     {{ $details['subject'] }}
 

@@ -202,9 +202,9 @@ return [
 
     //'register_url' => true,
 
-    //'password_reset_url' => 'password/reset',
+    'password_reset_url' => 'password/reset',
 
-    'password_reset_url' => false,
+    //'password_reset_url' => true,
 
     'password_email_url' => 'password/email',
 
@@ -272,13 +272,21 @@ return [
             'can' => ['view users'],
         ],
         [
-
             'text' => 'Students',
-            'route'  => 'students.student.index',
             'icon'    => 'fa fa-book',
             'can' => ['view students'],
-
-        ],
+            'submenu' => [
+                [
+                    'text' => 'All Students',
+                    'route'  => 'students.student.index',
+                    'can' => ['view students'],
+                ], [
+                    'text' => 'Registered Students',
+                    'route'  => 'students.registered.index',
+                    'can' => ['view students'],
+                ],
+            ]
+            ],
         [
             'text' => 'Tutors',
             'route'  => 'tutors.tutor.index',
