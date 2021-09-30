@@ -49,7 +49,9 @@
           <div class="card-header">
             <h3 class="card-title">
               Pay your registration fee
+              
             </h3>
+            
           </div>
           <!-- /.card-header -->
           <div class="card-body p-0 table-responsive">
@@ -59,33 +61,7 @@
               @method("POST")
               <div class="form-group">
                 <div class="col-md-12 text-center">
-                  <?php
-                  // set API Endpoint and API key 
-                  
-$endpoint = 'latest';
-$access_key = '0d0b39254cefb941a64f7838ba522781';
-
-// Initialize CURL:
-$ch = curl_init('http://data.fixer.io/api/'.$endpoint.'?access_key='.$access_key.'');
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-// Store the data:
-$json = curl_exec($ch);
-curl_close($ch);
-
-// Decode JSON response:
-$exchangeRates = json_decode($json, true);
-
-// Access the exchange rate values
-$Inr_Euro=$exchangeRates['rates']['INR'];
-$fees=500;
-$fee_euro=round(($fees/$Inr_Euro),2);
-$student_currency_rate=round(($exchangeRates['rates'][$student_currency]),2);
-$student_pay_amount=$fee_euro*$student_currency_rate;
-echo "Fees : ".round($student_pay_amount,2);
-
-
-                  ?>
+                  Fees : <a id="fees"></a>
                 
                   <input class="form-control" name="regfee" type="hidden" id="regfee" value="500">
                 </div>
@@ -109,4 +85,33 @@ echo "Fees : ".round($student_pay_amount,2);
   </div><!-- /.container-fluid -->
 </section>
 
+@stop
+
+@section('js')
+<script>
+    $(document).ready(function() {
+           // set endpoint and your access key
+endpoint = 'latest'
+access_key = '0d0b39254cefb941a64f7838ba522781';
+
+// get the most recent exchange rates via the "latest" endpoint:
+$.ajax({
+    url: 'http://data.fixer.io/api/' + endpoint + '?access_key=' + access_key,   
+    dataType: 'jsonp',
+    success: function(json) {
+
+      var student_currency='<?php echo $student_currency;?>';
+      Inr_Euro=json.rates.INR;
+      fees=$("#regfee").val();
+      fee_euro=(fees/Inr_Euro).toFixed(2);
+      student_currency_rate=(json.rates[student_currency]).toFixed(2);
+      student_pay_amount=(fee_euro*student_currency_rate).toFixed(2);
+      student_pay_amount=student_pay_amount+" "+student_currency;
+              
+      $("#fees").html(student_pay_amount);
+     
+    }
+});
+    } );
+</script>
 @stop
