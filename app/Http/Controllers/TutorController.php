@@ -394,6 +394,18 @@ class TutorController extends Controller
         //Send Login Credentials
 
         $details = [
+            'subject' =>    config('adminlte.title').' Tutor Login Credentials',
+            'content' =>    __('adminlte::adminlte.thankyou_tutor_cred_info'),
+            'details' =>    'Login details below',
+            'name'    =>    $user->name,
+            'email'   =>    $user->email,
+            'password'=>    $passwordStr,
+            'login'   =>    true
+        ];
+        \Mail::to($user->email)->send(new \App\Mail\TutorCredentials($details));
+
+        /*
+        $details = [
             'subject' => config('adminlte.title')." Tutor Login Credentials ",
             'content' =>  __('adminlte::adminlte.thankyou_tutor_cred_info'),
             'login'   => 'email address : '.$user->email.', Password : '.$passwordStr,

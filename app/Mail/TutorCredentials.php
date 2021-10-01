@@ -1,18 +1,16 @@
 <?php
-  
+
 namespace App\Mail;
-  
+
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-  
+
 class TutorCredentials extends Mailable
 {
     use Queueable, SerializesModels;
-  
-    public $details;
-  
+
     /**
      * Create a new message instance.
      *
@@ -20,9 +18,9 @@ class TutorCredentials extends Mailable
      */
     public function __construct($details)
     {
-        $this->details = $details;
+        $this->details  =   $details;
     }
-  
+
     /**
      * Build the message.
      *
@@ -31,6 +29,6 @@ class TutorCredentials extends Mailable
     public function build()
     {
         $details    =   $this->details;
-        return $this->view('emails.tutorCredentials',compact('details'));
+        return $this->markdown('emails.tutor-credentials-mail',compact('details'));
     }
 }

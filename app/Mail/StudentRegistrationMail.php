@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class MyTestMail extends Mailable
+class StudentRegistrationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -29,6 +29,6 @@ class MyTestMail extends Mailable
     public function build()
     {
         $details    =   $this->details;
-        return $this->markdown('emails.sample-mail',compact('details'));
+        return $this->markdown('emails.student-registration-mail',compact('details'));
     }
 }

@@ -4,11 +4,9 @@
 
 {{ $details['content'] }}
 
-{{ $details['details'] }}
-
-    Name  : {{ $details['name'] }}
-    Email : {{ $details['email'] }}
-    Phone : {{ $details['phone'] }}
+    Name     : {{ $details['name'] }}
+    Email    : {{ $details['email'] }}
+    Password : {{ $details['password'] }}
 
 @component('mail::button', ['url' => config('app.url')])
 Login
