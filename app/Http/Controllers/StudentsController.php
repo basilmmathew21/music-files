@@ -201,7 +201,7 @@ class StudentsController extends Controller
         $student['country_id']     =  $data['country'];
         $student['course_id']      =  $request->course;
         $student['online_class_link']      =  $request->online_class_link;
-       // $student['currency_id']    =  $request->currency;
+        $student['currency_id']    =  $request->currency;
         $student['class_fee']      =  $request->class_fee;
         $student['is_registered']  =  1;
         //$student['is_active']      =  $request->status ? $request->status : 0;
