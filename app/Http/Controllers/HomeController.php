@@ -176,6 +176,7 @@ class HomeController extends Controller
                 ->select(['users.*','users.name as tutor_name' ,'students.display_name', 'courses.course', 'countries.name AS country_name', DB::raw('CONCAT(countries.phone_code," ",users.phone) as phone')])
                 ->limit(10)
                 ->where("users.is_active",'1')
+                ->where("users.user_type_id",'4')
                 ->orderBy('users.id', 'desc')
                 ->get();
             
