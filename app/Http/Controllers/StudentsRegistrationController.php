@@ -100,21 +100,29 @@ class StudentsRegistrationController extends Controller
         Student::create($student);
 
         $details = [
-            'subject' => config('adminlte.title').' Registration',
-            'content' =>  __('adminlte::adminlte.thankyou_registration'),
-            'login'   => 'email address : '.$data['email'].', Password : '.$request->password
+            'subject' =>    config('adminlte.title').' Registration',
+            'content' =>    __('adminlte::adminlte.thankyou_registration'),
+            'details' =>    'Student details below',
+            'name'    =>    $request->name,
+            'email'   =>    $data['email'],
+            'phone'   =>    $request->whatsapp_number,
+            'login'   =>    false
         ];
-        \Mail::to($data['email'])->send(new \App\Mail\MyTestMail($details));
+        \Mail::to($data['email'])->send(new \App\Mail\StudentRegistrationMail($details));
 
         $adminInfo =   Settings::find(2);
 
         $details = [
-            'subject' => config('adminlte.title').' Registration',
-            'content' =>  $request->name.' Is registered',
-            'login'   => ''
+            'subject' =>    config('adminlte.title').' Registration',
+            'content' =>    __('adminlte::adminlte.thankyou_registration_admin'),
+            'details' =>    'Student details below',
+            'name'    =>    $request->name,
+            'email'   =>    $data['email'],
+            'phone'   =>    $request->whatsapp_number,
+            'login'   =>    false
         ];
 
-        \Mail::to($adminInfo['value'])->send(new \App\Mail\MyTestMail($details));
+        \Mail::to($adminInfo['value'])->send(new \App\Mail\StudentRegistrationMail($details));
 
 
         return Redirect::to('thankyou')->with('success_message',"Registration Successful");;

@@ -146,6 +146,7 @@ class TutorEnquiryController extends Controller
 
                 $data['profile_image'] = $name;
         } */
+        
         $data['dob'] = date_format(date_create($data['dob']), 'Y-m-d');
         $data['date_of_enquiry'] = date('Y-m-d');
         TutorEnquiry::create($data);
@@ -154,17 +155,32 @@ class TutorEnquiryController extends Controller
 
         $adminInfo =   Settings::find(3);
 
-     
+        /*
         $details = [
             'subject' => config('adminlte.title').' Tutor Enquiry',
             'content' =>  __('adminlte::adminlte.thankyou_tutor_enquiry')
         ];
         \Mail::to($data['email'])->send(new \App\Mail\TutorMail($details));
-
-
+        */
         $details = [
-            'subject' => config('adminlte.title').' Tutor Enquiry',
-            'content' =>  __('adminlte::adminlte.thankyou_tutor_admin_info')
+            'subject' =>    config('adminlte.title').' Tutor Enquiry',
+            'content' =>    __('adminlte::adminlte.thankyou_tutor_enquiry'),
+            'details' =>    'Enquiry details below',
+            'name'    =>    $data['name'],
+            'email'   =>    $data['email'],
+            'phone'   =>    $request->whatsapp_number,
+            'login'   =>    true
+        ];
+        \Mail::to($data['email'])->send(new \App\Mail\TutorMail($details));
+        
+        $details = [
+            'subject' =>    config('adminlte.title').' Tutor Enquiry',
+            'content' =>    __('adminlte::adminlte.thankyou_tutor_admin_info'),
+            'details' =>    'Enquiry details below',
+            'name'    =>    $data['name'],
+            'email'   =>    $data['email'],
+            'phone'   =>    $request->whatsapp_number,
+            'login'   =>    true
         ];
         \Mail::to($adminInfo['value'])->send(new \App\Mail\TutorMail($details));
 
