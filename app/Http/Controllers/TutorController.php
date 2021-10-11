@@ -382,10 +382,15 @@ class TutorController extends Controller
     {
         // fetch the details
         $user=User::where('id',$id)->get()->first();
+        //Assign Tutor role to the user        
+        $user->assignRole('tutor');
+        
         $passwordStr    =  Str::random(8);
         $password       =  Hash::make($passwordStr);
         //Accept the Enquiry
         $active= User::where('id', $id)->update(['is_active' => 1]);
+
+        
 
         //Reset password 
 
