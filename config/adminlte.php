@@ -300,7 +300,7 @@ return [
             'can' => ['view tutor enquiries'],
         ],
         [
-            'text' => 'Testmonials',
+            'text' => 'Testimonials',
             'route'  => 'testimonials.testimonial.index',
             'icon'    => 'fa fa-globe',
             'can' => ['view testimonials'],
