@@ -63,7 +63,7 @@
                 <div class="col-md-12 text-center">
                   Fees : <a id="fees"></a>
 
-                  <input class="form-control" name="regfee" type="hidden" id="regfee" value="0">
+                  <input class="form-control" name="regfee" type="hidden" id="regfee" value=<?php echo $fee_pay;?>>
                 </div>
               </div>
               <div class="form-group">

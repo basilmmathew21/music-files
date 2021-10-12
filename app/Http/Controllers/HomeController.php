@@ -241,7 +241,9 @@ class HomeController extends Controller
             $currency_id            =   DB::table('students')->select('currency_id')->where('user_id',$id) ->get()->first();
             $currency_code           =   DB::table('currencies')->select('code')->where('id',$currency_id->currency_id) ->get()->first();
             $student_currency= $currency_code->code;
-            return view('home', compact('student_currency'));
+            $fee_query=DB::table('Settings')->select('value')->where('id',4) ->get()->first();
+            $fee_pay=$fee_query->value;
+            return view('home', compact('student_currency','fee_pay'));
           
            }
         return view('home');
