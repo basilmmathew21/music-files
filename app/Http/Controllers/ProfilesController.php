@@ -66,7 +66,7 @@ class ProfilesController extends Controller
 
         $user           = User::with('student')
                                 ->leftJoin('students', 'students.user_id', '=', 'users.id')
-                                ->select(['users.*','users.is_active as is_active','students.is_registered','students.country_id','students.course_id','students.currency_id',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%Y") as dob')])
+                                ->select(['users.*','users.is_active as is_active','students.is_registered','students.course_id','students.currency_id',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%Y") as dob')])
                                 ->findOrFail($id);
         $nationalities  = Country::pluck('name', 'id')->all();
         $courses        = Course::pluck('course', 'id')->all();
