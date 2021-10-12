@@ -132,8 +132,8 @@ body {
             {{ csrf_field() }}
             @method("PUT")
             <div class="d-flex pt-3 pl-3">
-                <div><img src="/images/visa-icon.png" width="60" height="80" /></div>
-                <div class="mt-3 pl-2">      <h2>{{$user->name}} </h2>
+                <div><img src="/images/visa-icon.png" width="auto" height="32" /></div>
+                <div class="pl-2">      <h2>{{$user->name}} </h2>
                 </div>
             </div>
 
