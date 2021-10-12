@@ -132,7 +132,7 @@ class HomeController extends Controller
             $paymentHistory = User::with('student')
             ->Join('students', 'students.user_id', '=', 'users.id')
             ->where('students.user_id', $id)
-            ->select('students.regfee as amount',DB::raw("'-' as no_of_classes"),DB::raw("'Paid' as status"),
+            ->select('students.regfee as amount',DB::raw("'-' as no_of_classes"),DB::raw("'paid' as status"),
                     DB::raw('DATE_FORMAT(students.regfee_date, "%d-%b-%Y %h:%i:%s") as payment_date'),
                     'students.regfee_date as created_at'
                     )
