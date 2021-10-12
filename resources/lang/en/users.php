@@ -17,7 +17,7 @@ return [
     'email__placeholder' => 'Enter email here...',
     'phone' => 'Phone',
     'dob' => 'Dob',
-    'phone__placeholder' => 'Enter phone here...',
+    'phone__placeholder' => 'Enter phone without ISD code here...',
     'gender' => 'Gender',
     'gender__placeholder' => 'Enter gender here...',
     'city' => 'City',

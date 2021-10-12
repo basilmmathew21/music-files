@@ -16,15 +16,7 @@ class CurrencySeeder extends Seeder
 		
         \DB::table('currencies')->truncate();
 		\DB::table('currencies')->insert([
-            ['code' => 'AFN', 'name' => 'Afghani', 'symbol' => '؋'],
-            ['code' => 'ALL', 'name' => 'Lek', 'symbol' => 'Lek'],
-            ['code' => 'ANG', 'name' => 'Netherlands Antillian Guilder', 'symbol' => 'ƒ'],
-            ['code' => 'ARS', 'name' => 'Argentine Peso', 'symbol' => '$'],
-            ['code' => 'AUD', 'name' => 'Australian Dollar', 'symbol' => '$'],
-            ['code' => 'AWG', 'name' => 'Aruban Guilder', 'symbol' => 'ƒ'],
-            ['code' => 'AZN', 'name' => 'Azerbaijanian Manat', 'symbol' => 'ман'],
-            ['code' => 'BAM', 'name' => 'Convertible Marks', 'symbol' => 'KM'],
-            ['code' => 'BBD', 'name' => 'Barbados Dollar', 'symbol' => '$'],
+            ['code' => 'AED', 'name' => 'United Arab Emirates Dirham', 'symbol' => 'د.إ'],            
             ['code' =>'AFN' , 'name' => 'Afghani', 'symbol' => '؋' ],
             ['code' =>'ALL' , 'name' => 'Lek', 'symbol' => 'Lek' ],
             ['code' =>'ANG' , 'name' => 'Netherlands Antillian Guilder', 'symbol' => 'ƒ' ],
