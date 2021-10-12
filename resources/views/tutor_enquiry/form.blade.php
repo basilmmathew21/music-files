@@ -42,7 +42,7 @@
     </div>
     <div class="col-md-6 mb-3">
         <label class="form-label">Whatsapp Number</label>Same as Phone: <input type="checkbox" id="checkbox" >
-        <input class="form-control {{ $errors->has('whatsapp_number') ? 'is-invalid' : '' }}" name="whatsapp_number" id="whatsapp_number" type="text" value="{{ old('whatsapp_number', optional($tutorenquiry)->whatsapp_number) }}" minlength="1" maxlength="255"  required="true"  placeholder="Enter Whatsapp Number">
+        <input class="form-control {{ $errors->has('whatsapp_number') ? 'is-invalid' : '' }}" name="whatsapp_number" id="whatsapp_number" type="text" value="{{ old('whatsapp_number', optional($tutorenquiry)->whatsapp_number) }}" minlength="1" maxlength="255"  required="true"  placeholder="Enter Whatsapp number without ISD code">
 
         @if($errors->has('whatsapp_number'))
         <div class="invalid-feedback">
@@ -279,7 +279,7 @@ if (this.checked ) {
     } else {
 
         $('#whatsapp_number').val("");
-        $("#whatsapp_number").attr("placeholder", "Enter Whatsapp Number")  ;
+        $("#whatsapp_number").attr("placeholder", "Enter Whatsapp number without ISD code")  ;
       }    
 
    });

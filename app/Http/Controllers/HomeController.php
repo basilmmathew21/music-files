@@ -123,11 +123,24 @@ class HomeController extends Controller
             $tutorClass     =   $tutorClass->where('student_user_id', $id);
             $tutorClass     =   $tutorClass->limit(10)->orderBy('users.created_at', 'desc')->get();
 
-            $paymentHistory =    User::with('student')
-                ->Join('payment_histories', 'payment_histories.student_user_id', '=', 'users.id')
-                ->where('payment_histories.student_user_id', $id)
-                ->select('payment_histories.*', DB::raw('DATE_FORMAT(payment_histories.payment_date, "%d-%b-%Y %h:%i:%s") as payment_date'))
-                ->limit(10)->orderby('payment_histories.created_at', 'desc')->get();
+            $paymentHistoryHis =    User::with('student')
+            ->Join('payment_histories', 'payment_histories.student_user_id', '=', 'users.id')
+            ->where('payment_histories.student_user_id', $id)
+            ->select('payment_histories.amount','payment_histories.no_of_classes','payment_histories.status',DB::raw('DATE_FORMAT(payment_histories.payment_date, "%d-%b-%Y %h:%i:%s") as payment_date'),
+            'payment_histories.created_at as created_at');
+
+            $paymentHistory = User::with('student')
+            ->Join('students', 'students.user_id', '=', 'users.id')
+            ->where('students.user_id', $id)
+            ->select('students.regfee as amount',DB::raw("'-' as no_of_classes"),DB::raw("'paid' as status"),
+                    DB::raw('DATE_FORMAT(students.regfee_date, "%d-%b-%Y %h:%i:%s") as payment_date'),
+                    'students.regfee_date as created_at'
+                    )
+            ->union($paymentHistoryHis)
+            ->orderby('created_at', 'desc')
+            ->limit(10)
+            ->get();
+
 
             $sms            =   DB::table('sms')
                 ->select('sms.*', 'users.name', 'tutors.display_name', DB::raw('DATE_FORMAT(sms.sent_on, "%d-%b-%Y %h:%i:%s") as sent_on'))
@@ -228,7 +241,7 @@ class HomeController extends Controller
             $currency_id            =   DB::table('students')->select('currency_id')->where('user_id',$id) ->get()->first();
             $currency_code           =   DB::table('currencies')->select('code')->where('id',$currency_id->currency_id) ->get()->first();
             $student_currency= $currency_code->code;
-            $fee_query=DB::table('Settings')->select('value')->where('id',4) ->get()->first();
+            $fee_query=DB::table('settings')->select('value')->where('id',4) ->get()->first();
             $fee_pay=$fee_query->value;
             return view('home', compact('student_currency','fee_pay'));
           

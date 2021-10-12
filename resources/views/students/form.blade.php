@@ -97,7 +97,7 @@
 
         <input class="form-control" name="whatsapp_number" type="text" id="whatsapp_number"
             value="{{ old('whatsapp_number', optional($user)->whatsapp_number) }}" minlength="1" maxlength="255" required="true"
-            placeholder="Enter Whatsapp Number">
+            placeholder="Enter Whatsapp number without ISD code">
         {!! $errors->first('whatsapp_number', '<p class="text-danger">:message</p>') !!}
     </div>
 </div>
@@ -215,7 +215,7 @@ if (this.checked ) {
     } else {
 
         $('#whatsapp_number').val("");
-        $("#whatsapp_number").attr("placeholder", "Enter Whatsapp Number")  ;
+        $("#whatsapp_number").attr("placeholder", "Enter Whatsapp number without ISD code")  ;
       }    
 
    });

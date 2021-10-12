@@ -69,12 +69,11 @@
     <div class="container">
         <div class="row">
             <div class="col text-center">
-                <h5><i class="uil uil-estate"></i> 8B,"Royal Fortress", Eroor West , Manjelippadam, Tripunithura,
-                    Eranakulam 682306 </h5>
-                <h5><i class="uil uil-forwaded-call"></i> <a href="tel: +91 9495 400 124">+91 9495 400 124</a> ,
-                    <a href="tel: +91 8547307308"> +91 8547307308</a>
+            <h5><i class="uil uil-estate"></i>'Madhavam', Elavakkat Nagar, Thrikkakara,  Eranakulam 682021</h5>
+                <h5><i class="uil uil-forwaded-call"></i> <a href="tel: +91 9495 400 124">+91 8590577026</a> ,
+                    <a href="tel: +91 8547307308"> +91 9495400124</a>
                 </h5>
-                <h5> <i class="uil uil-envelope"></i> <a href="mailto:info@musicsikshan.com">musicshikshan@gmail.com</a></h5>
+                <h5> <i class="uil uil-envelope"></i> <a href="mailto:hello@musicshikshan.com">hello@musicshikshan.com</a></h5>
                 <div class="social-icons">
                     <li> <a href="https://www.facebook.com/DevSudhiMusic?ref=hl" class="facebook" title="Facebook" target="blank"><i class="uil uil-facebook"></i></a></li>
                     <li> <a href="https://www.linkedin.com/home?trk=nav_responsive_tab_home" class="linkedin" title="Linked in" target="blank"><i class="uil uil-linkedin"></i></a></li>
