@@ -130,6 +130,17 @@
 </div>
 
 <div class="form-group">
+    <label for="name" class="col-md-2 control-label"><span style="color:red">*</span>Mode of Remittance</label>
+	<div class="col-md-10">
+        
+       <input type="radio" name="remittance" value="Indian"> Indian Account 
+
+      <input type="radio" name="remittance" value="International">International Account  
+	</div>
+</div>
+
+
+<div class="form-group">
     <label for="name" class="col-md-2 control-label"><span style="color:red">*</span>{{ trans('students.currency') }}</label>
 	<div class="col-md-10">
         <select name="currency" class="form-control" required="true">

@@ -92,6 +92,7 @@ class StudentsRegistrationController extends Controller
         $student['user_id']        =  $newuser['id'];
         $student['display_name']        =$request->name;
         $student['country_id']     =  $data['country'];
+        $student['mode_of_remittance']     =  $request['remittance'];
         $student['course_id']      =  $request->course;
        // $student['currency_id']    =  $request->currency;
         $student['class_fee']      =  0;
@@ -156,6 +157,7 @@ class StudentsRegistrationController extends Controller
 
         $rules = [
             'name' => 'required|string|min:1|max:255',
+            'remittance'=>'required',
             'email' => [
                 'regex:/(.+)@(.+)\.(.+)/i',
                 Rule::unique('users')->where(function ($query) {
