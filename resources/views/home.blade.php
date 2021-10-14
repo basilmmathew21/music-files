@@ -63,7 +63,8 @@
                 <div class="col-md-12 text-center">
                   Fees : <a id="fees"></a>
 
-                  <input class="form-control" name="regfee" type="hidden" id="regfee" value=<?php echo $fee_pay;?>>
+                  <input class="form-control" name="regfee" type="hidden" id="regfee" value="">
+                  <input class="form-control" name="inr_regfee" type="hidden" id="inr_regfee" value=<?php echo $fee_pay;?>>
                 </div>
               </div>
               <div class="form-group">
@@ -100,7 +101,7 @@
     endpoint = 'convert'
     from = 'INR'
     to = '<?php echo $student_currency; ?>'
-    amount = $("#regfee").val()
+    amount = $("#inr_regfee").val()
     access_key = '0d0b39254cefb941a64f7838ba522781';
     if (amount > 0) {
       // get the most recent exchange rates via the "latest" endpoint:
@@ -120,11 +121,12 @@
           //alert(json.result);  
           regfee = json.result.toFixed(2)
           $("#fees").html(to + ' ' + regfee);
-
+          $("#regfee").val(regfee);
         }
       });
     }else{
       $("#fees").html(to + ' ' + '0.00');
+      $("#regfee").val(0);
     }
   });
 </script>
