@@ -228,7 +228,7 @@ class StudentsController extends Controller
 
         $user           = User::with('student')
             ->leftJoin('students', 'students.user_id', '=', 'users.id')
-            ->select(['users.*', 'users.is_active as is_active','students.display_name', 'students.class_fee', 'students.is_registered', 'students.country_id', 'students.course_id', 'students.currency_id','students.online_class_link',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%Y") as dob')])
+            ->select(['users.*', 'users.is_active as is_active','students.display_name', 'students.class_fee', 'students.is_registered', 'students.country_id', 'students.course_id', 'students.currency_id','students.online_class_link','students.registration_fee_type',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%Y") as dob')])
             ->findOrFail($id);
         $nationalities  = Country::pluck('name', 'id')->all();
         $courses        = Course::pluck('course', 'id')->all();
@@ -299,13 +299,14 @@ class StudentsController extends Controller
         $studentDetais                  =  Student::where('user_id', $id)->first();
 
         if ($studentDetais && $studentDetais != null) {
-            $student['display_name']   =  $request->display_name;
-            $student['country_id']     =  $request->country;
-            $student['course_id']      =  $request->course;
-            $student['currency_id']    =  $request->currency;
-            $student['class_fee']      =  $request->class_fee;
-            $student['online_class_link']      =  $request->online_class_link;
-            $student['is_registered']  =  $request->is_registered;
+            $student['display_name']            =  $request->display_name;
+            $student['country_id']              =  $request->country;
+            $student['course_id']               =  $request->course;
+            $student['currency_id']             =  $request->currency;
+            $student['registration_fee_type']   =  $request->registration_fee_type;
+            $student['class_fee']               =  $request->class_fee;
+            $student['online_class_link']       =  $request->online_class_link;
+            $student['is_registered']           =  $request->is_registered;
             //$student['is_active']      =  $request->status;
            /* if ($student['is_active'] == "Active") {
                 $student['is_active']      = 1;
