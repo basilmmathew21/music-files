@@ -8,6 +8,7 @@ use DataTables;
 use DB;
 
 use App\Models\Sms;
+use App\Models\SmsTemplates;
 use App\Models\User;
 use App\Models\Country;
 use App\Models\Currency;
@@ -294,6 +295,29 @@ class SmsController extends Controller
         }
         return redirect()->back()
         ->with('success_message', trans('Message Sent'));
+    }
+    public function ajaxMessage(Request $request)
+    {
+        $log_user=auth()->user();       
+        $from_user_type=User::where('id',$log_user->id)->pluck('user_type_id')->first();
+        $to_user_type=User::where('id',$request->to_user_id)->pluck('user_type_id')->first();
+        $sms_templates=SmsTemplates::select('id','message')
+                            ->where('from_user_type_id',$from_user_type)
+                            ->where('to_user_type_id',$to_user_type)
+                            ->get();
+        $template="<option value=''>--Select Template--</option>";
+        if($sms_templates)
+        {
+            foreach($sms_templates as $sms_template)
+            {
+                $template.="<option value='".$sms_template->id."'>".$sms_template->message."</option>";
+            }
+
+        }
+       
+
+        return $template;
+
     }
 
     public function tutor_inbox(Request $request)

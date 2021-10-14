@@ -339,4 +339,6 @@ Route::group([
         ->name('Sms.sms.viewmessage');
     Route::delete('/delete-message/{messageid}', 'SmsController@delete_message')->middleware(['permission:view admin sms'])
         ->name('Sms.sms.deletemessage');
+    Route::post('/ajaxMessage', 'SmsController@ajaxMessage')->middleware(['permission:view sms'])
+        ->name('Sms.sms.ajaxMessage');
 });
