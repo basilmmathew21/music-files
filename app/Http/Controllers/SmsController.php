@@ -267,7 +267,6 @@ class SmsController extends Controller
     {
         $to_user=User::find($request['to_user']);
         $from_user=$request->user(); 
-      
         if($to_user)
         {
             $sms=new Sms();
@@ -280,6 +279,18 @@ class SmsController extends Controller
             $sms->sent_on=date('Y-m-d H:i:s');
             $sms->status='sent';
             $sms->save();
+
+          //Send Mail to Rcepient
+
+            $details = [
+                'content' =>   "You have a new Message from ".$from_user['name'],
+                'toname'    =>    $to_user['name'],
+                'fromname'    =>    $from_user['name'],
+                'message'    =>    $request['message'],
+                'email'   =>    $to_user['email'],
+                'login'   =>    true
+            ];
+            \Mail::to($to_user['email'])->send(new \App\Mail\SmsMail($details));
         }
         return redirect()->back()
         ->with('success_message', trans('Message Sent'));
