@@ -155,6 +155,18 @@
 </div>
 
 
+<div class="form-group">
+    <label for="gender" class="col-md-2 control-label"><span style="color:red">*</span>Registration Fee Type</label>
+    <div class="col-md-10">
+        <input type="radio" id="registration_fee_type_paid" name="registration_fee_type" value="Paid" @if(old('registration_fee_type') == 'Paid') checked @endif checked>
+          <label>Paid</label>
+          <input type="radio" id="registration_fee_type_free" name="registration_fee_type" value="Free"  @if(old('registration_fee_type') == 'Free') checked @endif>
+          <label>Free</label>
+        <p class="text-danger" id="registration_fee_type_err"></p>
+    </div>
+</div>
+
+
 
 <div class="form-group {{ $errors->has('class_fee') ? 'has-error' : '' }}">
     <label for="class fee" class="col-md-2 control-label"><span style="color:red">*</span>{{ trans('students.fee') }}</label>
