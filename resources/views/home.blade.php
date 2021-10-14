@@ -71,7 +71,7 @@
                   <input class="btn btn-primary" type="submit" value="Continue">
                   @if($registration_fee_type == "Paid")
                   <div class="col-md-12 text-center">
-                    Note:- Please continue, you can pay the regisrtration fee while you are paying the class fees.
+                    Note:- Please continue, your regisrtration fee will be added to your first fee payment.
                   </div>
                   @endif
                 </div>
