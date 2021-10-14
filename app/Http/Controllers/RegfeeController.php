@@ -43,7 +43,19 @@ class RegfeeController extends Controller
             $student->payment_method_id = '1';
             $student->is_registered = '1';
             $student->payment_status = 'paid';
+            /*
+                If student fee payment mode is Paid,the amount is substracted to credits
+            */
+            if($student->registration_fee_type == "Paid"){
+            $student->credits  =   $student->credits - $request['regfee'];
+            }
+            /*
+                credit is substracted ends here
+            */
+
             $student->save();
+
+            
             //Assign Students Role on successful payment
             $user = User::find($userid);
             $user->assignRole('student');
