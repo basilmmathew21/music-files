@@ -41,8 +41,8 @@
             {{ csrf_field() }}
             @method("POST")
             <div class="form-group">
-                <select class="form-control" name="to_user" required >
-                    <option>--Select--</option>
+                <select class="form-control filed-validate" name="to_user" required id="to_user" >
+                    <option value=''>--Select--</option>
                     @foreach($users as $user)
                         <option value='{{$user->id}} '>@if(isset($user->display_name)){{$user->display_name}}@else{{$user->name}}@endif</option>
                     @endforeach
@@ -50,9 +50,14 @@
               </div>
            
               <div class="form-group" >
-               <textarea class="form-control" name="message" required></textarea>
+              <select class="form-control " name="message_template"  id="message_template" >
+                    <option value="">--Select Template--</option>
+                   
+                </select>
               </div>
-          
+              <div class="form-group" >
+              <textarea class="form-control" name="message" required id="message" placeholder="Message" ></textarea>
+              </div>
             <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input class="btn btn-primary" type="submit" value="Send">
@@ -66,3 +71,40 @@
     </div>
 
 @endsection
+@section('js')
+<script>
+    $(document).ready(function() {
+      
+        $("#to_user").change(function(){
+               
+               $("#message").html('');
+               var to_user_id=$("#to_user").val();
+               $.ajax({
+          url: "{{ route('Sms.sms.ajaxMessage') }}",
+          data: {'to_user_id' : to_user_id ,"_token": "{{ csrf_token() }}"},
+          type: "POST",
+          success: function (response) {
+            $("#message").html('');
+             $("#message_template").html(response);
+          },
+                    });
+            });
+            $("#message_template").change(function(){
+              
+               var e = document.getElementById("message_template");
+               if(e.value!='')
+               {
+                var message =  e.options[e.selectedIndex].text;
+                $("#message").html(message);
+               }
+               else
+               {
+                $("#message").html('');
+               }
+             
+             
+            });
+ 
+    } );
+</script>
+@stop
