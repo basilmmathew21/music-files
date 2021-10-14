@@ -68,6 +68,11 @@
             @endif
         </select>
     </div>-->
+    <div class="col-md-6 mb-3">
+        <label class="form-label">Mode of Remittance</label>
+    <input type="radio" name="remittance" value="Indian">Indian Account 
+     <input type="radio" name="remittance" value="International">International Account
+    </div>
 </div>
 <div class="row">
     <div class="col-md-6 mb-3">

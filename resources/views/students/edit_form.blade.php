@@ -128,6 +128,14 @@
         </select>
 	</div>
 </div>
+<div class="form-group">
+<label for="name" class="col-md-2 control-label"><span style="color:red">*</span>Mode of Remittance</label>
+	<div class="col-md-10">
+       <input type="radio" name="remittance" value="Indian" @if($user->mode_of_remittance == 'Indian') checked @endif>Indian Account 
+       <input type="radio" name="remittance" value="International" @if($user->mode_of_remittance == 'International') checked @endif>International Account
+	</div>
+</div>
+
 
 <div class="form-group">
     <label for="name" class="col-md-2 control-label"><span style="color:red">*</span>{{ trans('students.currency') }}</label>
