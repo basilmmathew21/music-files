@@ -239,11 +239,16 @@ class HomeController extends Controller
            if($noRole==0)
            {
             $currency_id            =   DB::table('students')->select('currency_id')->where('user_id',$id) ->get()->first();
-            $currency_code           =   DB::table('currencies')->select('code')->where('id',$currency_id->currency_id) ->get()->first();
-            $student_currency= $currency_code->code;
-            $fee_query=DB::table('settings')->select('value')->where('id',4) ->get()->first();
-            $fee_pay=$fee_query->value;
-            return view('home', compact('student_currency','fee_pay'));
+            $registration_fee_type  =   DB::table('students')->select('registration_fee_type')->where('user_id',$id) ->get()->first();
+            $currency_code          =   DB::table('currencies')->select('code')->where('id',$currency_id->currency_id) ->get()->first();
+            $student_currency       =   $currency_code->code;
+            if($registration_fee_type->registration_fee_type == 'Free'){
+                $fee_pay            =   0;
+            }else{
+                $fee_query          =   DB::table('settings')->select('value')->where('id',4) ->get()->first();
+                $fee_pay            =   @$fee_query->value;
+            }
+            return view('home', compact('student_currency','fee_pay','registration_fee_type'));
           
            }
         return view('home');

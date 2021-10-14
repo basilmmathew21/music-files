@@ -229,7 +229,7 @@ class StudentsController extends Controller
 
         $user           = User::with('student')
             ->leftJoin('students', 'students.user_id', '=', 'users.id')
-            ->select(['users.*', 'users.is_active as is_active','students.display_name', 'students.class_fee', 'students.is_registered', 'students.country_id', 'students.course_id', 'students.currency_id','students.mode_of_remittance','students.online_class_link',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%Y") as dob')])
+            ->select(['users.*', 'users.is_active as is_active','students.display_name', 'students.class_fee', 'students.is_registered', 'students.country_id', 'students.course_id', 'students.currency_id','students.mode_of_remittance','students.registration_fee_type','students.online_class_link',DB::raw('DATE_FORMAT(users.dob, "%d-%m-%Y") as dob')])
             ->findOrFail($id);
         $nationalities  = Country::pluck('name', 'id')->all();
         $courses        = Course::pluck('course', 'id')->all();
@@ -305,6 +305,7 @@ class StudentsController extends Controller
             $student['course_id']      =  $request->course;
             $student['currency_id']    =  $request->currency;
             $student['mode_of_remittance']     =  $request['remittance'];
+            $student['registration_fee_type']   =  $request->registration_fee_type;
             $student['class_fee']      =  $request->class_fee;
             $student['online_class_link']      =  $request->online_class_link;
             $student['is_registered']  =  $request->is_registered;
