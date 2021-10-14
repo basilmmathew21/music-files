@@ -46,7 +46,7 @@ Route::get('/seed-currency', function () {
 
 Route::get('/seed-sms', function () {
     $exitCode = Artisan::call('db:seed --class=Sms_templatesSeeder');
-    echo $exitCode . ' - Seeded currencies for 1,2,3,4';
+    echo $exitCode . ' - Seeded sms for 1,2,3,4';
 });
 
 Route::get('/shutdown', function () {
