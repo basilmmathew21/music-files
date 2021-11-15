@@ -32,7 +32,11 @@
             <!-- small box -->
             <div class="small-box bg-warning">
               <div class="inner">
-                <h3>{{$feesDue}}</h3>
+              <h3>
+                  <span id="class_fee_total">
+                  0.00
+                  </span>
+                </h3>
 
                 <p>Fees Due</p>
               </div>
@@ -214,4 +218,40 @@
     </section>
 
 @stop
-	
+
+@section('js')
+<script>
+  $(document).ready(function() {
+    // set endpoint and your access key
+    //endpoint = 'latest'
+    var feesDue = '<?php echo json_encode($feesDue); ?>';
+    var obj = jQuery.parseJSON(feesDue);
+    var totalDues = 0;
+    $.each(obj, function(key,due) {
+      endpoint   = 'convert'
+      to         = 'INR'
+      from       =  due.code;
+      amount     =  due.class_fee;
+      access_key = '0d0b39254cefb941a64f7838ba522781';
+      if (amount > 0) {
+        // get the most recent exchange rates via the "latest" endpoint:
+        $.ajax({
+          //url: 'http://data.fixer.io/api/' + endpoint + '?access_key=' + access_key,   
+          url: 'https://data.fixer.io/api/' + endpoint + '?access_key=' + access_key + '&from=' + from + '&to=' + to + '&amount=' + amount,
+          dataType: 'jsonp',
+          success: function(json) {
+            dues    = json.result.toFixed(2)
+            doSummativeDues(dues);
+          }
+        });
+      }
+    });
+    
+      function doSummativeDues(dues)
+      {
+        totalDues  = parseFloat(dues)+parseFloat(totalDues);
+        $("#class_fee_total").html(totalDues.toFixed(2));
+      }
+  });
+</script>
+@stop

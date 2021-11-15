@@ -110,8 +110,13 @@ class HomeController extends Controller
             $classes        =   DB::table('classes')->where('classes.student_user_id', $id);
             $classes        =   $classes->count();
 
-            $feesDue        =   DB::table('classes')->where('classes.student_user_id', $id)->where("is_paid","0");
-            $feesDue        =   $feesDue->sum('class_fee');
+            $feesDue        =   DB::table('classes')
+                                        ->select("currencies.code",DB::raw('sum(class_fee) as class_fee'))
+                                        ->Join('currencies', 'classes.currency_id', '=', 'currencies.id')
+                                        ->where('classes.student_user_id', $id)
+                                        ->where("is_paid","0")
+                                        ->groupBy("currency_id");
+            $feesDue        =   $feesDue->get();
 
             $credits        =    User::with('student')
                 ->Join('students', 'students.user_id', '=', 'users.id')
@@ -168,9 +173,11 @@ class HomeController extends Controller
 
             $noRole=1;
 
-            $feesDue        =   DB::table('classes')->where("is_paid",'0');
-            $feesDue        =   $feesDue->sum('class_fee');
-
+            $feesDue        =   DB::table('classes')->select("currencies.code",DB::raw('sum(class_fee) as class_fee'))
+                                    ->Join('currencies', 'classes.currency_id', '=', 'currencies.id')
+                                    ->where("is_paid",'0')->groupBy("currency_id");
+            $feesDue        =   $feesDue->get();
+           
             $credits        =    User::with('student')
                 ->Join('students', 'students.user_id', '=', 'users.id')
                 ->sum('credits');
