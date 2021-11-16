@@ -158,22 +158,17 @@ body {
 				</div>
             </div>
             @endif
-
-
-
             <div class=" px-3">
                 <div class="firstpy-2">
-                 
                     <div class="pl-2 pr-2"><span class="head">Total credits</span>
-                        <div><span class="dollar"><!--{{$user->symbol}} --></span><span class="amount" id="amount"><!--{{ $user->credits}} --></span></div>
+                        <div><span class="dollar">₹</span><span class="amount" id="amount">{{$user->credits}}@if($user->credits == "") 0.00 @endif</span></div>
                     </div>
                 </div>
             </div>
             <div class="py-2 px-3">
                 <div class="first py-2">
-                  
                     <div class="pl-2 pr-2"><span class="head">Total amount due</span>
-                        <div><span class="dollar"><!--{{$user->symbol}}--></span><span class="amount" id="payment"><!--{{$payment * $user->class_fee}}--></span></div>
+                        <div><span class="dollar">₹</span><span class="amount" id="payment">0.00</span></div>
                     </div>
                 </div>
             </div>
@@ -203,7 +198,7 @@ body {
                 <div class="second py-2">
                   
                     <div class="pl-2 pr-2"><span class="head">Pay amount</span>
-                        <div class="d-flex"><span class="dollar"  style="padding-top:5px;"><!-- {{$user->symbol}} --></span>
+                        <div class="d-flex"><span class="dollar"  style="padding-top:5px;">₹</span>
 						    <input type="text" id="class_fee" name="class_fee" class="form-control" required="true" readonly placeholder="0">
 						</div>
                     </div>
@@ -241,7 +236,7 @@ body {
 
 <script type="text/javascript">
             $(document).ready(function() {
-            
+            var returnAmount;
             $('#student_user_id').change(function(){
                 changeStudent();
             });
@@ -249,7 +244,6 @@ body {
             $(function () {
                 changeStudent();
             });
-
             function changeStudent() {
                 var student_user_id = $('#student_user_id').val();
                 if(student_user_id != ''){
@@ -263,11 +257,34 @@ body {
                     success: function (response) {
                         response =   JSON.parse(response);
                         $("#no_class_fee_msg").html('');
-                        $("#amount").html(response.user.credits);
-                        $(".dollar").html(response.user.symbol);
-                        one_class_fee = response.user.class_fee;
-                        var payment   = response.payment;
-                        $("#payment").html(payment);
+                        console.log(response.user.mode_of_remittance);
+                        if(response.user.mode_of_remittance == "Indian"){
+                            to              =  'INR'
+                            from            =  'INR';
+                            amount          =   response.user.credits;
+                            if(amount < 0){
+                                amount  =   amount * -1;
+                            }
+                            currencyConverter(to,from,amount,'credits');
+                            var payment   = response.payment;
+                            currencyConverter(to,from,payment,'payment');
+                            one_class_fee = response.user.class_fee;
+                            currencyConverter(to,from,one_class_fee,'one_class_fee');
+                        }else if(response.user.mode_of_remittance == "International"){
+                            to              =  'INR'
+                            from            =  'INR';
+                            amount          =   response.user.credits;
+                            if(amount < 0){
+                                amount  =   amount * -1;
+                            }
+                            currencyConverter(to,from,amount,'credits');
+                            var payment     =   response.payment;
+                            from            =   response.user.code;
+                            currencyConverter(to,from,payment,'payment');
+                            one_class_fee = response.user.class_fee;
+                            currencyConverter(to,from,one_class_fee,'one_class_fee');
+                        }
+                        $(".dollar").html('₹');
                         $("#class_fee").val(0);
                         $("#no_of_classes").val("");
                         if(response.user.class_fee == 0){
@@ -284,7 +301,35 @@ body {
                 }
             }
             
+            function currencyConverter(to,from,amount,mode)
+            {
+                endpoint   = 'convert'
+                access_key = '0d0b39254cefb941a64f7838ba522781';
+                // get the most recent exchange rates via the "latest" endpoint:
+                returnAmount = $.ajax({
+                    url: 'https://data.fixer.io/api/' + endpoint + '?access_key=' + access_key + '&from=' + from + '&to=' + to + '&amount=' + amount,
+                    dataType: 'jsonp',
+                    success: function(json) {
+                    dues            = json.result.toFixed(2);
+                    //console.log('hi');
+                    //console.log(mode);
+                    showConvertedAmount(dues,mode);
+                    }
+                });
+            }
             
+            function showConvertedAmount(amount,mode)
+            {
+                if(mode == 'credits'){
+                    $("#amount").html(amount);
+                }
+                if(mode == 'payment'){
+                    $("#payment").html(amount);
+                }
+                if(mode == 'one_class_fee'){
+                    one_class_fee   =   amount;
+                }
+            }
         });
 </script>
 @stop
