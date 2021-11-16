@@ -165,7 +165,7 @@ body {
                 <div class="firstpy-2">
                  
                     <div class="pl-2 pr-2"><span class="head">Total credits</span>
-                        <div><span class="dollar">{{$user->symbol}}</span><span class="amount" id="amount">{{ $user->credits}}</span></div>
+                        <div><span class="dollar">₹</span><span class="amount" id="amount">{{ $user->credits}}</span></div>
                     </div>
                 </div>
             </div>
@@ -173,14 +173,14 @@ body {
                 <div class="first py-2">
                   
                     <div class="pl-2 pr-2"><span class="head">Total amount due</span>
-                        <div><span class="dollar">{{$user->symbol}}</span><span class="amount" id="payment">{{$payment}}</span></div>
+                        <div><span class="dollar">₹</span><span class="amount" id="payment"><!--{{$payment}}-->0.00</span></div>
                     </div>
                 </div>
             </div>
  
             <div class="py-2 px-3">
                   <div class="second py-2">
-               
+                    <input type="hidden" name="one_class_fee_dump" id="one_class_fee_dump" value="{{ $user->class_fee }}">
                     <div class="pl-2 pr-2"><span class="head">No of classes</span>
                         <div class="d-flex">
                             <select id="no_of_classes" name="no_of_classes" class="form-control " required="true">
@@ -204,7 +204,7 @@ body {
                 <div class="second py-2">
                   
                     <div class="pl-2 pr-2"><span class="head">Pay amount</span>
-                        <div class="d-flex"><span class="dollar"  style="padding-top:5px;">{{$user->symbol}}</span>
+                        <div class="d-flex"><span class="dollar"  style="padding-top:5px;">₹</span>
 						    <input type="text" id="class_fee" name="class_fee" class="form-control" required="true" readonly placeholder="0">
 						</div>
                     </div>
@@ -231,20 +231,82 @@ body {
     var one_class_fee;
     
     $(document).ready(function() {
+            
+            var amount          =   '<?php echo $user->credits; ?>';
+            var code            =   '<?php echo $user->code; ?>';
+            var mode_remittance =   '<?php echo $user->mode_of_remittance; ?>';
+            if(mode_remittance == 'Indian'){
+                to              =  'INR'
+                from            =  'INR';
+                if(amount < 0){
+                amount  =   amount * -1;
+                }
+                currencyConverter(to,from,amount,'credits');
+                var payment = '<?php echo $payment; ?>';
+                currencyConverter(to,from,payment,'payment');
+            }else if(mode_remittance == "International"){
+                to              =  'INR'
+                from            =  code;
+                if(amount < 0){
+                amount  =   amount * -1;
+                }
+                //currencyConverter(to,from,amount,'credits');
+                var payment = '<?php echo $payment; ?>';
+                currencyConverter(to,from,payment,'payment');
+            }
+            var class_fee = '<?php echo $user->class_fee;?>';
+            currencyConverter(to,from,class_fee,'one_class_fee');
+
             $("#no_of_classes").change(function(){
                 if(one_class_fee == null){
-                    one_class_fee = {{ $user->class_fee }};
+                    //one_class_fee = {{ $user->class_fee }};
                 }
-                var no_of_classes = parseInt($(this).val());
-                var class_fee     = one_class_fee*no_of_classes;
+                //currencyConverter(to,from,one_class_fee,'one_class_fee');
+                one_class_fee     =     $("#one_class_fee_dump").val();
+                var no_of_classes =     parseInt($(this).val());
+                var class_fee     =     one_class_fee*no_of_classes;
                 $("#class_fee").val(class_fee);
             });
+            
+            
     });
+
+    function currencyConverter(to,from,amount,mode)
+            {
+                var my_result;
+                endpoint   = 'convert'
+                access_key = '0d0b39254cefb941a64f7838ba522781';
+                // get the most recent exchange rates via the "latest" endpoint:
+                $.ajax({
+                    url: 'https://data.fixer.io/api/' + endpoint + '?access_key=' + access_key + '&from=' + from + '&to=' + to + '&amount=' + amount,
+                    dataType: 'jsonp',
+                    success: function(json) {
+                    console.log(json);
+                    dues            = json.result.toFixed(2);
+                    console.log(json.result);
+                    showConvertedAmount(dues,mode);
+                    }
+                });
+                }
+            function showConvertedAmount(amount,mode)
+            {
+                if(mode == 'credits'){
+                    $("#amount").html(amount);
+                }
+                if(mode == 'payment'){
+                    $("#payment").html(amount);
+                }
+                if(mode == 'one_class_fee'){
+                    $("#one_class_fee_dump").val(amount);
+                }
+            }
+
+            
 </script>
 
 <script type="text/javascript">
             $(document).ready(function() {
-            
+            /*
             $('#student_user_id').change(function(){
                 
                 var student_user_id = $(this).val();
@@ -258,12 +320,32 @@ body {
                 success: function (response) {
 					response =   JSON.parse(response);
 					$("#no_class_fee_msg").html('');
-                    $("#amount").html(response.user.credits);
-                    $(".dollar").html(response.user.symbol);
+                    currencyConverter(to,from,response.user.credits,'credits');
+                    //$("#amount").html(response.user.credits);
+                    //$(".dollar").html(response.user.symbol);
                     one_class_fee = response.user.class_fee;
+                    currencyConverter(to,from,one_class_fee,'one_class_fee');
                     var payment   = response.payment;
-                    $("#payment").html(payment*one_class_fee);
+                    currencyConverter(to,from,payment,'payment');
+                    //$("#payment").html(payment*one_class_fee);
                     $("#class_fee").val(0);
+
+
+
+                    to              =  'INR'
+                    from            =   response.user.code;
+                    amount          =   response.user.credits;
+                    if(amount < 0){
+                      amount  =   amount * -1;
+                    }
+                    currencyConverter(to,from,amount,'credits');
+                    var payment   = response.payment;
+                    currencyConverter(to,from,payment,'payment');
+                    one_class_fee = response.user.class_fee;
+                    currencyConverter(to,from,one_class_fee,'one_class_fee');
+
+
+
                     
                     if(response.user.class_fee == 0){
                         $("#no_class_fee_msg").html('<p class="text-danger">The course fee for the student has not updated</p>');
@@ -277,7 +359,7 @@ body {
 				},
 			    });
             });
-            
+            */
         });
 </script>
 @stop
