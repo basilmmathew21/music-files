@@ -31,7 +31,7 @@
             <div class="small-box bg-warning">
               <div class="inner">
                 <h3>
-                  <span id="class_fee_total">
+                  <span id="class_fee_total">₹
                   0.00
                   </span>
                 </h3>
@@ -273,7 +273,7 @@
       function doSummativeDues(dues)
       {
         totalDues  = parseFloat(dues)+parseFloat(totalDues);
-        $("#class_fee_total").html(totalDues.toFixed(2));
+        $("#class_fee_total").html('₹'+totalDues.toFixed(2));
       }
   });
 </script>
