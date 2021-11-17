@@ -310,7 +310,12 @@ body {
                     url: 'https://data.fixer.io/api/' + endpoint + '?access_key=' + access_key + '&from=' + from + '&to=' + to + '&amount=' + amount,
                     dataType: 'jsonp',
                     success: function(json) {
-                    dues            = json.result.toFixed(2);
+                        if(json.result){
+                        dues  = json.result.toFixed(2);
+                        }else{
+                        dues  = 0.00;
+                        }
+                   
                     //console.log('hi');
                     //console.log(mode);
                     showConvertedAmount(dues,mode);
