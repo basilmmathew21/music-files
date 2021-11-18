@@ -250,7 +250,7 @@ body {
                 if(amount < 0){
                 amount  =   amount * -1;
                 }
-                currencyConverter(to,from,amount,'credits');
+                //currencyConverter(to,from,amount,'credits');
                 var payment = '<?php echo $payment; ?>';
                 currencyConverter(to,from,payment,'payment');
             }

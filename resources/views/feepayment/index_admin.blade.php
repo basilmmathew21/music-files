@@ -272,15 +272,15 @@ body {
                             currencyConverter(to,from,one_class_fee,'one_class_fee');
                         }else if(response.user.mode_of_remittance == "International"){
                             to              =  'INR'
-                            //from            =  'INR';
-                            from            =   response.user.code;
+                            from            =  'INR';
+                            //from            =   response.user.code;
                             amount          =   response.user.credits;
                             if(amount < 0){
                                 amount  =   amount * -1;
                             }
                             currencyConverter(to,from,amount,'credits');
                             var payment     =   response.payment;
-                            //from            =   response.user.code;
+                            from            =   response.user.code;
                             currencyConverter(to,from,payment,'payment');
                             one_class_fee = response.user.class_fee;
                             currencyConverter(to,from,one_class_fee,'one_class_fee');
