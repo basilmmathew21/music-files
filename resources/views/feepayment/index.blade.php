@@ -258,6 +258,7 @@ body {
             var code            =   '<?php echo $user->code; ?>';
             var mode_remittance =   '<?php echo $user->mode_of_remittance; ?>';
             var symbol          =   '<?php echo $user->symbol; ?>';
+            var user_code       =   '<?php echo $user->code; ?>';
             if(mode_remittance == 'Indian'){
                 
                 showAmount(amount,'credits',symbol);
@@ -265,7 +266,7 @@ body {
                 showAmount(payment,'payment',symbol);
                 one_class_fee = '<?php echo $user->class_fee;?>';
                 showAmount(one_class_fee,'one_class_fee',symbol);
-
+                
                 if(code != "INR")
                 {
                     to         =  'INR'
@@ -320,8 +321,7 @@ body {
                 var class_fee     =     one_class_fee*no_of_classes;
                 var class_fee_inr =     one_class_fee_inr*no_of_classes;
                 $("#class_fee").val(class_fee);
-                
-                if(mode_remittance == "Indian"){
+                if(mode_remittance == "Indian" && user_code != 'INR'){
                         $("#divClassfee").show();
                         $(".amountInr").html('₹')
                         $("#class_feeInr").html(class_fee_inr);

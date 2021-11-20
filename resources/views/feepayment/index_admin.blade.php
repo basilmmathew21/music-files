@@ -245,6 +245,7 @@ body {
     var one_class_fee;
     var one_class_fee_inr;
     var selected_remittance;
+    var user_code;
 </script>
 
 <script type="text/javascript">
@@ -271,6 +272,7 @@ body {
                         response =   JSON.parse(response);
                         $("#no_class_fee_msg").html('');
                         selected_remittance = response.user.mode_of_remittance;
+                        user_code           = response.user.code;
                         if(response.user.mode_of_remittance == "Indian"){
                             amount          =   response.user.credits;
                             
@@ -279,6 +281,8 @@ body {
                             showAmount(payment,'payment',response.user.symbol);
                             one_class_fee = response.user.class_fee;
                             showAmount(one_class_fee,'one_class_fee',response.user.symbol);
+
+                            clearCurrencyINR();
 
                             to              =  'INR'
                             from            =   response.user.code;
@@ -395,7 +399,7 @@ body {
                     var class_fee     = one_class_fee*no_of_classes;
                     var class_fee_inr = one_class_fee_inr*no_of_classes;
                     $("#class_fee").val(class_fee);
-                    if(selected_remittance == "Indian"){
+                    if(selected_remittance == "Indian" && user_code != 'INR'){
                         $("#divClassfee").show();
                         $(".amountInr").html('₹')
                         $("#class_feeInr").html(class_fee_inr);
