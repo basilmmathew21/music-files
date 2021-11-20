@@ -376,67 +376,7 @@ body {
                     
                  }
                 $(".amountInr").html('₹');
-            }
-            
-</script>
-
-<script type="text/javascript">
-            $(document).ready(function() {
-            /*
-            $('#student_user_id').change(function(){
-                
-                var student_user_id = $(this).val();
-			    $.ajax({
-				beforeSend: function (xhr) { // Add this line
-				    xhr.setRequestHeader('X-CSRF-Token', $('[name="_csrfToken"]').val());
-				 },
-				url: '{{ URL::to("/ajaxFeePayment")}}',
-				type: "POST",
-				data: {'student_user_id': student_user_id,"_token": "{{ csrf_token() }}"},
-                success: function (response) {
-					response =   JSON.parse(response);
-					$("#no_class_fee_msg").html('');
-                    currencyConverter(to,from,response.user.credits,'credits');
-                    //$("#amount").html(response.user.credits);
-                    //$(".dollar").html(response.user.symbol);
-                    one_class_fee = response.user.class_fee;
-                    currencyConverter(to,from,one_class_fee,'one_class_fee');
-                    var payment   = response.payment;
-                    currencyConverter(to,from,payment,'payment');
-                    //$("#payment").html(payment*one_class_fee);
-                    $("#class_fee").val(0);
-
-
-
-                    to              =  'INR'
-                    from            =   response.user.code;
-                    amount          =   response.user.credits;
-                    if(amount < 0){
-                      amount  =   amount * -1;
-                    }
-                    currencyConverter(to,from,amount,'credits');
-                    var payment   = response.payment;
-                    currencyConverter(to,from,payment,'payment');
-                    one_class_fee = response.user.class_fee;
-                    currencyConverter(to,from,one_class_fee,'one_class_fee');
-
-
-
-                    
-                    if(response.user.class_fee == 0){
-                        $("#no_class_fee_msg").html('<p class="text-danger">The course fee for the student has not updated</p>');
-						$(".content-wrapper").height(935);
-						$(".card").height(630);
-                    }
-					else{
-						$(".content-wrapper").height(915);
-					}
-					
-				},
-			    });
-            });
-            */
-        });
+            }            
 </script>
 @stop
 
