@@ -161,14 +161,30 @@ body {
             <div class=" px-3">
                 <div class="firstpy-2">
                     <div class="pl-2 pr-2"><span class="head">Total credits</span>
-                        <div><span class="dollar">₹</span><span class="amount" id="amount">{{$user->credits}}@if($user->credits == "") 0.00 @endif</span></div>
+                        <div>
+                            <span class="dollar"></span>
+                            <span class="amount" id="amount">{{$user->credits}}@if($user->credits == "") 0.00 @endif</span>
+                        </div>
+
+                        <div  id="divAmountInr" style="display:none">
+                            <span class="amountInr">₹</span>
+                            <span class="amount" id="amountInr">{{$user->credits}}@if($user->credits == "") 0.00 @endif</span>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="py-2 px-3">
                 <div class="first py-2">
                     <div class="pl-2 pr-2"><span class="head">Total amount due</span>
-                        <div><span class="dollar">₹</span><span class="amount" id="payment">0.00</span></div>
+                        <div>
+                            <span class="dollar"></span>
+                            <span class="amount" id="payment">0.00</span>
+                        </div>
+
+                        <div id="divPaymentInr" id="divAmountInr" style="display:none">
+                            <span class="amountInr">₹</span>
+                            <span class="amount" id="paymentInr">0.00</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -198,9 +214,13 @@ body {
                 <div class="second py-2">
                   
                     <div class="pl-2 pr-2"><span class="head">Pay amount</span>
-                        <div class="d-flex"><span class="dollar"  style="padding-top:5px;">₹</span>
+                        <div class="d-flex"><span class="dollar"  style="padding-top:5px;"></span>
 						    <input type="text" id="class_fee" name="class_fee" class="form-control" required="true" readonly placeholder="0">
 						</div>
+                        <div  id="divClassfee" style="display:none">
+                            <span class="amountInr"></span>
+                            <span class="amount" id="class_feeInr">{{$user->credits}}@if($user->credits == "") 0.00 @endif</span>
+                        </div>
                     </div>
 				</div>
 				<div>
@@ -223,15 +243,8 @@ body {
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
     var one_class_fee;
-   $(document).ready(function() {
-            $("#no_of_classes").change(function(){
-                if($('#student_user_id').val() != ""){
-                    var no_of_classes = parseInt($(this).val());
-                    var class_fee     = one_class_fee*no_of_classes;
-                    $("#class_fee").val(class_fee);
-                }
-            });
-    });
+    var one_class_fee_inr;
+    var selected_remittance;
 </script>
 
 <script type="text/javascript">
@@ -257,35 +270,40 @@ body {
                     success: function (response) {
                         response =   JSON.parse(response);
                         $("#no_class_fee_msg").html('');
-                        console.log(response.user.mode_of_remittance);
+                        selected_remittance = response.user.mode_of_remittance;
                         if(response.user.mode_of_remittance == "Indian"){
-                            to              =  'INR'
-                            from            =  'INR';
                             amount          =   response.user.credits;
-                            if(amount < 0){
-                                amount  =   amount * -1;
-                            }
-                            currencyConverter(to,from,amount,'credits');
+                            
+                            showAmount(amount,'credits',response.user.symbol);
                             var payment   = response.payment;
-                            currencyConverter(to,from,payment,'payment');
+                            showAmount(payment,'payment',response.user.symbol);
                             one_class_fee = response.user.class_fee;
-                            currencyConverter(to,from,one_class_fee,'one_class_fee');
-                        }else if(response.user.mode_of_remittance == "International"){
+                            showAmount(one_class_fee,'one_class_fee',response.user.symbol);
+
                             to              =  'INR'
-                            from            =  'INR';
-                            //from            =   response.user.code;
-                            amount          =   response.user.credits;
-                            if(amount < 0){
-                                amount  =   amount * -1;
-                            }
-                            currencyConverter(to,from,amount,'credits');
-                            var payment     =   response.payment;
                             from            =   response.user.code;
-                            currencyConverter(to,from,payment,'payment');
+                            
+                            /* converted amount show in INR */
+                            if(response.user.code != "INR"){
+                                currencyConverter(to,from,amount,'credits',response.user.symbol,response.user.mode_of_remittance);
+                                var payment   = response.payment;
+                                currencyConverter(to,from,payment,'payment',response.user.symbol,response.user.mode_of_remittance);
+                                one_class_fee_inr = response.user.class_fee;
+                                currencyConverter(to,from,one_class_fee_inr,'one_class_fee',response.user.symbol,response.user.mode_of_remittance);
+                            }
+                            /* show in INR ends */
+
+
+                        }else if(response.user.mode_of_remittance == "International"){
+                            amount          =   response.user.credits;
+                            showAmount(amount,'credits',response.user.symbol);
+                            var payment   = response.payment;
+                            showAmount(payment,'payment',response.user.symbol);
                             one_class_fee = response.user.class_fee;
-                            currencyConverter(to,from,one_class_fee,'one_class_fee');
+                            showAmount(one_class_fee,'one_class_fee',response.user.symbol);
+                            clearCurrencyINR();
                         }
-                        $(".dollar").html('₹');
+                        //$(".dollar").html('₹');
                         $("#class_fee").val(0);
                         $("#no_of_classes").val("");
                         if(response.user.class_fee == 0){
@@ -302,7 +320,7 @@ body {
                 }
             }
             
-            function currencyConverter(to,from,amount,mode)
+            function currencyConverter(to,from,amount,mode,symbol,remittance ="")
             {
                 endpoint   = 'convert'
                 access_key = '0d0b39254cefb941a64f7838ba522781';
@@ -316,15 +334,17 @@ body {
                         }else{
                         dues  = 0.00;
                         }
-                   
-                    //console.log('hi');
-                    //console.log(mode);
-                    showConvertedAmount(dues,mode);
+                    if(remittance == "Indian"){
+                        currencyINR(dues,mode,symbol);
+                    }else{
+                        clearCurrencyINR();
+                    }
+
                     }
                 });
             }
-            
-            function showConvertedAmount(amount,mode)
+        
+            function showAmount(amount,mode,symbol)
             {
                 if(mode == 'credits'){
                     $("#amount").html(amount);
@@ -335,8 +355,58 @@ body {
                 if(mode == 'one_class_fee'){
                     one_class_fee   =   amount;
                 }
+                $(".dollar").html(symbol);
             }
+
+            function currencyINR(amount,mode,symbol)
+            {
+                if(mode == 'credits'){
+                    $("#amountInr").html(amount);
+                    $("#divAmountInr").show();
+                }
+                if(mode == 'payment'){
+                    $("#paymentInr").html(amount).show();
+                    $("#divPaymentInr").show();
+                }
+                if(mode == 'one_class_fee'){
+                    one_class_fee_inr   =   amount;
+                 }
+                $(".amountInr").html('₹');
+            }
+
+            function clearCurrencyINR()
+            {
+                $("#amountInr").html('');
+                $("#divAmountInr").hide();
+                $("#paymentInr").html('');
+                $("#divPaymentInr").hide();
+                $(".amountInr").html('');
+                $("#divClassfee").hide();
+                $("#class_feeInr").html('');
+            }
+            
+
         });
+
+        $(document).ready(function() {
+            $("#no_of_classes").change(function(){
+                if($('#student_user_id').val() != ""){
+                    var no_of_classes = parseInt($(this).val());
+                    var class_fee     = one_class_fee*no_of_classes;
+                    var class_fee_inr = one_class_fee_inr*no_of_classes;
+                    $("#class_fee").val(class_fee);
+                    if(selected_remittance == "Indian"){
+                        $("#divClassfee").show();
+                        $(".amountInr").html('₹')
+                        $("#class_feeInr").html(class_fee_inr);
+                        
+                    }else{
+                        clearCurrencyINR();
+                    }
+                     
+                }
+            });
+    });
 </script>
 @stop
 
