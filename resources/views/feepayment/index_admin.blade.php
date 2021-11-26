@@ -398,6 +398,8 @@ body {
                     var no_of_classes = parseInt($(this).val());
                     var class_fee     = one_class_fee*no_of_classes;
                     var class_fee_inr = one_class_fee_inr*no_of_classes;
+                    class_fee_inr     = class_fee_inr.toFixed(2);
+                    //alert(class_fee_inr);
                     $("#class_fee").val(class_fee);
                     if(selected_remittance == "Indian" && user_code != 'INR'){
                         $("#divClassfee").show();
