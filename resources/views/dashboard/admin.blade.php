@@ -29,6 +29,7 @@
           <div class="col-lg-3 col-6">
             <!-- small box -->
             <div class="small-box bg-warning">
+           
               <div class="inner">
                 <h3>
                   <span id="class_fee_total">₹
@@ -39,11 +40,14 @@
                 <p>Fees Due</p>
               </div>
               <div class="icon">
-                <i class="ion ion-person-add"></i>
+                <i class="ion ion-person-add">
+                <button id="sumInr" type="button" class="btn btn-block btn-primary btn-xs">Click to show in INR</button>
+                </i>
+                
               </div>
-             
               
             </div>
+           
           </div>
          
           <!-- ./col -->
@@ -244,36 +248,65 @@
 
 @section('js')
 <script>
+
+https://data.fixer.io/api/latest?access_key=0d0b39254cefb941a64f7838ba522781&base=INR&symbols=USD,AUD,CAD,PLN,MXN&format=1
   $(document).ready(function() {
     // set endpoint and your access key
     //endpoint = 'latest'
     var feesDue = '<?php echo json_encode($feesDue); ?>';
     var obj = jQuery.parseJSON(feesDue);
     var totalDues = 0;
+    var symbol_string = '';
+    ratesConv = [];
     $.each(obj, function(key,due) {
-      endpoint   = 'convert'
-      to         = 'INR'
-      from       =  due.code;
-      amount     =  due.class_fee;
+     amount     =  due.class_fee;
+     invCode    =  due.code;
+     console.log(invCode);
+     if (amount > 0) {
+       indItem  = {};
+       indItem[invCode] = amount;
+        ratesConv.push(indItem);
+        symbol_string  += due.code + ',';
+     }
+    });
+    symbol_string = symbol_string.slice(0,-1);
+    
+
+    $("#sumInr").click(function(){
       access_key = '0d0b39254cefb941a64f7838ba522781';
-      if (amount > 0) {
-        // get the most recent exchange rates via the "latest" endpoint:
-        $.ajax({
-          //url: 'http://data.fixer.io/api/' + endpoint + '?access_key=' + access_key,   
-          url: 'https://data.fixer.io/api/' + endpoint + '?access_key=' + access_key + '&from=' + from + '&to=' + to + '&amount=' + amount,
+      totSum     =  0;
+      $.ajax({
+          url: 'https://data.fixer.io/api/latest?access_key=0d0b39254cefb941a64f7838ba522781&base=INR&symbols='+symbol_string+'&format=1',   
+          //url: 'https://data.fixer.io/api/' + endpoint + '?access_key=' + access_key + '&from=' + from + '&to=' + to + '&amount=' + amount,
           dataType: 'jsonp',
           success: function(json) {
-            dues    = json.result.toFixed(2)
-            doSummativeDues(dues);
+            console.log(json.rates);
+            
+            $.each(json.rates, function(key,conv){
+              $.each(ratesConv, function(befKey,befCov){
+                console.log(key);
+                console.log(befKey);
+                 $.each(befCov, function(befInKey,befInCov){
+                   console.log(befInCov);
+                   if(key == befInKey){
+                    totSum =  totSum + ((1/parseFloat(conv))*parseFloat(befInCov));
+                  }
+                 });
+                  
+              });
+            });
+            
+            //dues    = json.result.toFixed(2)
+            doSummativeDues(totSum);
           }
         });
-      }
     });
-    
+
+ 
       function doSummativeDues(dues)
       {
-        totalDues  = parseFloat(dues)+parseFloat(totalDues);
-        $("#class_fee_total").html('₹'+totalDues.toFixed(2));
+        //totalDues  = parseFloat(dues)+parseFloat(totalDues);
+        $("#class_fee_total").html(dues.toFixed(2));
       }
   });
 </script>
