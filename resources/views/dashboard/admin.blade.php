@@ -247,9 +247,7 @@
 	
 
 @section('js')
-<script>
-
-https://data.fixer.io/api/latest?access_key=0d0b39254cefb941a64f7838ba522781&base=INR&symbols=USD,AUD,CAD,PLN,MXN&format=1
+<script> 
   $(document).ready(function() {
     // set endpoint and your access key
     //endpoint = 'latest'
