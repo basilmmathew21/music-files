@@ -271,11 +271,11 @@ body {
                 {
                     to         =  'INR'
                     from       =  code;
-                    currencyConverter(to,from,amount,'credits',symbol,mode_remittance);
+                    //currencyConverter(to,from,amount,'credits',symbol,mode_remittance);
                     var payment = '<?php echo $payment; ?>';
-                    currencyConverter(to,from,payment,'payment',symbol,mode_remittance);
+                    //currencyConverter(to,from,payment,'payment',symbol,mode_remittance);
                     var class_fee = '<?php echo $user->class_fee;?>';
-                    currencyConverter(to,from,class_fee,'one_class_fee',symbol,mode_remittance);
+                    currencyConverter(to,from,amount,payment,class_fee,'one_class_fee',symbol,mode_remittance);
 
                 }
             }else if(mode_remittance == "International"){
@@ -320,6 +320,7 @@ body {
                 var no_of_classes =     parseInt($(this).val());
                 var class_fee     =     one_class_fee*no_of_classes;
                 var class_fee_inr =     one_class_fee_inr*no_of_classes;
+                class_fee_inr     =     class_fee_inr.toFixed(2);
                 $("#class_fee").val(class_fee);
                 if(mode_remittance == "Indian" && user_code != 'INR'){
                         $("#divClassfee").show();
@@ -334,8 +335,9 @@ body {
     });
 
     
-    function currencyConverter(to,from,amount,mode,symbol,remittance ="")
+    function currencyConverter(to,from,credit,payment,one_class_fees,mode,symbol,remittance ="")
             {
+                amount     = 1;
                 endpoint   = 'convert'
                 access_key = '0d0b39254cefb941a64f7838ba522781';
                 // get the most recent exchange rates via the "latest" endpoint:
@@ -345,13 +347,13 @@ body {
                     success: function(json) {
                     
                        if(json.result){
-                        dues  = json.result.toFixed(2);
+                        dues  = json.result;
                         }else{
                         dues  = 0.00;
                         }
 
                     if(remittance == "Indian"){
-                        currencyINR(dues,mode,symbol);
+                        currencyINR(dues,mode,symbol,credit,payment,one_class_fees);
                     }else{
                         clearCurrencyINR();
                     }
@@ -359,22 +361,24 @@ body {
                 });
                 }
            
-            function currencyINR(amount,mode,symbol)
+            function currencyINR(amount,mode,symbol,credit,payment,one_class_fees)
             {
-                if(mode == 'credits'){
-                    $("#amountInr").html(amount);
+                //if(mode == 'credits'){
+                    credit      =   amount * credit;
+                    $("#amountInr").html(credit.toFixed(2));
                     $("#divAmountInr").show();
-                }
-                if(mode == 'payment'){
-                    $("#paymentInr").html(amount);
+                //}
+                //if(mode == 'payment'){
+                    payment      =   parseFloat(amount) * parseFloat(payment);
+                    $("#paymentInr").html(payment.toFixed(2));
                     $("#divPaymentInr").show();
-                }
-                if(mode == 'one_class_fee'){
+                //}
+                //if(mode == 'one_class_fee'){
                     //one_class_fee_inr   =   amount;
+                    one_class_fee_inr   =   parseFloat(amount) * parseFloat(one_class_fees);
+                    $("#one_class_fee_inr_dump").val(one_class_fee_inr);
                     
-                    $("#one_class_fee_inr_dump").val(amount);
-                    
-                 }
+                 //}
                 $(".amountInr").html('₹');
             }            
 </script>
