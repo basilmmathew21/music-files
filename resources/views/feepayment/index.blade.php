@@ -128,9 +128,11 @@ body {
 
     <div class="card">
         <div>
-		<form method="POST" action="{{ route('feepayment.fee.update',$user->id) }}" accept-charset="UTF-8" id="update_fee_form" name="update_fee_form" class="form-horizontal">
+		<form method="POST" action="{{ route('razorpay.verify.class') }}" accept-charset="UTF-8" name='razorpayform' id="razorpayform" class="form-horizontal">
             {{ csrf_field() }}
-            @method("PUT")
+			<input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id">
+			<input type="hidden" name="razorpay_signature"  id="razorpay_signature" >
+			<input type="hidden" name="order_id"  id="order_id" value="">
             <div class="d-flex pt-3 pl-3">
                 <div><img src="/images/visa-icon.png" width="auto" height="32" /></div>
                 <div class="pl-2">      <h2>{{$user->name}} </h2>
@@ -237,7 +239,7 @@ body {
             </div>
             <div class="d-flex justify-content-between px-3  ">
                 <div class="col-md-offset-2 col-md-10 p-0">  
-                    <input class="btn btn-primary" type="submit" value="{{ trans('users.paynow') }}">
+                    <input class="btn btn-primary" type="button" id="rzp-button1" value="{{ trans('users.paynow') }}">
                 </div>
             </div>
 		</form>
@@ -248,7 +250,111 @@ body {
 
 @endsection
 @section('js')
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+@if(!$isSuperAdmin)
+<script>
+ var SITEURL = '{{URL::to('')}}';
+ $('document').ready( function(e){
+	$.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+	$("#rzp-button1").click(function(){
+		
+		var amount = $('#class_fee').val();
+		var no_of_classes = $('#no_of_classes').val();
+		if(no_of_classes == ""){
+			alert("please select No of classes")
+		}else{
+			var postData = {"class_fee":amount,"no_of_classes":no_of_classes}
+			
+			$.ajax({
+				type: "post",
+				url: "{{ route('razorpay.ajax') }}",
+				data: postData,
+				contentType: "application/x-www-form-urlencoded",
+				success: function(responseData, textStatus, jqXHR) {
+					document.getElementById('order_id').value = responseData.notes.merchant_order_id;
+					var options = responseData;
+					options.amount = (parseFloat($('#class_feeInr').html()))*100;
+					options.description = "Class ("+ $('#no_of_classes').val() +") Fees",
+					options.handler = function (response){
+						document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
+						document.getElementById('razorpay_signature').value = response.razorpay_signature;
+						document.getElementById('razorpayform').submit();
+					};
+					options.modal = {
+						ondismiss: function() {
+							
+							//console.log("This code runs when the popup is closed");
+						},
+						// Boolean indicating whether pressing escape key 
+						// should close the checkout form. (default: true)
+						escape: false,
+						// Boolean indicating whether clicking translucent blank
+						// space outside checkout form should close the form. (default: false)
+						backdropclose: false
+					};
+					var rzp1 = new Razorpay(options);
+					rzp1.open();
+				},
+				error: function(jqXHR, textStatus, errorThrown) {
+					console.log(errorThrown);
+				}
+			})
+		}			
+		
+		
+	});
+ });
+</script>
+@else
+<script>
+ var SITEURL = '{{URL::to('')}}';
+ $('document').ready( function(e){
+	$("#rzp-button1").click(function(){
+		 document.getElementById('razorpayform').submit();
+	});
+ });
+</script>
+@endif
+
+<script>
+ 
+
+ $('document').ready( function(e){
+
+	
+	$("#rzp-button11").click(function(){
+		
+		
+		var options = "";
+		options.amount = ($('#class_fee').val())*100;
+		options.description = "Class ("+ $('#no_of_classes').val() +") Fees",
+        options.handler = function (response){
+            document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
+            document.getElementById('razorpay_signature').value = response.razorpay_signature;
+            document.getElementById('razorpayform').submit();
+        };
+        options.modal = {
+            ondismiss: function() {
+                
+                //console.log("This code runs when the popup is closed");
+            },
+            // Boolean indicating whether pressing escape key 
+            // should close the checkout form. (default: true)
+            escape: false,
+            // Boolean indicating whether clicking translucent blank
+            // space outside checkout form should close the form. (default: false)
+            backdropclose: false
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+	});
+ });
+</script>
 <script type="text/javascript">
     var one_class_fee;
     

@@ -387,9 +387,10 @@ class TutorController extends Controller
         
         $passwordStr    =  Str::random(8);
         $password       =  Hash::make($passwordStr);
-        //Accept the Enquiry
-        $active= User::where('id', $id)->update(['is_active' => 1]);
-
+        
+        if ($user->hasRole('tutor')){        //Accept the Enquiry
+            $active= User::where('id', $id)->update(['is_active' => 1]);
+        }
         
 
         //Reset password 

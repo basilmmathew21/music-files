@@ -89,6 +89,10 @@ Route::group([
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 Route::post('/regfee', 'RegfeeController@paynow')->name('regfee.paynow'); //Regostration fee
 
+Route::post('razorpay-verify', 'PaymentController@razorpayVerifyWhook')->name('razorpay.payment.verify');
+    
+Route::post('/razorpay/verify', 'PaymentController@razorpayVerifyPayment')->name('razorpay.verify');
+
 
 
 //Route::get('/email', 'EmailsController@index')->name('email');
@@ -313,6 +317,9 @@ Route::group([
 
     Route::put('feepay/{fee}', 'FeepaymentController@update')->middleware(['permission:add fee payment'])
         ->name('feepayment.fee.update');
+        
+    Route::post('/razorpay/verify', 'FeepaymentController@razorpayVerifyPayment')->middleware(['permission:add fee payment'])->name('razorpay.verify.class');
+	Route::post('/create/order', 'FeepaymentController@ajaxFeePaymentOrder')->middleware(['permission:add fee payment'])->name('razorpay.ajax');    
 });
 
 Route::group([
