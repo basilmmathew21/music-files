@@ -61,7 +61,7 @@
               @method("POST")
               <div class="form-group">
                 <div class="col-md-12 text-center">
-                  Fees : <a id="fees"></a>
+                  Fees : <span id="fees">INR <?php echo $fee_pay;?></span>
 
                   <input class="form-control" name="regfee" type="hidden" id="regfee" value="">
                   <input class="form-control" name="inr_regfee" type="hidden" id="inr_regfee" value=<?php echo $fee_pay;?>>
@@ -94,10 +94,9 @@
 @stop
 
 @section('js')
-<script>
+<!-- <script>
   $(document).ready(function() {
     // set endpoint and your access key
-    //endpoint = 'latest'
     endpoint = 'convert'
     from = 'INR'
     to = '<?php echo $student_currency; ?>'
@@ -105,20 +104,10 @@
     access_key = '0d0b39254cefb941a64f7838ba522781';
     if (amount > 0) {
       // get the most recent exchange rates via the "latest" endpoint:
-      $.ajax({
-        //url: 'http://data.fixer.io/api/' + endpoint + '?access_key=' + access_key,   
+      $.ajax({  
         url: 'https://data.fixer.io/api/' + endpoint + '?access_key=' + access_key + '&from=' + from + '&to=' + to + '&amount=' + amount,
         dataType: 'jsonp',
         success: function(json) {
-
-          /* var student_currency='<?php echo $student_currency; ?>';
-          Inr_Euro=json.rates.INR;
-          fees=$("#regfee").val();
-          fee_euro=(fees/Inr_Euro).toFixed(2);
-          student_currency_rate=(json.rates[student_currency]).toFixed(2);
-          student_pay_amount=(fee_euro*student_currency_rate).toFixed(2);
-          student_pay_amount=student_pay_amount+" "+student_currency; */
-          //alert(json.result);  
           regfee = json.result.toFixed(2)
           $("#fees").html(to + ' ' + regfee);
           $("#regfee").val(regfee);
@@ -129,5 +118,5 @@
       $("#regfee").val(0);
     }
   });
-</script>
+</script> -->
 @stop
