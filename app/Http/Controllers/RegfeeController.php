@@ -13,6 +13,7 @@ use Spatie\Permission\Models\Role;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
+use Illuminate\Support\Facades\DB as FacadesDB;
 
 class RegfeeController extends Controller
 {
@@ -38,7 +39,10 @@ class RegfeeController extends Controller
     {
             $userid = FacadesAuth::user()->id;;
             $student = Student::where('user_id',$userid)->first();
-            $student->regfee = $request['regfee'];
+            //Fetch Registration fee from database           
+            $regfee_query              =   FacadesDB::table('settings')->select('value')->where('id',4) ->get()->first();
+            $regfee                =   @$regfee_query->value;
+
             $student->regfee_date = date("Y-m-d H:i:s");
             $student->payment_method_id = '1';
             $student->is_registered = '1';
@@ -46,8 +50,9 @@ class RegfeeController extends Controller
             /*
                 If student fee payment mode is Paid,the amount is substracted to credits
             */
+           
             if($student->registration_fee_type == "Paid"){
-            $student->credits  =   $student->credits - $request['regfee'];
+            $student->credits  =   $student->credits - $regfee;
             }
             /*
                 credit is substracted ends here
